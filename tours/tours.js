@@ -122,6 +122,10 @@
     var cost = document.createElement("div");
     cost.className = "cost";
     body.appendChild(cost);
+    var add = document.createElement("span");
+    add.className = "add";
+    add.setAttribute("aria-hidden", "true");
+    body.appendChild(add);
 
     card.appendChild(pic); card.appendChild(body);
     card.addEventListener("click", function (e) {
@@ -159,11 +163,12 @@
       card.classList.toggle("on", state[p.id].on);
       card.setAttribute("aria-checked", state[p.id].on ? "true" : "false");
       card.querySelector(".cost").textContent = stopTag(p);
+      card.querySelector(".add").textContent = state[p.id].on ? "✓ Agregado · tocar para quitar" : "+ Agregar al tour";
     });
     els.pickup.placeholder = els.pickupZone.value === "boca" ? "Ej.: Hotel Don Juan, Boca Chica" : "Hotel, barrio o ciudad";
     var q = computeQuote();
     var price = "—", note = "", label = "Precio del tour";
-    if (q.kind === "empty") note = "Elige al menos una parada.";
+    if (q.kind === "empty") note = "Agrega tu primer lugar para ver el precio.";
     else if (q.kind === "pending") { price = "A cotizar"; note = q.reason; }
     else {
       price = usd(q.total);
@@ -174,6 +179,10 @@
     $("quotePrice").textContent = price;
     $("quotePrice").classList.toggle("pending", price === "A cotizar");
     $("quoteNote").textContent = note;
+    var n = selected().length;
+    $("barCount").textContent = n ? n + (n === 1 ? " lugar elegido" : " lugares elegidos") : "Toca «+ Agregar» en los lugares";
+    $("barPrice").textContent = n ? (price === "A cotizar" ? "Precio: a cotizar" : "Tu tour: " + price) : "y mira tu precio aquí";
+    $("barBtn").classList.toggle("off", !n);
     if (submitted) validate();
     return q;
   }
@@ -182,7 +191,7 @@
   var submitted = false;
   function validate() {
     var e = {};
-    if (!selected().length) e.stops = "Elige al menos una parada.";
+    if (!selected().length) e.stops = "Agrega al menos un lugar a tu tour.";
     if (els.pickup.value.trim().length < 3) e.pickup = "Escribe el hotel o la dirección de recogida.";
     if (!els.date.value) e.date = "Elige la fecha.";
     else if (els.date.value < todayISO()) e.date = "La fecha no puede ser anterior a hoy.";

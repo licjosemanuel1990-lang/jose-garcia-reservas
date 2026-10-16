@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=3">
-<link rel="stylesheet" href="tours.css?v=5">
+<link rel="stylesheet" href="tours.css?v=7">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
     </a>
     <div class="eyebrow">Saliendo desde Boca Chica</div>
     <h1>Arma tu City Tour por Santo Domingo</h1>
-    <p class="lead">Elige las paradas que quieras y ve tu precio al instante. Transporte privado, guía turístico certificado en la Zona Colonial y sin pagos anticipados.</p>
+    <p class="lead">Tú eliges qué visitar: agrega solo los lugares que te interesan y mira el precio al instante. Transporte privado desde tu hotel y sin pagos anticipados.</p>
   </div>
 </header>
 
@@ -36,13 +36,21 @@
   <form id="tourForm" class="card" novalidate>
 
     <section class="block">
-      <h2><span class="step">1</span> Elige tus paradas</h2>
-      <p class="sub">Toca una parada para incluirla o quitarla.</p>
+      <h2><span class="step">1</span> Arma tu tour a tu gusto</h2>
+      <div class="howto">
+        <p class="howto-title">Tú decides qué visitar 👇</p>
+        <ol>
+          <li>Toca <b>«+ Agregar»</b> en los lugares que quieras conocer.</li>
+          <li>Mira tu precio en la barra de abajo: cambia con cada lugar que agregas o quitas.</li>
+          <li>Cuando te guste, completa tus datos y reserva por WhatsApp.</li>
+        </ol>
+        <p class="howto-note">Pagas solo lo que eliges · Sin pagos anticipados</p>
+      </div>
       <div class="stops" id="stops"></div>
       <p class="err" data-for="stops"></p>
     </section>
 
-    <section class="block">
+    <section class="block" id="paso2">
       <h2><span class="step">2</span> Fecha y recogida</h2>
       <div class="grid2">
         <div class="field">
@@ -109,6 +117,14 @@
   </form>
 </main>
 
+<div class="tourbar" id="tourBar" aria-live="polite">
+  <div class="tb-info">
+    <span class="tb-count" id="barCount">Agrega tu primer lugar</span>
+    <span class="tb-price" id="barPrice">Precio: —</span>
+  </div>
+  <a href="#paso2" class="tb-btn" id="barBtn">Continuar</a>
+</div>
+
 <div class="overlay hidden" id="confirmBox" role="dialog" aria-modal="true" aria-labelledby="cTitle">
   <div class="sheet">
     <h3 id="cTitle">Tu tour está listo</h3>
@@ -133,7 +149,7 @@
 </footer>
 
 <script src="../routes.js?v=3"></script>
-<script src="tour-config.js?v=7"></script>
-<script src="tours.js?v=7"></script>
+<script src="tour-config.js?v=9"></script>
+<script src="tours.js?v=9"></script>
 </body>
 </html>

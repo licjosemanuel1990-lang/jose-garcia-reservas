@@ -27,8 +27,13 @@ with sync_playwright() as p:
 
     pg, errs = page()
     check("Menú muestra 10 paradas (Alcázar, Fortaleza y Catedral por separado)", pg.locator(".stop").count() == 10)
-    check("Por defecto: todas marcadas salvo plaza comercial",
-          all(is_on(pg, s) for s in ["tresojos", "faro", "alcazar", "fortaleza", "catedral", "guia", "palacio", "malecon", "comida"]) and not is_on(pg, "plaza"))
+    check("Al abrir, ningún lugar está seleccionado", not any(is_on(pg, s) for s in ["tresojos", "faro", "alcazar", "fortaleza", "catedral", "guia", "palacio", "malecon", "comida", "plaza"]))
+    check("Barra inferior invita a agregar", "Agregar" in pg.locator("#barCount").inner_text())
+    check("Cada tarjeta muestra el botón «+ Agregar al tour»", pg.locator(".stop .add", has_text="+ Agregar al tour").count() == 10)
+    check("Instrucciones visibles para el cliente", pg.locator(".howto").is_visible())
+    for s_ in ["tresojos", "faro", "guia", "alcazar", "fortaleza", "catedral", "comida", "malecon", "palacio"]: toggle(pg, s_)
+    check("Al agregar, el botón cambia a «✓ Agregado»", "Agregado" in pg.locator('.stop[data-id="tresojos"] .add').inner_text())
+    check("Barra inferior muestra cantidad y precio", "9 lugares" in pg.locator("#barCount").inner_text() and "US$" in pg.locator("#barPrice").inner_text())
     pg.select_option("#people", "2")
     check("2 personas, todo incluido (Faro con entrada) = US$186", price(pg) == "US$186", price(pg))
     pg.click('.stop[data-id="faro"] .opts label:nth-child(2)')

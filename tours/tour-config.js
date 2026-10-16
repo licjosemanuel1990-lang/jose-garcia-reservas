@@ -45,7 +45,7 @@ window.JGT_TOUR = {
       detalleCosto: "Entrada y barquito incluidos",
       foto: "Santo_Domingo_Este_-_Los_Tres_Ojos_0941.JPG",
       credito: "Phyrexian, CC BY-SA 4.0",
-      marcada: true
+      marcada: false
     },
     {
       id: "faro",
@@ -57,7 +57,7 @@ window.JGT_TOUR = {
       ],
       foto: "Santo_Domingo_-_Faro_a_Colon.JPG",
       credito: "Martin Falbisoner, CC BY-SA 4.0",
-      marcada: true
+      marcada: false
     },
     {
       id: "guia",
@@ -65,7 +65,7 @@ window.JGT_TOUR = {
       descripcion: "Un guía turístico certificado te acompaña por la Zona Colonial y te cuenta su historia, incluyendo la Calle Las Damas y el Panteón Nacional.",
       grupoUSD: 40,                   // por grupo
       foto: "img/guia.jpg",
-      marcada: true
+      marcada: false
     },
     {
       id: "alcazar",
@@ -73,7 +73,7 @@ window.JGT_TOUR = {
       descripcion: "Palacio de Diego Colón, hijo de Cristóbal Colón, en la Zona Colonial.",
       porPersonaRD: 200,              // parte de los RD$600 de entradas en Zona Colonial
       foto: "img/alcazar.jpg",
-      marcada: true
+      marcada: false
     },
     {
       id: "fortaleza",
@@ -81,7 +81,7 @@ window.JGT_TOUR = {
       descripcion: "La fortaleza militar más antigua de América, junto al río Ozama.",
       porPersonaRD: 200,
       foto: "img/fortaleza-ozama.jpg",
-      marcada: true
+      marcada: false
     },
     {
       id: "catedral",
@@ -89,7 +89,7 @@ window.JGT_TOUR = {
       descripcion: "La primera catedral construida en América.",
       porPersonaRD: 200,
       foto: "img/catedral.jpg",
-      marcada: true
+      marcada: false
     },
     {
       id: "comida",
@@ -98,7 +98,7 @@ window.JGT_TOUR = {
       porPersonaRD: 700,
       foto: "img/comida.jpg",
       icono: "🍽️",
-      marcada: true
+      marcada: false
     },
     {
       id: "malecon",
@@ -106,7 +106,7 @@ window.JGT_TOUR = {
       descripcion: "Parada fotográfica en el famoso letrero frente al mar Caribe.",
       foto: "img/malecon.jpg",
       icono: "📸",
-      marcada: true
+      marcada: false
     },
     {
       id: "palacio",
@@ -114,7 +114,7 @@ window.JGT_TOUR = {
       descripcion: "Parada frente al Palacio Nacional para tomarse fotos.",
       foto: "Palacio_Nacional_SD_RD_02_2017_2005.jpg",
       credito: "Mariordo, CC BY-SA 4.0",
-      marcada: true
+      marcada: false
     },
     {
       id: "plaza",
