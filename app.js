@@ -112,7 +112,7 @@
     if (!dep || !ret) return mix({ kind: "price", amount: roundAmount, trip: "round", provisional: true }, info);
     if (ret <= dep) return { kind: "invalidReturn" };
     var hours = (ret - dep) / 36e5;
-    if (s.rDate !== s.date) return mix({ kind: "price", amount: roundAmount, trip: "round", otherDay: true }, info);
+    if (s.rDate !== s.date) return mix({ kind: "price", amount: round2(oneWay * 2), trip: "round", otherDay: true }, info);
     if (hours > CFG.esperaMaximaHoras) return { kind: "pending", reason: "longWait", base: base };
     return mix({ kind: "price", amount: roundAmount, trip: "round" }, info);
   }
@@ -142,8 +142,8 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = (q.extraPax ? extraText(q) + " " : "") + "2 trayectos de " + money(q.oneWay) + " con 22 % de descuento." +
-            (q.otherDay ? " Regreso en otro día: misma tarifa." : " Si regresas el mismo día, incluye hasta " + CFG.esperaMaximaHoras + " h de espera.");
+          note = (q.extraPax ? extraText(q) + " " : "") + (q.otherDay ? "Regreso en otro día: 2 trayectos de " + money(q.oneWay) + " a tarifa normal (el 22 % de descuento aplica solo si regresas el mismo día)."
+            : "2 trayectos de " + money(q.oneWay) + " con 22 % de descuento por regresar el mismo día. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera.");
         } else {
           label = "Tarifa estimada · solo ida";
           note = extraText(q) + " Sujeto a confirmación de disponibilidad.";
@@ -289,7 +289,7 @@
       priceEl.textContent = money(q.amount);
       priceEl.classList.remove("pending");
       $("cNote").textContent = (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
-        ? (q.otherDay ? "Ida y vuelta con regreso en otro día: misma tarifa con 22 % de descuento." : "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.")
+        ? (q.otherDay ? "Ida y vuelta con regreso en otro día: 2 trayectos a tarifa normal." : "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.")
         : "Sujeto a confirmación de disponibilidad.");
     } else {
       $("cLabel").textContent = "Precio del servicio";
