@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1f3a">
 <title>Tours y excursiones | José García Transporte</title>
-<meta name="description" content="Tours desde Boca Chica: arma tu City Tour por Santo Domingo o vive Isla Saona todo incluido. Sin pagos anticipados.">
+<meta name="description" content="Tours desde Boca Chica: City Tour por Santo Domingo, Tour Isla Saona todo incluido y Tour de Buggies y Four Wheel en Comatillo. Sin pagos anticipados.">
 <meta property="og:title" content="Arma tu City Tour en Santo Domingo | José García Transporte">
 <meta property="og:description" content="Elige las paradas que quieras y recibe tu precio al instante.">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=3">
-<link rel="stylesheet" href="tours.css?v=8">
+<link rel="stylesheet" href="tours.css?v=9">
 <link rel="stylesheet" href="saona.css?v=1">
 </head>
 <body>
@@ -29,7 +29,7 @@
     </a>
     <div class="eyebrow">Saliendo desde Boca Chica</div>
     <h1>Tours y excursiones</h1>
-    <p class="lead">Elige tu aventura: arma tu City Tour por Santo Domingo o vive Isla Saona todo incluido. Transporte privado desde tu hotel y sin pagos anticipados.</p>
+    <p class="lead">Elige tu aventura: City Tour por Santo Domingo, Tour Isla Saona todo incluido o Tour de Buggies y Four Wheel. Transporte privado desde tu hotel y sin pagos anticipados.</p>
   </div>
 </header>
 
@@ -43,7 +43,11 @@
       </button>
       <button type="button" class="choice" data-tour="saona">
         <img src="https://commons.wikimedia.org/wiki/Special:FilePath/SAONA_PLAYA.jpg?width=700" alt="">
-        <span class="choice-body"><b>Isla Saona</b><small>Todo incluido: catamarán, piscina natural y buffet dominicano.</small><span class="choice-go">Ver opciones →</span></span>
+        <span class="choice-body"><b>Tour Isla Saona</b><small>Todo incluido: catamarán, piscina natural y buffet dominicano.</small><span class="choice-go">Ver opciones →</span></span>
+      </button>
+      <button type="button" class="choice" data-tour="buggies">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mega_Aventures_Buggies.jpg?width=700" alt="">
+        <span class="choice-body"><b>Tour de Buggies y Four Wheel</b><small>Aventura en Comatillo: lodo, ríos, cascada y naturaleza.</small><span class="choice-go">Ver opciones →</span></span>
       </button>
     </div>
   </section>
@@ -212,13 +216,132 @@
     </div>
 
     <p class="form-error hidden" id="sFormError" role="alert">Revisa los campos marcados en rojo.</p>
-    <button type="submit" class="cta" id="sSubmitBtn">RESERVAR ISLA SAONA POR WHATSAPP</button>
+    <button type="submit" class="cta" id="sSubmitBtn">RESERVAR TOUR ISLA SAONA POR WHATSAPP</button>
 
     <div class="terms">
       <p><b>Incluye:</b> transporte privado ida y vuelta, catamarán, piscina natural, playa en Isla Saona y buffet dominicano. El precio es el total del grupo.</p>
       <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
       <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
       <p class="credits">Fotos de <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>: Jordi Esquiva (playa), Danu Widjajanto (piscina natural), Melodygar (llegada a la isla), licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>; catamarán, dominio público (CC0).</p>
+    </div>
+  </form>
+  </section>
+
+  <section class="tour-pane hidden s-main" id="buggiesTour">
+
+  <section class="s-card b-intro">
+    <span class="s-badge">A 1 hora de Boca Chica</span>
+    <h2>Buggies y Four Wheel en Comatillo</h2>
+    <p>Maneja tu propio buggy o four wheel por caminos de lodo, cruces de río y bosque tropical en Comatillo, Bayaguana. Una aventura llena de adrenalina, naturaleza y paisajes del campo dominicano.</p>
+  </section>
+
+  <section class="s-card">
+    <h2>Lo que incluye tu aventura</h2>
+    <ul class="incl">
+      <li><span>🚐</span><div><b>Transporte privado</b>Ida y vuelta desde tu hotel hasta Comatillo.</div></li>
+      <li><span>🏎️</span><div><b>Buggy o four wheel</b>Tú eliges en qué vehículo vivir la aventura.</div></li>
+      <li><span>⛑️</span><div><b>Equipo de seguridad</b>Casco y gafas, con charla de seguridad antes de salir.</div></li>
+      <li><span>🧭</span><div><b>Guía local</b>Te acompaña durante toda la ruta.</div></li>
+    </ul>
+  </section>
+
+  <section class="s-gallery" aria-label="Fotos de la aventura">
+    <figure class="big"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mega_Aventures_Buggies.jpg?width=1000" alt="Buggies"><figcaption>Buggies</figcaption></figure>
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mud_storm_under_the_wheels_of_the_ATV_(50239934241).jpg?width=800" alt="Four wheel en el lodo"><figcaption>Four wheel en el lodo</figcaption></figure>
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Through_the_dirt_(50015093543).jpg?width=800" alt="Caminos de tierra"><figcaption>Caminos de aventura</figcaption></figure>
+  </section>
+
+  <section class="s-card">
+    <h2>Así será tu aventura</h2>
+    <ol class="steps">
+      <li><b>Te recogemos</b> en tu hotel y viajamos cerca de 1 hora hasta Comatillo.</li>
+      <li><b>Charla de seguridad</b>: recibes tu casco y gafas.</li>
+      <li><b>Arranca la ruta</b> en buggy o four wheel por lodo, ríos y bosque tropical.</li>
+      <li><b>Cascada Salto Alto</b>: tiempo para bañarte y tomar fotos.</li>
+      <li><b>Mirador y Ruta del Agua</b>: vistas del campo y cruces de arroyos.</li>
+      <li><b>Te llevamos de vuelta</b> a tu hotel.</li>
+    </ol>
+  </section>
+
+  <section class="s-card">
+    <h2>Qué llevar</h2>
+    <ul class="tips">
+      <li>Ropa que se pueda ensuciar y zapatos cerrados.</li>
+      <li>Traje de baño, toalla y una muda de ropa para el regreso.</li>
+      <li>Protector solar, repelente y gafas de sol.</li>
+    </ul>
+    <p class="note-warn">No recomendado para embarazadas ni para personas con problemas de espalda o del corazón.</p>
+  </section>
+
+  <form id="buggiesForm" class="card" novalidate>
+    <h2 id="bReservar"><span class="step">✓</span> Calcula tu precio y reserva</h2>
+    <div class="grid2">
+      <div class="field">
+        <label for="bPeople">Personas *</label>
+        <select id="bPeople"></select>
+        <p class="err" data-for="bPeople"></p>
+      </div>
+      <div class="field">
+        <label for="bVehicle">Vehículo *</label>
+        <select id="bVehicle">
+          <option value="buggy">Buggy</option>
+          <option value="four">Four wheel</option>
+          <option value="ambos">Buggy y four wheel (grupo mixto)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bDate">Fecha *</label>
+        <input id="bDate" type="date">
+        <p class="err" data-for="bDate"></p>
+      </div>
+      <div class="field">
+        <label for="bShift">Tanda *</label>
+        <select id="bShift">
+          <option value="manana">Mañana</option>
+          <option value="tarde">Tarde</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bPickupZone">Recogida en *</label>
+        <select id="bPickupZone">
+          <option value="boca">Boca Chica</option>
+          <option value="otra">Otra zona — escribir</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bPickup">Hotel o dirección *</label>
+        <input id="bPickup" type="text" maxlength="160" placeholder="Ej.: Hotel Don Juan, Boca Chica">
+        <p class="err" data-for="bPickup"></p>
+      </div>
+    </div>
+
+    <section class="quote" aria-live="polite">
+      <div class="quote-label">Precio total del tour</div>
+      <div class="quote-price" id="bQuotePrice">—</div>
+      <div class="quote-note" id="bQuoteNote">Elige cuántas personas son.</div>
+    </section>
+
+    <div class="grid2 stack-sm">
+      <div class="field">
+        <label for="bName">Nombre completo *</label>
+        <input id="bName" type="text" autocomplete="name" maxlength="80" placeholder="Nombre y apellido">
+        <p class="err" data-for="bName"></p>
+      </div>
+      <div class="field">
+        <label for="bPhone">WhatsApp con código de país *</label>
+        <input id="bPhone" type="tel" autocomplete="tel" inputmode="tel" maxlength="22" placeholder="Ej.: +1 809 555 1234">
+        <p class="err" data-for="bPhone"></p>
+      </div>
+    </div>
+
+    <p class="form-error hidden" id="bFormError" role="alert">Revisa los campos marcados en rojo.</p>
+    <button type="submit" class="cta" id="bSubmitBtn">RESERVAR TOUR DE BUGGIES POR WHATSAPP</button>
+
+    <div class="terms">
+      <p><b>Incluye:</b> transporte privado ida y vuelta a Comatillo y tu buggy o four wheel. El precio es el total del grupo.</p>
+      <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
+      <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
+      <p class="credits">Fotos de <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>: Funcheta (buggies, <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>), Michał Siergiejevicz (four wheel, <a href="https://creativecommons.org/licenses/by/2.0/deed.es" target="_blank" rel="noopener">CC BY 2.0</a>).</p>
     </div>
   </form>
   </section>
@@ -250,7 +373,7 @@
 
 <div class="s-bar hidden" id="sBar">
   <div class="tb-info">
-    <span class="tb-count" id="sBarCount">Isla Saona · todo incluido</span>
+    <span class="tb-count" id="sBarCount">Tour Isla Saona</span>
     <span class="tb-price" id="sBarPrice">Calcula tu precio</span>
   </div>
   <a href="#sReservar" class="tb-btn">Reservar</a>
@@ -272,6 +395,30 @@
   </div>
 </div>
 
+<div class="s-bar hidden" id="bBar">
+  <div class="tb-info">
+    <span class="tb-count" id="bBarCount">Tour de Buggies</span>
+    <span class="tb-price" id="bBarPrice">Calcula tu precio</span>
+  </div>
+  <a href="#bReservar" class="tb-btn">Reservar</a>
+</div>
+
+<div class="overlay hidden" id="bConfirmBox" role="dialog" aria-modal="true" aria-labelledby="bCTitle">
+  <div class="sheet">
+    <h3 id="bCTitle">Tu aventura está lista</h3>
+    <p class="c-route" id="bCRoute"></p>
+    <div class="c-quote">
+      <div class="quote-label">Precio total</div>
+      <div class="c-price" id="bCPrice"></div>
+      <div class="c-note" id="bCNote"></div>
+    </div>
+    <p class="c-next">Para completar tu reserva, <b>continúa por WhatsApp</b> y envía el mensaje. Te confirmaremos la disponibilidad personalmente.</p>
+    <a class="cta" id="bWaLink" href="#" rel="noopener">CONTINUAR EN WHATSAPP</a>
+    <button type="button" class="back" id="bEditBtn">Modificar datos</button>
+    <p class="c-small">Sin pagos anticipados · Pagas al finalizar el servicio.</p>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="wrap">
     <b>José García Transporte</b> · Moviendo Personas. Creando Confianza.<br>
@@ -283,7 +430,9 @@
 <script src="tour-config.js?v=10"></script>
 <script src="tours.js?v=10"></script>
 <script src="saona-config.js?v=1"></script>
-<script src="saona.js?v=2"></script>
-<script src="hub.js?v=1"></script>
+<script src="buggies-config.js?v=1"></script>
+<script src="simple-tour.js?v=1"></script>
+<script src="tours-init.js?v=1"></script>
+<script src="hub.js?v=2"></script>
 </body>
 </html>

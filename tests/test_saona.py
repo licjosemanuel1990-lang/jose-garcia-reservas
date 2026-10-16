@@ -16,8 +16,9 @@ with sync_playwright() as p:
     check("Al tocar «Isla Saona» se abre Saona y no el City Tour", pg.locator("#saonaTour").is_visible() and not pg.locator("#cityTour").is_visible())
     price = lambda: pg.locator("#sQuotePrice").inner_text().strip()
     check("Título de la landing", "Isla Saona" in pg.locator("#saonaTour").inner_text())
-    check("Incluye 5 elementos (transporte, catamarán, piscina, isla, buffet)", pg.locator(".incl li").count() == 5)
-    check("Galería con 5 fotos", pg.locator(".s-gallery img").count() == 5)
+    check("Incluye 5 elementos (transporte, catamarán, piscina, isla, buffet)", pg.locator("#saonaTour .incl li").count() == 5)
+    check("Galería con 5 fotos", pg.locator("#saonaTour .s-gallery img").count() == 5)
+    check("Se llama «Tour Isla Saona» en el selector", "Tour Isla Saona" in pg.locator('.choice[data-tour="saona"]').inner_text())
     check("Sin personas elegidas no hay precio", price() == "—")
     for n, exp in [("1", "US$135"), ("2", "US$170"), ("4", "US$240"), ("10", "US$450"), ("15", "US$625"), ("16+", "A cotizar")]:
         pg.select_option("#sPeople", n); check(f"{n} persona(s) = {exp}", price() == exp, price())
@@ -36,7 +37,7 @@ with sync_playwright() as p:
     pg.click("#sWaLink"); pg.wait_for_timeout(600)
     u = pg.evaluate("window.__lastUrl") or ""; msg = urllib.parse.unquote(u.split("?text=", 1)[-1])
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
-    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Tour: Isla Saona (todo incluido)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$170"]:
+    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Tour Isla Saona (todo incluido)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$170"]:
         check(f"Mensaje contiene «{f}»", f in msg)
     check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))

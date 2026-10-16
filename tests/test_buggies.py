@@ -1,0 +1,50 @@
+"""Pruebas del Tour de Buggies. Uso: python3 -I test_buggies.py <URL_BASE> <carpeta>"""
+import sys, urllib.parse
+from playwright.sync_api import sync_playwright
+BASE = sys.argv[1].rstrip("/") + "/tours/"; OUT = sys.argv[2]; DATE = "2026-10-23"
+res = []
+def check(n, c, d=""):
+    res.append(bool(c)); print(("PASA " if c else "FALLA") + " | " + n + (" | " + d if d else ""))
+with sync_playwright() as p:
+    br = p.chromium.launch()
+    ctx = br.new_context(**p.devices["iPhone 13"], timezone_id="America/Santo_Domingo", locale="es-DO")
+    pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};")
+    errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
+    pg.goto(BASE, wait_until="load")
+    check("Al abrir, se ve el selector y ningún tour abierto", pg.locator(".chooser").is_visible() and not pg.locator("#buggiesTour").is_visible() and not pg.locator("#cityTour").is_visible())
+    pg.click('.choice[data-tour="buggies"]'); pg.wait_for_timeout(300)
+    check("Al tocar «Buggies» se abre Buggies y no el City Tour", pg.locator("#buggiesTour").is_visible() and not pg.locator("#cityTour").is_visible())
+    price = lambda: pg.locator("#bQuotePrice").inner_text().strip()
+    check("Título de la landing", "Buggies y Four Wheel en Comatillo" in pg.locator("#buggiesTour").inner_text())
+    check("Incluye 4 elementos (transporte, vehículo, seguridad, guía)", pg.locator("#buggiesTour .incl li").count() == 4)
+    check("Galería con 3 fotos", pg.locator("#buggiesTour .s-gallery img").count() == 3)
+    check("Se llama «Tour de Buggies y Four Wheel» en el selector", "Tour de Buggies y Four Wheel" in pg.locator('.choice[data-tour="buggies"]').inner_text())
+    check("Sin personas elegidas no hay precio", price() == "—")
+    for n, exp in [("1", "US$140"), ("2", "US$200"), ("4", "US$320"), ("10", "US$680"), ("15", "US$980"), ("16+", "A cotizar")]:
+        pg.select_option("#bPeople", n); check(f"{n} persona(s) = {exp}", price() == exp, price())
+    pg.select_option("#bPeople", "2")
+    check("Barra inferior muestra el total", "US$200" in pg.locator("#bBarPrice").inner_text())
+    check("Muestra precio por persona en grupo", "US$100 por persona" in pg.locator("#bQuoteNote").inner_text())
+    pg.select_option("#bPickupZone", "otra"); check("Otra zona = A cotizar", price() == "A cotizar"); pg.select_option("#bPickupZone", "boca")
+    pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
+    check("Formulario incompleto no abre la ventana", not pg.locator("#bConfirmBox").is_visible())
+    pg.fill("#bDate", "2026-10-01"); pg.fill("#bPickup", "Hotel Don Juan"); pg.fill("#bName", "Cliente de Prueba"); pg.fill("#bPhone", "+1 809 555 1234")
+    pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
+    check("Fecha pasada bloqueada", not pg.locator("#bConfirmBox").is_visible())
+    pg.select_option("#bVehicle", "four"); pg.select_option("#bShift", "tarde")
+    pg.fill("#bDate", DATE); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
+    check("Ventana muestra US$200 antes de WhatsApp", pg.locator("#bConfirmBox").is_visible() and pg.locator("#bCPrice").inner_text() == "US$200")
+    pg.screenshot(path=f"{OUT}/buggies-ventana.png")
+    pg.click("#bWaLink"); pg.wait_for_timeout(600)
+    u = pg.evaluate("window.__lastUrl") or ""; msg = urllib.parse.unquote(u.split("?text=", 1)[-1])
+    check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
+    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Buggies y Four Wheel en Comatillo", "Vehículo: Four wheel", "Tanda: Tarde", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$200"]:
+        check(f"Mensaje contiene «{f}»", f in msg)
+    check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
+    check("Sin errores de JavaScript", not errs, "; ".join(errs))
+    pg.goto(BASE + "#buggies", wait_until="load"); pg.wait_for_timeout(300)
+    check("Enlace directo /tours/#buggies abre Buggies", pg.locator("#buggiesTour").is_visible())
+    pg.goto(BASE, wait_until="load"); pg.wait_for_timeout(300)
+    pg.screenshot(path=f"{OUT}/hub2.png")
+    br.close()
+print(f"\nRESULTADO: {sum(res)}/{len(res)} pruebas superadas"); sys.exit(0 if all(res) else 1)

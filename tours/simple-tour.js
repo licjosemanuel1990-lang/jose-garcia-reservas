@@ -1,29 +1,34 @@
-/* Isla Saona — precio en vivo y reserva por WhatsApp. Precios: saona-config.js */
-(function () {
+/* Tours de precio fijo (Isla Saona, Buggies): transporte por grupo + precio por persona.
+ * Cada tour usa un prefijo en sus ids (ej. "s" → sPeople, sDate...). */
+window.JGTSimpleTour = function (o) {
   "use strict";
-  var S = window.JGT_SAONA;
+  var C = o.cfg;
   var WA = (window.JGT_CONFIG && window.JGT_CONFIG.whatsapp) || "18298182426";
-  var $ = function (id) { return document.getElementById(id); };
-  var form = $("saonaForm");
-  var els = { people: $("sPeople"), date: $("sDate"), pickupZone: $("sPickupZone"), pickup: $("sPickup"), name: $("sName"), phone: $("sPhone") };
+  function id(k) { return o.prefix + k.charAt(0).toUpperCase() + k.slice(1); }
+  function $(k) { return document.getElementById(id(k)); }
+  var form = document.getElementById(o.form);
+  var keys = ["people", "date", "pickup", "name", "phone"];
+  var els = {};
+  ["people", "date", "pickupZone", "pickup", "name", "phone"].concat((o.extras || []).map(function (e) { return e.key; }))
+    .forEach(function (k) { els[k] = $(k); });
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function todayISO() { var d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
   function fmtDate(d) { var p = d.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
   function usd(n) { return "US$" + (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2)); }
+  function txt(sel) { return sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : ""; }
 
   els.people.appendChild(new Option("Elige", ""));
-  for (var i = 1; i <= S.maxPersonas; i++) els.people.appendChild(new Option(String(i), String(i)));
-  els.people.appendChild(new Option("Más de " + S.maxPersonas, (S.maxPersonas + 1) + "+"));
+  for (var i = 1; i <= C.maxPersonas; i++) els.people.appendChild(new Option(String(i), String(i)));
+  els.people.appendChild(new Option("Más de " + C.maxPersonas, (C.maxPersonas + 1) + "+"));
   els.date.min = todayISO();
 
   function computeQuote() {
     var p = els.people.value;
     if (!p) return { kind: "empty" };
-    if (!/^\d+$/.test(p)) return { kind: "pending", reason: "Para grupos de más de " + S.maxPersonas + " personas te enviaremos el precio por WhatsApp." };
+    if (!/^\d+$/.test(p)) return { kind: "pending", reason: "Para grupos de más de " + C.maxPersonas + " personas te enviaremos el precio por WhatsApp." };
     if (els.pickupZone.value !== "boca") return { kind: "pending", reason: "Recogida fuera de Boca Chica: te cotizaremos el precio por WhatsApp." };
-    var n = Number(p);
-    var total = S.transporte + S.porPersona * n;
+    var n = Number(p), total = C.transporte + C.porPersona * n;
     return { kind: "price", total: total, people: n, perPerson: total / n };
   }
 
@@ -34,19 +39,18 @@
     if (q.kind === "price") {
       price = usd(q.total);
       note = "Total para " + q.people + (q.people === 1 ? " persona" : " personas") +
-        (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". Todo incluido.";
+        (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". " + o.priceNote;
     }
-    $("sQuotePrice").textContent = price;
-    $("sQuotePrice").classList.toggle("pending", price === "A cotizar");
-    $("sQuoteNote").textContent = note;
-    $("sBarCount").textContent = q.kind === "price" ? "Isla Saona · " + q.people + (q.people === 1 ? " persona" : " personas") : "Isla Saona · todo incluido";
-    $("sBarPrice").textContent = q.kind === "price" ? "Total: " + price : (q.kind === "pending" ? "Precio: a cotizar" : "Calcula tu precio");
+    $("quotePrice").textContent = price;
+    $("quotePrice").classList.toggle("pending", price === "A cotizar");
+    $("quoteNote").textContent = note;
+    $("barCount").textContent = o.short + (q.kind === "price" ? " · " + q.people + (q.people === 1 ? " persona" : " personas") : "");
+    $("barPrice").textContent = q.kind === "price" ? "Total: " + price : (q.kind === "pending" ? "Precio: a cotizar" : "Calcula tu precio");
     els.pickup.placeholder = els.pickupZone.value === "boca" ? "Ej.: Hotel Don Juan, Boca Chica" : "Hotel, barrio o ciudad";
     if (submitted) validate();
     return q;
   }
 
-  var keys = ["people", "date", "pickup", "name", "phone"];
   function validate() {
     var e = {};
     if (!els.people.value) e.people = "Elige cuántas personas.";
@@ -59,42 +63,40 @@
     if (!pd) e.phone = "Escribe tu número de WhatsApp.";
     else if (pd.length < 10 || pd.length > 15) e.phone = "Número incompleto. Incluye el código de país (ej.: +1 809 555 1234).";
     keys.forEach(function (k) {
-      var box = form.querySelector('.err[data-for="' + k + '"]');
+      var box = form.querySelector('.err[data-for="' + id(k) + '"]');
       if (box) box.textContent = e[k] || "";
       els[k].classList.toggle("invalid", !!e[k]);
     });
-    $("sFormError").classList.toggle("hidden", !Object.keys(e).length);
+    $("formError").classList.toggle("hidden", !Object.keys(e).length);
     return e;
   }
 
   function buildMessage() {
     var q = computeQuote();
-    return [
-      "Nombre: " + els.name.value.trim(),
-      "WhatsApp: " + els.phone.value.trim(),
-      "Tour: Isla Saona (todo incluido)",
-      "Recogida: " + els.pickup.value.trim() + (els.pickupZone.value === "boca" ? " (Boca Chica)" : ""),
-      "Fecha: " + fmtDate(els.date.value),
-      "Personas: " + els.people.options[els.people.selectedIndex].text,
-      "Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar")
-    ].join("\n");
+    var L = ["Nombre: " + els.name.value.trim(), "WhatsApp: " + els.phone.value.trim(), "Excursión: " + o.msgTour];
+    (o.extras || []).forEach(function (e) { L.push(e.label + ": " + txt(els[e.key])); });
+    L.push("Recogida: " + els.pickup.value.trim() + (els.pickupZone.value === "boca" ? " (Boca Chica)" : ""));
+    L.push("Fecha: " + fmtDate(els.date.value));
+    L.push("Personas: " + txt(els.people));
+    L.push("Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar"));
+    return L.join("\n");
   }
   function whatsappUrl() { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(buildMessage()); }
 
-  var box = $("sConfirmBox"), waLink = $("sWaLink");
+  var box = $("confirmBox"), waLink = $("waLink");
   function openConfirm() {
     var q = computeQuote();
-    $("sCRoute").textContent = "Isla Saona · " + fmtDate(els.date.value) + " · " + els.people.options[els.people.selectedIndex].text + " personas";
-    $("sCPrice").textContent = q.kind === "price" ? usd(q.total) : "A cotizar";
-    $("sCPrice").classList.toggle("pending", q.kind !== "price");
-    $("sCNote").textContent = q.kind === "price" ? "Todo incluido: transporte, catamarán, piscina natural y buffet." : q.reason;
+    $("cRoute").textContent = o.short + " · " + fmtDate(els.date.value) + " · " + txt(els.people) + " personas";
+    $("cPrice").textContent = q.kind === "price" ? usd(q.total) : "A cotizar";
+    $("cPrice").classList.toggle("pending", q.kind !== "price");
+    $("cNote").textContent = q.kind === "price" ? o.included : q.reason;
     waLink.href = whatsappUrl();
     box.classList.remove("hidden");
     document.body.classList.add("modal-open");
     waLink.focus();
   }
   function closeConfirm() { box.classList.add("hidden"); document.body.classList.remove("modal-open"); }
-  $("sEditBtn").addEventListener("click", closeConfirm);
+  $("editBtn").addEventListener("click", closeConfirm);
   box.addEventListener("click", function (e) { if (e.target === box) closeConfirm(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeConfirm(); });
   waLink.addEventListener("click", function (e) {
@@ -116,6 +118,6 @@
     openConfirm();
   });
 
-  window.JGT_SAONAAPI = { computeQuote: computeQuote, buildMessage: buildMessage };
   refresh();
-})();
+  return { computeQuote: computeQuote, buildMessage: buildMessage };
+};
