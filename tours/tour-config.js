@@ -60,6 +60,14 @@ window.JGT_TOUR = {
       marcada: true
     },
     {
+      id: "guia",
+      nombre: "Tour guiado en la Zona Colonial",
+      descripcion: "Un guía turístico certificado te acompaña por la Zona Colonial y te cuenta su historia, incluyendo la Calle Las Damas y el Panteón Nacional.",
+      grupoUSD: 40,                   // por grupo
+      foto: "img/guia.jpg",
+      marcada: true
+    },
+    {
       id: "alcazar",
       nombre: "Alcázar de Colón",
       descripcion: "Palacio de Diego Colón, hijo de Cristóbal Colón, en la Zona Colonial.",
@@ -84,19 +92,12 @@ window.JGT_TOUR = {
       marcada: true
     },
     {
-      id: "guia",
-      nombre: "Tour guiado en la Zona Colonial",
-      descripcion: "Un guía turístico certificado te acompaña por la Zona Colonial y te cuenta su historia, incluyendo la Calle Las Damas y el Panteón Nacional.",
-      grupoUSD: 40,                   // por grupo
-      foto: "img/guia.jpg",
-      marcada: true
-    },
-    {
-      id: "palacio",
-      nombre: "Palacio Nacional",
-      descripcion: "Parada frente al Palacio Nacional para tomarse fotos.",
-      foto: "Palacio_Nacional_SD_RD_02_2017_2005.jpg",
-      credito: "Mariordo, CC BY-SA 4.0",
+      id: "comida",
+      nombre: "Almuerzo típico dominicano",
+      descripcion: "Comida criolla en un restaurante local.",
+      porPersonaRD: 700,
+      foto: "img/comida.jpg",
+      icono: "🍽️",
       marcada: true
     },
     {
@@ -108,12 +109,11 @@ window.JGT_TOUR = {
       marcada: true
     },
     {
-      id: "comida",
-      nombre: "Almuerzo típico dominicano",
-      descripcion: "Comida criolla en un restaurante local.",
-      porPersonaRD: 700,
-      foto: "img/comida.jpg",
-      icono: "🍽️",
+      id: "palacio",
+      nombre: "Palacio Nacional",
+      descripcion: "Parada frente al Palacio Nacional para tomarse fotos.",
+      foto: "Palacio_Nacional_SD_RD_02_2017_2005.jpg",
+      credito: "Mariordo, CC BY-SA 4.0",
       marcada: true
     },
     {
