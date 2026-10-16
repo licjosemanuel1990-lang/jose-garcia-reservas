@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1f3a">
+<title>Reservas | José García Transporte</title>
+<meta name="description" content="Reserva tu traslado privado en República Dominicana con José García Transporte. Sin pagos anticipados: pagas al finalizar el servicio.">
+<meta property="og:title" content="Reserva tu traslado | José García Transporte">
+<meta property="og:description" content="Traslados privados y aeroportuarios en República Dominicana. Sin pagos anticipados.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="" width="46" height="46">
+      <div>
+        <div class="brand-name">José García <span>Transporte</span></div>
+        <div class="brand-tag">Moviendo Personas. Creando Confianza.</div>
+      </div>
+    </div>
+    <h1>Reserva tu traslado privado de forma rápida, segura y sin pagos anticipados.</h1>
+    <ul class="benefits">
+      <li>Atención personalizada</li>
+      <li>Pago al finalizar</li>
+      <li>Traslados aeroportuarios</li>
+      <li>Servicio privado</li>
+      <li>Cotización por WhatsApp</li>
+    </ul>
+  </div>
+</header>
+
+<main class="wrap main">
+  <form id="booking" class="card" novalidate>
+
+    <section class="block">
+      <h2><span class="step">1</span> Tu traslado</h2>
+
+      <div class="route">
+        <div class="field">
+          <label for="origin">Origen *</label>
+          <select id="origin" name="origin"></select>
+          <input id="originOther" class="other hidden" type="text" maxlength="160" placeholder="Hotel, aeropuerto, barrio, ciudad o dirección" aria-label="Escribe el origen">
+          <p class="err" data-for="origin"></p>
+        </div>
+
+        <button type="button" id="swap" class="swap" aria-label="Intercambiar origen y destino" title="Intercambiar origen y destino">⇅</button>
+
+        <div class="field">
+          <label for="destination">Destino *</label>
+          <select id="destination" name="destination"></select>
+          <input id="destinationOther" class="other hidden" type="text" maxlength="160" placeholder="Hotel, aeropuerto, barrio, ciudad o dirección" aria-label="Escribe el destino">
+          <p class="err" data-for="destination"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label">Tipo de servicio *</span>
+        <div class="toggle" role="radiogroup" aria-label="Tipo de servicio">
+          <label><input type="radio" name="trip" value="one" checked><span>Solo ida</span></label>
+          <label><input type="radio" name="trip" value="round"><span>Ida y vuelta</span></label>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="date">Fecha del traslado *</label>
+          <input id="date" type="date">
+          <p class="err" data-for="date"></p>
+        </div>
+        <div class="field">
+          <label for="time">Hora del traslado *</label>
+          <input id="time" type="time">
+          <p class="err" data-for="time"></p>
+        </div>
+      </div>
+
+      <div id="returnBlock" class="grid2 hidden">
+        <div class="field">
+          <label for="returnDate">Fecha de regreso *</label>
+          <input id="returnDate" type="date">
+          <p class="err" data-for="returnDate"></p>
+        </div>
+        <div class="field">
+          <label for="returnTime">Hora de regreso *</label>
+          <input id="returnTime" type="time">
+          <p class="err" data-for="returnTime"></p>
+        </div>
+        <p class="hint full">Precio con descuento: regreso el mismo día y hasta <b id="waitHours">4</b> horas después de la salida. Otros casos se cotizan por WhatsApp.</p>
+      </div>
+
+      <div class="grid3">
+        <div class="field">
+          <label for="passengers">Pasajeros *</label>
+          <select id="passengers"></select>
+          <p class="err" data-for="passengers"></p>
+        </div>
+        <div class="field">
+          <label for="bags">Maletas grandes</label>
+          <select id="bags"></select>
+        </div>
+        <div class="field">
+          <label for="carry">Equipaje de mano</label>
+          <select id="carry"></select>
+        </div>
+      </div>
+
+      <div id="flightBlock" class="grid2 hidden">
+        <div class="field">
+          <label for="flight">Número de vuelo</label>
+          <input id="flight" type="text" maxlength="20" placeholder="Ej.: AA1234" autocapitalize="characters">
+        </div>
+        <div class="field">
+          <label for="airline">Aerolínea (opcional)</label>
+          <input id="airline" type="text" maxlength="60" placeholder="Ej.: American Airlines">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="tripNotes">Instrucciones especiales del traslado</label>
+        <textarea id="tripNotes" maxlength="500" rows="2" placeholder="Punto de encuentro, silla de bebé, paradas, etc."></textarea>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="step">2</span> Tus datos</h2>
+      <div class="grid2 stack-sm">
+        <div class="field">
+          <label for="name">Nombre completo *</label>
+          <input id="name" type="text" autocomplete="name" maxlength="80" placeholder="Nombre y apellido">
+          <p class="err" data-for="name"></p>
+        </div>
+        <div class="field">
+          <label for="phone">WhatsApp con código de país *</label>
+          <input id="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="22" placeholder="Ej.: +1 809 555 1234">
+          <p class="err" data-for="phone"></p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="clientNotes">Observaciones adicionales</label>
+        <textarea id="clientNotes" maxlength="500" rows="2" placeholder="Cualquier otro detalle que debamos saber"></textarea>
+      </div>
+    </section>
+
+    <section class="quote" aria-live="polite">
+      <div class="quote-label" id="quoteLabel">Tarifa estimada</div>
+      <div class="quote-price" id="quotePrice">—</div>
+      <div class="quote-note" id="quoteNote">Selecciona origen y destino.</div>
+    </section>
+
+    <p class="form-error hidden" id="formError" role="alert">Revisa los campos marcados en rojo.</p>
+
+    <button type="submit" class="cta" id="submitBtn">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.3z"/></svg>
+      SOLICITAR RESERVA POR WHATSAPP
+    </button>
+    <p class="after hidden" id="afterNote">Se abrió WhatsApp con tu solicitud. Envía el mensaje y te confirmaremos disponibilidad y precio. <b>Tu reserva aún no está confirmada.</b></p>
+
+    <div class="terms">
+      <p><b>Importante:</b> este formulario prepara tu solicitud por WhatsApp. La reserva queda confirmada solo cuando te respondamos con disponibilidad y precio final.</p>
+      <p>Sin pagos anticipados: pagas al finalizar el servicio. Atención 24/7, sujeta a disponibilidad.</p>
+      <p>Ida y vuelta: 22 % de descuento sobre dos trayectos, mismo día, con hasta 4 horas de espera incluidas.</p>
+      <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
+    </div>
+  </form>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <b>José García Transporte</b> · Moviendo Personas. Creando Confianza.<br>
+    <a href="https://wa.me/18298182426" target="_blank" rel="noopener">WhatsApp +1 829-818-2426</a>
+  </div>
+</footer>
+
+<script src="routes.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+:root{
+  --navy:#0b1f3a; --navy-2:#13315a; --gold:#c9a24a; --gold-2:#e3c27a;
+  --ink:#1a2433; --muted:#5e6b7e; --line:#d6dde7; --bg:#f4f6f9; --white:#fff;
+  --err:#c0362c; --ok:#0f7a4f; --wa:#1f9d55; --wa-2:#178045;
+  --radius:12px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.hidden{display:none!important}
+
+/* Encabezado */
+.hero{background:radial-gradient(120% 140% at 100% 0%,#1d4170 0%,var(--navy) 55%);color:var(--white);padding:26px 0 64px;border-bottom:3px solid var(--gold)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{flex:none}
+.brand-name{font-family:"Playfair Display",Georgia,serif;font-size:22px;font-weight:700;letter-spacing:.3px;line-height:1.1}
+.brand-name span{color:var(--gold-2)}
+.brand-tag{font-size:13px;color:#c8d4e3;letter-spacing:.3px;margin-top:2px}
+.hero h1{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(24px,5.4vw,36px);line-height:1.2;margin:26px 0 18px;max-width:640px}
+.benefits{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.benefits li{font-size:13px;font-weight:600;color:#eef3f9;border:1px solid rgba(227,194,122,.55);border-radius:999px;padding:6px 12px 6px 28px;position:relative}
+.benefits li::before{content:"";position:absolute;left:11px;top:50%;width:10px;height:6px;border-left:2px solid var(--gold-2);border-bottom:2px solid var(--gold-2);transform:translateY(-70%) rotate(-45deg)}
+
+/* Tarjeta */
+.main{margin-top:-40px;margin-bottom:28px;position:relative}
+.card{background:var(--white);border-radius:18px;box-shadow:0 12px 40px rgba(11,31,58,.12);padding:22px 18px}
+@media(min-width:600px){.card{padding:30px}}
+.block{padding-bottom:10px;margin-bottom:18px;border-bottom:1px solid #edf0f5}
+h2{display:flex;align-items:center;gap:10px;font-size:19px;margin:0 0 16px;color:var(--navy)}
+.step{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--gold-2);font-size:14px;font-weight:800}
+
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-width:0}
+label,.label{font-size:14px;font-weight:700;color:#2b3a50}
+input[type=text],input[type=tel],input[type=date],input[type=time],select,textarea{
+  font:inherit;font-size:16px;color:var(--ink);width:100%;min-height:50px;padding:12px;
+  border:1.5px solid var(--line);border-radius:var(--radius);background:var(--white);
+  -webkit-appearance:none;appearance:none}
+input[type=date],input[type=time]{display:block;line-height:24px}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--navy) 50%),linear-gradient(135deg,var(--navy) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(201,162,74,.35)}
+.invalid{border-color:var(--err)!important;background-color:#fff7f6!important}
+.err{margin:0;color:var(--err);font-size:13px;font-weight:600;min-height:0}
+.err:empty{display:none}
+.other{margin-top:4px;border-style:dashed!important}
+.hint{font-size:13px;color:var(--muted);margin:-4px 0 14px}
+.full{grid-column:1/-1}
+
+.grid2,.grid3{display:grid;gap:0 12px;grid-template-columns:1fr 1fr}
+.grid3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:420px){.grid3{grid-template-columns:1fr 1fr}.grid3 .field:first-child{grid-column:1/-1}}
+
+/* Origen / destino */
+.route{display:grid;grid-template-columns:1fr auto 1fr;gap:0 10px;align-items:start}
+.swap{margin-top:30px;width:46px;height:50px;border:1.5px solid var(--gold);border-radius:var(--radius);background:#fffaf0;color:var(--navy);font-size:22px;font-weight:700;cursor:pointer;transform:rotate(90deg)}
+.swap:active{background:#f6e7c3}
+@media(max-width:600px){
+  .route{grid-template-columns:1fr}
+  .swap{margin:-4px auto 10px;transform:none;width:100%;height:42px;font-size:15px}
+  .swap::after{content:" Intercambiar origen y destino";font-size:14px}
+}
+
+/* Tipo de servicio */
+.toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toggle label{position:relative;cursor:pointer}
+.toggle input{position:absolute;opacity:0;width:1px;height:1px}
+.toggle span{display:flex;align-items:center;justify-content:center;min-height:50px;border:1.5px solid var(--line);border-radius:var(--radius);font-weight:700;color:var(--muted);text-align:center;padding:6px}
+.toggle input:checked+span{border-color:var(--navy);background:var(--navy);color:var(--white);box-shadow:inset 0 -3px 0 var(--gold)}
+.toggle input:focus-visible+span{box-shadow:0 0 0 3px rgba(201,162,74,.5)}
+
+/* Cotización */
+.quote{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--white);border-radius:14px;padding:18px;margin:4px 0 16px;border-left:5px solid var(--gold)}
+.quote-label{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold-2);font-weight:700}
+.quote-price{font-size:32px;font-weight:800;line-height:1.2;margin:4px 0}
+.quote-price.pending{font-size:24px}
+.quote-note{font-size:14px;color:#d3deeb}
+
+.form-error{color:var(--err);font-weight:700;text-align:center;margin:0 0 10px}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;border:0;border-radius:14px;
+  background:var(--wa);color:var(--white);font:inherit;font-size:16px;font-weight:800;letter-spacing:.3px;cursor:pointer;
+  box-shadow:0 6px 18px rgba(31,157,85,.35);touch-action:manipulation}
+.cta:hover{background:var(--wa-2)}
+.cta:active{transform:translateY(1px)}
+.after{background:#eef8f2;border:1px solid #bfe3cd;color:#185c38;border-radius:10px;padding:12px;font-size:14px;margin:12px 0 0}
+.terms{margin-top:18px;font-size:13px;color:var(--muted)}
+.terms p{margin:0 0 8px}
+.footer{text-align:center;font-size:14px;color:var(--muted);padding:6px 0 34px}
+.footer a{color:var(--wa-2);font-weight:700}
+@media(max-width:480px){.stack-sm{grid-template-columns:1fr}}
