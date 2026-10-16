@@ -31,8 +31,9 @@ window.JGT_BUGGIESAPI = (function () {
     },
     calc: function (n, els) {
       var v = fw(els, n), p = plan(els);
-      var rd = v * (p.rd + B.margenRD + (els.size.value === "300" ? B.extra300ccRD : 0)) + (els.food.value === "si" ? B.comidaRD * n : 0);
-      return Math.ceil(B.transporte + rd / B.tasaCambio);
+      var planUSD = p.usd != null ? p.usd : (p.rd + B.margenRD) / B.tasaCambio;
+      var extrasRD = v * (els.size.value === "300" ? B.extra300ccRD : 0) + (els.food.value === "si" ? B.comidaRD * n : 0);
+      return Math.ceil(B.transporte + v * planUSD + extrasRD / B.tasaCambio);
     },
     detail: function (n, els) {
       var v = fw(els, n), p = plan(els);
