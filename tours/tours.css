@@ -108,3 +108,5 @@ body.has-bar{padding-bottom:86px}
 .c-deposit b{color:var(--gold-2)}
 .deposit-card{border-left:5px solid var(--gold);background:#fffaf0}
 .deposit-card p{margin:0;font-size:15px;line-height:1.55}
+.plan-tag.prem{background:#7a1f3d;color:#fff}
+@media(min-width:620px){.plans{grid-template-columns:1fr 1fr 1fr}}

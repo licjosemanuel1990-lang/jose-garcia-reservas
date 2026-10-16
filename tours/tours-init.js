@@ -11,36 +11,36 @@ window.JGT_BUGGIESAPI = (function () {
   cnt.appendChild(new Option("Elige", ""));
   for (var i = 1; i <= B.maxPersonas; i++) cnt.appendChild(new Option(String(i), String(i)));
   function plan(els) { return B.planes[els.plan.value] || B.planes.basico; }
-  function vName(els, v) {
-    var one = { four: "four wheel", buggy: "buggy", ambos: "vehículo" }[els.vehicle.value];
-    var many = { four: "four wheels", buggy: "buggies", ambos: "vehículos (buggy y four wheel)" }[els.vehicle.value];
-    return v + " " + (v === 1 ? one : many);
-  }
+  function fw(els, n) { return Number(els.count.value) || Math.ceil(n / 2); }
+  function fwName(v) { return v + (v === 1 ? " four wheel" : " four wheels"); }
   return JGTSimpleTour({
     prefix: "b", form: "buggiesForm", cfg: B,
-    short: "Tour de Buggies", msgTour: "Buggies y Four Wheel en Comatillo",
-    extras: [{ key: "plan", label: "Plan" }, { key: "vehicle", label: "Vehículo" }, { key: "count", label: "Cantidad de vehículos" }, { key: "food", label: "Comida" }, { key: "shift", label: "Horario" }],
+    short: "Tour en Four Wheel", msgTour: "Four Wheel en Comatillo",
+    extras: [{ key: "plan", label: "Plan" }, { key: "count", label: "Four wheels" }, { key: "size", label: "Tipo" }, { key: "food", label: "Comida" }, { key: "shift", label: "Horario" }],
     extraKeys: ["count"],
     extraValidate: function (els) {
       var n = Number(els.people.value), v = Number(els.count.value), e = {};
-      if (!els.count.value) e.count = "Elige cuántos vehículos.";
+      if (!els.count.value) e.count = "Elige cuántos four wheels.";
       else if (n && /^\d+$/.test(els.people.value)) {
-        if (v > n) e.count = "No puede haber más vehículos que personas.";
-        else if (v * 2 < n) e.count = "Cada vehículo lleva máximo 2 personas: necesitan al menos " + Math.ceil(n / 2) + ".";
-        else if (els.vehicle.value === "ambos" && v < 2) e.count = "Para buggy y four wheel elige al menos 2 vehículos.";
+        if (v > n) e.count = "No puede haber más four wheels que personas.";
+        else if (v * 2 < n) e.count = "Cada four wheel lleva máximo 2 personas: necesitan al menos " + Math.ceil(n / 2) + ".";
       }
+      var p = plan(els);
+      if (p.minPersonas && n && n < p.minPersonas) e.people = "El " + p.nombre + " requiere mínimo " + p.minPersonas + " personas.";
       return e;
     },
     calc: function (n, els) {
-      var rd = n * plan(els).rd + (els.food.value === "si" ? B.comidaRD * n : 0);
+      var v = fw(els, n), p = plan(els);
+      var rd = v * (p.rd + B.margenRD + (els.size.value === "300" ? B.extra300ccRD : 0)) + (els.food.value === "si" ? B.comidaRD * n : 0);
       return Math.ceil(B.transporte + rd / B.tasaCambio);
     },
     detail: function (n, els) {
-      var v = Number(els.count.value);
-      return plan(els).nombre + (v ? " · " + vName(els, v) : "") +
-        (els.food.value === "si" ? " · con comida criolla" : "") + ". Incluye transporte privado.";
+      var v = fw(els, n), p = plan(els);
+      return p.nombre + " · " + fwName(v) + (els.size.value === "300" ? " de 300cc" : "") +
+        (els.food.value === "si" ? " · con comida criolla" : "") + ". Incluye transporte privado." +
+        (p.minPersonas ? " Mínimo " + p.minPersonas + " personas, sujeto a disponibilidad." : "");
     },
-    included: "Incluye transporte privado ida y vuelta y la ruta en buggy o four wheel."
+    included: "Incluye transporte privado ida y vuelta y la ruta en four wheel."
   });
 })();
 /* Sugiere la cantidad de vehículos según las personas (de 2 en 2) */
@@ -50,9 +50,10 @@ window.JGT_BUGGIESAPI = (function () {
   cnt.addEventListener("change", function () { touched = true; });
   ppl.addEventListener("change", function () {
     var n = Number(ppl.value);
-    if (!n) { hint.textContent = "Cada vehículo lleva 1 o 2 personas."; return; }
-    hint.textContent = "Para " + n + (n === 1 ? " persona" : " personas") + ": entre " + Math.ceil(n / 2) + " y " + n + (n === 1 ? " vehículo." : " vehículos.");
-    if (!touched || !cnt.value) { cnt.value = String(Math.ceil(n / 2)); cnt.dispatchEvent(new Event("change", { bubbles: true })); touched = false; }
+    if (!n) { hint.textContent = "Cada four wheel lleva 1 o 2 personas."; return; }
+    hint.textContent = "Para " + n + (n === 1 ? " persona" : " personas") + ": entre " + Math.ceil(n / 2) + " y " + n + (n === 1 ? " four wheel." : " four wheels.") + " Si van de 2 en 2, pagan menos.";
+    var v = Number(cnt.value);
+    if (!touched || !v || v > n || v * 2 < n) { cnt.value = String(Math.ceil(n / 2)); cnt.dispatchEvent(new Event("change", { bubbles: true })); touched = false; }
   });
 })();
 /* Las tarjetas de plan y el selector del formulario van sincronizados */

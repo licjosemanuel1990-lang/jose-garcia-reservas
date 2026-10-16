@@ -1,22 +1,25 @@
 /*
  * ============================================================
- *  TOUR DE BUGGIES Y FOUR WHEEL EN COMATILLO — PRECIOS
+ *  TOUR EN FOUR WHEEL POR COMATILLO — PRECIOS
+ *  El precio de Comatillo es POR FOUR WHEEL (1 o 2 personas).
  *  Precio = transporte (US$, por grupo)
- *         + plan por persona (RD$, ya con nuestro margen)
+ *         + plan por cada four wheel (RD$, costo + nuestro margen)
+ *         + 300cc opcional por four wheel (RD$)
  *         + comida opcional por persona (RD$)
  *  Todo se convierte a dólares con la tasa de cambio.
- *  Cada four wheel lleva 1 o 2 personas (no cambia el precio).
  * ============================================================
  */
 window.JGT_BUGGIES = {
-  nombre: "Tour de Buggies y Four Wheel en Comatillo",
+  nombre: "Tour en Four Wheel por Comatillo",
   tasaCambio: 62,          // RD$ por cada US$
   transporte: 80,          // US$ por grupo (ida y vuelta desde Boca Chica)
+  margenRD: 1000,          // RD$ que sumamos a cada plan (por four wheel)
   planes: {
-    // costo Comatillo + RD$1,000 de margen, por persona
-    basico: { nombre: "Tour Básico", rd: 3500 + 1000, detalle: "1er río y cascada Salto Alto" },
-    plus:   { nombre: "Tour Plus",   rd: 4000 + 1000, detalle: "2 ríos, cascada Salto Alto y La Orqueta" }
+    basico:  { nombre: "Tour Básico",  rd: 3350, detalle: "Loma de Managua y río Salto Alto" },
+    plus:    { nombre: "Tour Plus",    rd: 3850, detalle: "Básico + río La Jorqueta" },
+    premium: { nombre: "Tour Premium", rd: 4050, detalle: "Básico + río privado, piscina y tobogán", minPersonas: 10 }
   },
+  extra300ccRD: 300,       // RD$ por four wheel de 300cc
   deposito: 0.30,          // 30 % para reservar; el resto al abordar
   comidaRD: 375,           // RD$ por persona (opcional)
   maxPersonas: 15          // más personas → "A cotizar"
