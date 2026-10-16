@@ -17,6 +17,13 @@ Formulario de reservas para clientes. El cliente elige su traslado, ve la tarifa
 | `assets/` | Logo, icono y códigos QR |
 | `tests/test_form.py` | Pruebas automáticas con clientes ficticios |
 
+## City Tour
+
+- **Página:** https://jose-garcia-reservas.vercel.app/tours/
+- **Precios y paradas:** `tours/tour-config.js` (costos sin margen; la página suma el 10 %).
+- Cálculo: (transporte US$70, o US$110 con plaza comercial; +US$10 por persona desde la quinta) + guía US$40 si incluye Zona Colonial + entradas y comida en pesos × personas ÷ tasa de cambio → +10 % → redondeado hacia arriba.
+- Tasa de cambio en `tasaCambio` (61 RD$ por US$).
+
 ## Cómo añadir un destino nuevo
 
 Abrir `routes.js` y hacer dos cosas:

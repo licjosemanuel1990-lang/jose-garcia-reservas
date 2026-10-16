@@ -1,0 +1,32 @@
+/* City Tour — estilos propios (usa los colores de ../styles.css) */
+.tour-hero{background-size:cover;background-position:center;position:relative;padding-bottom:70px}
+.tour-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,31,58,.82) 0%,rgba(11,31,58,.92) 100%)}
+.tour-hero .wrap{position:relative}
+a.brand{color:inherit;text-decoration:none}
+.eyebrow{margin-top:22px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-2);font-weight:700}
+.tour-hero h1{margin:8px 0 10px}
+.lead{margin:0;color:#d6e0ec;max-width:600px;font-size:15px}
+.sub{color:var(--muted);font-size:14px;margin:-8px 0 14px}
+
+.stops{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:620px){.stops{grid-template-columns:1fr 1fr}}
+.stop{position:relative;border:2px solid var(--line);border-radius:16px;overflow:hidden;background:var(--white);cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column}
+.stop.on{border-color:var(--navy);box-shadow:0 6px 18px rgba(11,31,58,.14)}
+.stop .pic{height:132px;background:linear-gradient(135deg,#1d4170,var(--navy));background-size:cover;background-position:center;position:relative;display:grid;place-items:center;font-size:44px}
+.stop .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stop .check{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);border:2px solid var(--line);display:grid;place-items:center;font-weight:900;color:transparent;font-size:17px;z-index:1}
+.stop.on .check{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.stop .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.stop h3{margin:0;font-size:16px;color:var(--navy);line-height:1.25}
+.stop p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.45}
+.stop .cost{margin-top:auto;padding-top:4px;font-size:13.5px;font-weight:800;color:var(--wa-2)}
+.stop .cost.free{color:var(--navy-2)}
+.stop:not(.on) .cost{color:#9aa6b6}
+.stop input[type=checkbox]{position:absolute;opacity:0;pointer-events:none}
+.stop:focus-within{box-shadow:0 0 0 3px rgba(201,162,74,.45)}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.opts label{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink);padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;cursor:pointer}
+.opts input{accent-color:var(--navy);width:18px;height:18px;flex:none}
+.stop:not(.on) .opts{opacity:.45}
+.credits{font-size:12px}
+.credits a{color:var(--muted)}

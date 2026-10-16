@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1f3a">
+<title>City Tour Santo Domingo | José García Transporte</title>
+<meta name="description" content="Arma tu City Tour por Santo Domingo desde Boca Chica: Los Tres Ojos, Faro a Colón, Zona Colonial y más. Sin pagos anticipados.">
+<meta property="og:title" content="Arma tu City Tour en Santo Domingo | José García Transporte">
+<meta property="og:description" content="Elige las paradas que quieras y recibe tu precio al instante.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css?v=3">
+<link rel="stylesheet" href="tours.css?v=1">
+</head>
+<body>
+
+<header class="hero tour-hero" id="tourHero">
+  <div class="wrap">
+    <a class="brand" href="../">
+      <img src="../assets/logo.svg" alt="" width="46" height="46">
+      <div>
+        <div class="brand-name">José García <span>Transporte</span></div>
+        <div class="brand-tag">Moviendo Personas. Creando Confianza.</div>
+      </div>
+    </a>
+    <div class="eyebrow">Saliendo desde Boca Chica</div>
+    <h1>Arma tu City Tour por Santo Domingo</h1>
+    <p class="lead">Elige las paradas que quieras y ve tu precio al instante. Transporte privado, guía autorizado en la Zona Colonial y sin pagos anticipados.</p>
+  </div>
+</header>
+
+<main class="wrap main">
+  <form id="tourForm" class="card" novalidate>
+
+    <section class="block">
+      <h2><span class="step">1</span> Elige tus paradas</h2>
+      <p class="sub">Toca una parada para incluirla o quitarla.</p>
+      <div class="stops" id="stops"></div>
+      <p class="err" data-for="stops"></p>
+    </section>
+
+    <section class="block">
+      <h2><span class="step">2</span> Fecha y recogida</h2>
+      <div class="grid2">
+        <div class="field">
+          <label for="pickupZone">Recogida en *</label>
+          <select id="pickupZone">
+            <option value="boca">Boca Chica</option>
+            <option value="otra">Otra zona — escribir</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pickup">Hotel o dirección *</label>
+          <input id="pickup" type="text" maxlength="160" placeholder="Ej.: Hotel Don Juan, Boca Chica">
+          <p class="err" data-for="pickup"></p>
+        </div>
+        <div class="field">
+          <label for="date">Fecha del tour *</label>
+          <input id="date" type="date">
+          <p class="err" data-for="date"></p>
+        </div>
+        <div class="field">
+          <label for="time">Hora de recogida *</label>
+          <input id="time" type="time" value="08:00">
+          <p class="err" data-for="time"></p>
+        </div>
+        <div class="field">
+          <label for="people">Personas *</label>
+          <select id="people"></select>
+          <p class="err" data-for="people"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2><span class="step">3</span> Tus datos</h2>
+      <div class="grid2 stack-sm">
+        <div class="field">
+          <label for="name">Nombre completo *</label>
+          <input id="name" type="text" autocomplete="name" maxlength="80" placeholder="Nombre y apellido">
+          <p class="err" data-for="name"></p>
+        </div>
+        <div class="field">
+          <label for="phone">WhatsApp con código de país *</label>
+          <input id="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="22" placeholder="Ej.: +1 809 555 1234">
+          <p class="err" data-for="phone"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote" aria-live="polite">
+      <div class="quote-label" id="quoteLabel">Precio del tour</div>
+      <div class="quote-price" id="quotePrice">—</div>
+      <div class="quote-note" id="quoteNote"></div>
+    </section>
+
+    <p class="form-error hidden" id="formError" role="alert">Revisa los campos marcados en rojo.</p>
+    <button type="submit" class="cta" id="submitBtn">SOLICITAR TOUR POR WHATSAPP</button>
+
+    <div class="terms">
+      <p><b>Incluye:</b> transporte privado ida y vuelta desde Boca Chica y las entradas y servicios de las paradas elegidas. El precio es para todo el grupo.</p>
+      <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
+      <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
+      <p class="credits">Fotos: <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a> (licencias libres; autores en cada imagen).</p>
+    </div>
+  </form>
+</main>
+
+<div class="overlay hidden" id="confirmBox" role="dialog" aria-modal="true" aria-labelledby="cTitle">
+  <div class="sheet">
+    <h3 id="cTitle">Tu tour está listo</h3>
+    <p class="c-route" id="cRoute"></p>
+    <div class="c-quote">
+      <div class="quote-label">Precio del tour</div>
+      <div class="c-price" id="cPrice"></div>
+      <div class="c-note" id="cNote"></div>
+    </div>
+    <p class="c-next">Para completar tu reserva, <b>continúa por WhatsApp</b> y envía el mensaje. Te confirmaremos la disponibilidad personalmente.</p>
+    <a class="cta" id="waLink" href="#" rel="noopener">CONTINUAR EN WHATSAPP</a>
+    <button type="button" class="back" id="editBtn">Modificar tour</button>
+    <p class="c-small">Sin pagos anticipados · Pagas al finalizar el servicio.</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <b>José García Transporte</b> · Moviendo Personas. Creando Confianza.<br>
+    <a href="../">Reservar un traslado</a> · <a href="https://wa.me/18298182426" target="_blank" rel="noopener">WhatsApp +1 829-818-2426</a>
+  </div>
+</footer>
+
+<script src="../routes.js?v=3"></script>
+<script src="tour-config.js?v=1"></script>
+<script src="tours.js?v=1"></script>
+</body>
+</html>
