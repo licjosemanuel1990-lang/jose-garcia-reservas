@@ -65,7 +65,28 @@
     var pic = document.createElement("div");
     pic.className = "pic";
     pic.textContent = p.icono || "📍";
-    if (p.foto) {
+    if (p.fotos && p.fotos.length) {       // galería que rota sola
+      var imgs = p.fotos.map(function (f, idx) {
+        var im = document.createElement("img");
+        im.alt = f.titulo; im.loading = "lazy"; im.src = photo(f.foto);
+        im.className = "slide" + (idx === 0 ? " show" : "");
+        im.onerror = function () { im.remove(); };
+        pic.appendChild(im);
+        return im;
+      });
+      var cap = document.createElement("span");
+      cap.className = "caption"; cap.textContent = p.fotos[0].titulo;
+      pic.appendChild(cap);
+      var cur = 0;
+      setInterval(function () {
+        var live = imgs.filter(function (im) { return im.isConnected; });
+        if (live.length < 2) return;
+        imgs[cur].classList.remove("show");
+        do { cur = (cur + 1) % imgs.length; } while (!imgs[cur].isConnected);
+        imgs[cur].classList.add("show");
+        cap.textContent = imgs[cur].alt;
+      }, 3000);
+    } else if (p.foto) {
       var img = document.createElement("img");
       img.alt = p.nombre; img.loading = "lazy"; img.src = photo(p.foto);
       img.onerror = function () { img.remove(); };

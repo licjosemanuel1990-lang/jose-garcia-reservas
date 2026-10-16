@@ -62,14 +62,18 @@ window.JGT_TOUR = {
     {
       id: "colonial",
       nombre: "Zona Colonial",
-      descripcion: "La primera ciudad de América, con entrada a monumentos: Fortaleza Ozama, Panteón Nacional, Catedral Primada de América, Alcázar de Colón, Museo de las Casas Reales y Calle Las Damas.",
+      descripcion: "La primera ciudad de América. Visitamos el Alcázar de Colón, la Fortaleza Ozama y la Catedral Primada de América, además del Panteón Nacional, el Museo de las Casas Reales y la Calle Las Damas.",
       porPersonaRD: 600,              // entradas a monumentos (por persona)
       opciones: [
         { id: "guia",   nombre: "Con guía turístico certificado", grupoUSD: 40 },
         { id: "libre",  nombre: "Sin guía (recorrido libre)",      grupoUSD: 0 }
       ],
-      foto: "Catedral_Primada_CCSD_09_2018_1234.jpg",
-      credito: "Mariordo, CC BY-SA 4.0",
+      // Varias fotos: se muestran una tras otra con su nombre
+      fotos: [
+        { foto: "img/alcazar.jpg",         titulo: "Alcázar de Colón" },
+        { foto: "img/fortaleza-ozama.jpg", titulo: "Fortaleza Ozama" },
+        { foto: "img/catedral.jpg",        titulo: "Catedral Primada de América" }
+      ],
       marcada: true
     },
     {
