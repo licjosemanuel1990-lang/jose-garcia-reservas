@@ -24,13 +24,14 @@ window.JGT_TOUR = {
   maxPersonas: 15,              // más personas → "A cotizar"
 
   // Imagen principal
-  portada: "Aerial_view_Ciudad_Colonial_Santo_Domingo_09_2019_0067.jpg",
+  portada: "Aerial_view_Catedral_Primada_CCSD_09_2019_0074.jpg",
 
   // ---------------------------------------------------------
   // PARADAS del menú. El cliente elige las que quiera.
   //  porPersonaRD → costo por persona en pesos (entradas, comida)
   //  grupoUSD     → costo fijo del grupo en dólares (ej. guía)
-  //  opciones     → variantes para elegir (ej. entrar o solo foto)
+  //  opciones     → variantes para elegir; pueden tener su propio
+  //                 porPersonaRD o grupoUSD (ej. con o sin guía)
   //  foto         → nombre del archivo en Wikimedia Commons
   //  icono        → se usa si no hay foto
   // ---------------------------------------------------------
@@ -41,7 +42,8 @@ window.JGT_TOUR = {
       descripcion: "Cuevas y lagos subterráneos de agua cristalina. Incluye el cruce en barquito al lago escondido.",
       porPersonaRD: 300,              // entrada RD$200 + barquito RD$100
       detalleCosto: "Entrada y barquito incluidos",
-      foto: "LosTresOjos.JPG",
+      foto: "Santo_Domingo_Este_-_Los_Tres_Ojos_0941.JPG",
+      credito: "Phyrexian, CC BY-SA 4.0",
       marcada: true
     },
     {
@@ -52,24 +54,29 @@ window.JGT_TOUR = {
         { id: "entrar", nombre: "Con entrada al interior", porPersonaRD: 200 },
         { id: "foto",   nombre: "Solo vista panorámica y fotos (gratis)", porPersonaRD: 0 }
       ],
-      foto: "Santo_Domingo.El_Faro_a_Colón.20170402.jpg",
+      foto: "Santo_Domingo_-_Faro_a_Colon.JPG",
+      credito: "Martin Falbisoner, CC BY-SA 4.0",
       marcada: true
     },
     {
       id: "colonial",
-      nombre: "Zona Colonial con guía autorizado",
-      descripcion: "La primera ciudad de América. Recorrido con guía turístico autorizado y entrada a monumentos: Fortaleza Ozama, Panteón Nacional, Catedral Primada de América, Alcázar de Colón, Museo de las Casas Reales y Calle Las Damas.",
-      porPersonaRD: 600,              // entradas a monumentos
-      grupoUSD: 40,                   // guía turístico autorizado
-      detalleCosto: "Guía y entradas incluidos",
-      foto: "Catedral_Primada_SD_07_2017_4634.jpg",
+      nombre: "Zona Colonial",
+      descripcion: "La primera ciudad de América, con entrada a monumentos: Fortaleza Ozama, Panteón Nacional, Catedral Primada de América, Alcázar de Colón, Museo de las Casas Reales y Calle Las Damas.",
+      porPersonaRD: 600,              // entradas a monumentos (por persona)
+      opciones: [
+        { id: "guia",   nombre: "Con guía turístico certificado", grupoUSD: 40 },
+        { id: "libre",  nombre: "Sin guía (recorrido libre)",      grupoUSD: 0 }
+      ],
+      foto: "Catedral_Primada_CCSD_09_2018_1234.jpg",
+      credito: "Mariordo, CC BY-SA 4.0",
       marcada: true
     },
     {
       id: "palacio",
       nombre: "Palacio Nacional",
       descripcion: "Parada frente al Palacio Nacional para tomarse fotos.",
-      foto: "Palacio_Nacional_Republica_Dominicana_06_2018_8849.jpg",
+      foto: "Palacio_Nacional_SD_RD_02_2017_2005.jpg",
+      credito: "Mariordo, CC BY-SA 4.0",
       marcada: true
     },
     {
@@ -89,8 +96,8 @@ window.JGT_TOUR = {
     },
     {
       id: "plaza",
-      nombre: "Plaza comercial",
-      descripcion: "Tiempo para compras en un centro comercial de la capital.",
+      nombre: "Sambil Santo Domingo",
+      descripcion: "Tiempo para compras y descanso en el centro comercial Sambil.",
       cambiaTransporte: true,
       icono: "🛍️",
       marcada: false

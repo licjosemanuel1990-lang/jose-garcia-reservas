@@ -21,7 +21,8 @@ Formulario de reservas para clientes. El cliente elige su traslado, ve la tarifa
 
 - **Página:** https://jose-garcia-reservas.vercel.app/tours/
 - **Precios y paradas:** `tours/tour-config.js` (costos sin margen; la página suma el 10 %).
-- Cálculo: (transporte US$70, o US$110 con plaza comercial; +US$10 por persona desde la quinta) + guía US$40 si incluye Zona Colonial + entradas y comida en pesos × personas ÷ tasa de cambio → +10 % → redondeado hacia arriba.
+- Los precios por parada NO se muestran al cliente; solo el total.
+- Cálculo: (transporte US$70, o US$110 con Sambil; +US$10 por persona desde la quinta) + guía turístico certificado US$40 si lo elige en Zona Colonial + entradas y comida en pesos × personas ÷ tasa de cambio → +10 % → redondeado hacia arriba.
 - Tasa de cambio en `tasaCambio` (61 RD$ por US$).
 
 ## Cómo añadir un destino nuevo

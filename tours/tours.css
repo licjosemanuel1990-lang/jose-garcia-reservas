@@ -19,7 +19,7 @@ a.brand{color:inherit;text-decoration:none}
 .stop .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .stop h3{margin:0;font-size:16px;color:var(--navy);line-height:1.25}
 .stop p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.45}
-.stop .cost{margin-top:auto;padding-top:4px;font-size:13.5px;font-weight:800;color:var(--wa-2)}
+.stop .cost{margin-top:auto;padding-top:4px;font-size:13px;font-weight:700;color:var(--navy-2)}
 .stop .cost.free{color:var(--navy-2)}
 .stop:not(.on) .cost{color:#9aa6b6}
 .stop input[type=checkbox]{position:absolute;opacity:0;pointer-events:none}

@@ -50,10 +50,14 @@ with sync_playwright() as p:
     for s in ["palacio", "malecon"]: toggle(pg, s)
     check("Sin paradas: no hay precio", price(pg) == "—")
     for s in ["tresojos", "faro", "colonial", "palacio", "malecon", "comida"]: toggle(pg, s)
-    check("Costo visible en tarjeta: Tres Ojos +US$5.41 por persona",
-          "+US$5.41 por persona" in pg.locator('.stop[data-id="tresojos"] .cost').inner_text(), pg.locator('.stop[data-id="tresojos"] .cost').inner_text())
-    check("Costo visible en tarjeta: Zona Colonial guía +US$44 por grupo",
-          "+US$44 por grupo" in pg.locator('.stop[data-id="colonial"] .cost').inner_text())
+    check("Las tarjetas no muestran precios internos", "US$" not in pg.locator("#stops").inner_text() and "RD$" not in pg.locator("#stops").inner_text())
+    pg.click('.stop[data-id="colonial"] .opts label:nth-child(2)')
+    check("Zona Colonial sin guía = US$142", price(pg) == "US$142", price(pg))
+    check("Elegir 'sin guía' no desmarca la Zona Colonial", is_on(pg, "colonial"))
+    pg.click('.stop[data-id="colonial"] .opts label:nth-child(1)')
+    check("Zona Colonial con guía turístico certificado = US$186", price(pg) == "US$186", price(pg))
+    check("Opción de guía certificado visible", "Con guía turístico certificado" in pg.locator('.stop[data-id="colonial"]').inner_text())
+    check("Plaza comercial es Sambil", "Sambil" in pg.locator('.stop[data-id="plaza"]').inner_text())
     pg.select_option("#people", "16+")
     check("Más de 15 personas = A cotizar", price(pg) == "A cotizar")
     pg.select_option("#people", "2")
@@ -79,10 +83,11 @@ with sync_playwright() as p:
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
     for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Tour: City Tour Santo Domingo",
                  "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Hora: 8:00 a. m.", "Personas: 2",
-                 "• Parque Nacional Los Tres Ojos", "• Faro a Colón (Con entrada al interior)", "• Zona Colonial con guía autorizado",
+                 "• Parque Nacional Los Tres Ojos", "• Faro a Colón (Con entrada al interior)", "• Zona Colonial (Con guía turístico certificado)",
                  "Precio estimado: US$186"]:
         check(f"Mensaje contiene «{frag}»", frag in msg)
-    check("Plaza comercial no aparece si no se eligió", "Plaza comercial" not in msg)
+    check("Sambil no aparece si no se eligió", "Sambil" not in msg)
+    check("El mensaje no incluye costos internos", "RD$" not in msg and "por persona" not in msg)
     check("Sin errores de JavaScript", not errs, "; ".join(errs))
 
     for name in ["iPhone 13", "Pixel 7"]:

@@ -32,17 +32,17 @@
 
   /* ---------- Tarjetas de paradas ---------- */
   var state = {};   // id -> { on: bool, opt: id }
-  function stopCostLabel(p) {
-    var parts = [];
-    var rd = p.porPersonaRD || 0;
-    if (p.opciones) {
-      var o = optionOf(p);
-      rd = o.porPersonaRD || 0;
-    }
-    if (p.grupoUSD) parts.push("+" + usd(p.grupoUSD * M) + " por grupo");
-    if (rd) parts.push("+" + usd(rd / T.tasaCambio * M, true) + " por persona");
-    if (p.cambiaTransporte) parts.push("+" + usd((T.transporteConPlaza - T.transporte) * M) + " al transporte");
-    return parts.length ? parts.join(" · ") : "Gratis";
+  function stopCost(p) {          // costo interno de una parada (sin margen)
+    var o = p.opciones ? optionOf(p) : {};
+    return {
+      rd: ("porPersonaRD" in o ? o.porPersonaRD : p.porPersonaRD) || 0,
+      grupo: ("grupoUSD" in o ? o.grupoUSD : p.grupoUSD) || 0
+    };
+  }
+  function stopTag(p) {            // lo que ve el cliente: sin precios
+    if (p.cambiaTransporte) return "Opcional";
+    var c = stopCost(p);
+    return (c.rd || c.grupo) ? "Entradas y servicios incluidos" : "Parada gratuita";
   }
   function optionOf(p) {
     var id = state[p.id].opt;
@@ -66,7 +66,7 @@
       var img = document.createElement("img");
       img.alt = p.nombre; img.loading = "lazy"; img.src = photo(p.foto);
       img.onerror = function () { img.remove(); };
-      img.title = "Foto: Wikimedia Commons — " + filePage(p.foto);
+      img.title = "Foto: " + (p.credito || "") + " · Wikimedia Commons";
       pic.appendChild(img);
     }
     var check = document.createElement("span");
@@ -120,10 +120,7 @@
     var plaza = sel.some(function (p) { return p.cambiaTransporte; });
     var transport = (plaza ? T.transporteConPlaza : T.transporte) + Math.max(0, n - T.pasajerosIncluidos) * T.cargoPasajeroAdicional;
     var groupUSD = 0, perPersonRD = 0;
-    sel.forEach(function (p) {
-      groupUSD += p.grupoUSD || 0;
-      perPersonRD += p.opciones ? (optionOf(p).porPersonaRD || 0) : (p.porPersonaRD || 0);
-    });
+    sel.forEach(function (p) { var c = stopCost(p); groupUSD += c.grupo; perPersonRD += c.rd; });
     var cost = transport + groupUSD + perPersonRD * n / T.tasaCambio;
     var total = Math.ceil(cost * M);
     return { kind: "price", total: total, perPerson: total / n, people: n, assumed: !ppl };
@@ -134,10 +131,7 @@
       var card = stopsBox.querySelector('[data-id="' + p.id + '"]');
       card.classList.toggle("on", state[p.id].on);
       card.setAttribute("aria-checked", state[p.id].on ? "true" : "false");
-      var c = card.querySelector(".cost");
-      var label = stopCostLabel(p);
-      c.textContent = label;
-      c.classList.toggle("free", label === "Gratis");
+      card.querySelector(".cost").textContent = stopTag(p);
     });
     els.pickup.placeholder = els.pickupZone.value === "boca" ? "Ej.: Hotel Don Juan, Boca Chica" : "Hotel, barrio o ciudad";
     var q = computeQuote();
@@ -147,7 +141,7 @@
     else {
       price = usd(q.total);
       note = q.assumed ? "Precio para 1 persona. Elige cuántas personas son para calcular el total."
-                       : "Total para " + q.people + (q.people === 1 ? " persona" : " personas") + " (≈ " + usd(q.perPerson, true) + " por persona). Incluye transporte privado.";
+                       : "Total para " + q.people + (q.people === 1 ? " persona" : " personas") + ". Incluye transporte privado, entradas y servicios elegidos.";
     }
     $("quoteLabel").textContent = label;
     $("quotePrice").textContent = price;
@@ -186,7 +180,7 @@
   }
 
   /* ---------- Mensaje ---------- */
-  function stopLine(p) { return "• " + p.nombre + (p.opciones ? " (" + optionOf(p).nombre.replace(/ \(gratis\)$/, "") + ")" : ""); }
+  function stopLine(p) { return "• " + p.nombre + (p.opciones ? " (" + optionOf(p).nombre.replace(/ \((gratis|recorrido libre)\)$/, "") + ")" : ""); }
   function buildMessage() {
     var q = computeQuote();
     var L = [];
