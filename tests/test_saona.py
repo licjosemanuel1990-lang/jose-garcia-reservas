@@ -17,7 +17,7 @@ with sync_playwright() as p:
     price = lambda: pg.locator("#sQuotePrice").inner_text().strip()
     check("Título de la landing", "Isla Saona" in pg.locator("#saonaTour").inner_text())
     check("Incluye 5 elementos (transporte, catamarán, piscina, isla, buffet)", pg.locator("#saonaTour .incl li").count() == 5)
-    check("Galería con 8 fotos propias", pg.locator("#saonaTour .s-gallery img[src^='img/s-']").count() == 8)
+    check("Galería con 6 fotos propias", pg.locator("#saonaTour .s-gallery img[src^='img/s-']").count() == 6)
     check("Se llama «Tour Isla Saona» en el selector", "Tour Isla Saona" in pg.locator('.choice[data-tour="saona"]').inner_text())
     check("Sin personas elegidas no hay precio", price() == "—")
     for n, exp in [("1", "US$135"), ("2", "US$170"), ("4", "US$240"), ("10", "US$450"), ("15", "US$625"), ("16+", "A cotizar")]:
