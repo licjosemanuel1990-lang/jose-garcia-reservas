@@ -103,3 +103,4 @@ body.has-bar{padding-bottom:86px}
 .shifts b{color:var(--gold-2)}
 .shifts small{color:#c9d6e5}
 .s-gallery figure:last-child:nth-child(even){grid-column:1/-1}
+.shifts span b{color:#fff}

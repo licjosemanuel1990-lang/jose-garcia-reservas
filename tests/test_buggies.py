@@ -24,6 +24,8 @@ with sync_playwright() as p:
         pg.select_option("#bPeople", n); check(f"{n} persona(s) = {exp}", price() == exp, price())
     pg.select_option("#bPeople", "2")
     check("Con 2 personas sugiere 1 vehículo", pg.input_value("#bCount") == "1")
+    check("Horario mañana indica recogida 7:30 a.m.", "7:30 a.m." in pg.locator('#bShift option[value="manana"]').inner_text())
+    check("Horario tarde indica recogida 12:30 p.m.", "12:30 p.m." in pg.locator('#bShift option[value="tarde"]').inner_text())
     check("Opciones de vehículo: four wheel, buggy y ambos", pg.locator("#bVehicle option").count() == 3)
     pg.select_option("#bCount", "2")
     check("2 personas en 2 vehículos = US$226 (precio por persona)", price() == "US$226", price())
@@ -57,7 +59,7 @@ with sync_playwright() as p:
     pg.click("#bWaLink"); pg.wait_for_timeout(600)
     u = pg.evaluate("window.__lastUrl") or ""; msg = urllib.parse.unquote(u.split("?text=", 1)[-1])
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
-    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Buggies y Four Wheel en Comatillo", "Plan: Tour Plus (2 ríos + Salto Alto + La Orqueta)", "Vehículo: Buggy", "Cantidad de vehículos: 1", "Comida: No, gracias", "Tanda: Tarde (ruta 2:00 p.m. – 5:00 p.m.)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$242"]:
+    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Buggies y Four Wheel en Comatillo", "Plan: Tour Plus (2 ríos + Salto Alto + La Orqueta)", "Vehículo: Buggy", "Cantidad de vehículos: 1", "Comida: No, gracias", "Horario: Tarde · te recogemos 12:30 p.m. (ruta 2:00 – 5:00)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$242"]:
         check(f"Mensaje contiene «{f}»", f in msg)
     check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))

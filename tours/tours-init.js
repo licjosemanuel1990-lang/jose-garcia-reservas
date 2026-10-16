@@ -19,7 +19,7 @@ window.JGT_BUGGIESAPI = (function () {
   return JGTSimpleTour({
     prefix: "b", form: "buggiesForm", cfg: B,
     short: "Tour de Buggies", msgTour: "Buggies y Four Wheel en Comatillo",
-    extras: [{ key: "plan", label: "Plan" }, { key: "vehicle", label: "Vehículo" }, { key: "count", label: "Cantidad de vehículos" }, { key: "food", label: "Comida" }, { key: "shift", label: "Tanda" }],
+    extras: [{ key: "plan", label: "Plan" }, { key: "vehicle", label: "Vehículo" }, { key: "count", label: "Cantidad de vehículos" }, { key: "food", label: "Comida" }, { key: "shift", label: "Horario" }],
     extraKeys: ["count"],
     extraValidate: function (els) {
       var n = Number(els.people.value), v = Number(els.count.value), e = {};

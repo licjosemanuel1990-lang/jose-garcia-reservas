@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=3">
-<link rel="stylesheet" href="tours.css?v=11">
+<link rel="stylesheet" href="tours.css?v=12">
 <link rel="stylesheet" href="saona.css?v=1">
 </head>
 <body>
@@ -279,7 +279,7 @@
   <section class="s-card">
     <h2>Así será tu aventura</h2>
     <ol class="steps">
-      <li><b>Te recogemos</b> en tu hotel y viajamos cerca de 1 hora hasta Comatillo.</li>
+      <li><b>Te recogemos</b> en tu hotel (7:30 a.m. o 12:30 p.m., según el horario) y viajamos cerca de 1 hora hasta Comatillo.</li>
       <li><b>Recibes tu buggy o four wheel</b> y el equipo, con una charla de seguridad.</li>
       <li><b>Arranca la ruta</b> por senderos de tierra, barro y bosque.</li>
       <li><b>Cruzas el río</b> (dos ríos en el Tour Plus).</li>
@@ -288,9 +288,11 @@
       <li><b>Comida criolla</b> si la agregaste, y regreso a tu hotel.</li>
     </ol>
     <div class="shifts">
-      <div><b>Tanda mañana</b><span>Ruta de 9:00 a.m. a 12:00 p.m.</span><small>El clima fresco para entrar con energía.</small></div>
-      <div><b>Tanda tarde</b><span>Ruta de 2:00 p.m. a 5:00 p.m.</span><small>La luz de la tarde para vivir barro, río y bosque.</small></div>
+      <div><b>Horario mañana</b><span>Te recogemos a las <b>7:30 a.m.</b></span><span>Ruta de 9:00 a.m. a 12:00 p.m.</span><small>El clima fresco para entrar con energía.</small></div>
+      <div><b>Horario tarde</b><span>Te recogemos a las <b>12:30 p.m.</b></span><span>Ruta de 2:00 p.m. a 5:00 p.m.</span><small>La luz de la tarde para vivir barro, río y bosque.</small></div>
     </div>
+    <p class="hint" style="margin-top:10px">Recomendación: salimos 1 hora y media antes de cada ruta para llegar a tiempo a Comatillo. Si te recogemos fuera de Boca Chica, te confirmamos la hora por WhatsApp.</p>
+
   </section>
 
   <section class="s-card">
@@ -346,11 +348,12 @@
         <p class="err" data-for="bDate"></p>
       </div>
       <div class="field">
-        <label for="bShift">Tanda *</label>
+        <label for="bShift">Horario *</label>
         <select id="bShift">
-          <option value="manana">Mañana (ruta 9:00 a.m. – 12:00 p.m.)</option>
-          <option value="tarde">Tarde (ruta 2:00 p.m. – 5:00 p.m.)</option>
+          <option value="manana">Mañana · te recogemos 7:30 a.m. (ruta 9:00 – 12:00)</option>
+          <option value="tarde">Tarde · te recogemos 12:30 p.m. (ruta 2:00 – 5:00)</option>
         </select>
+        <p class="hint" id="bShiftHint">Salimos 1 hora y media antes para llegar a tiempo a Comatillo.</p>
       </div>
       <div class="field">
         <label for="bPickupZone">Recogida en *</label>
@@ -482,7 +485,7 @@
 <script src="saona-config.js?v=1"></script>
 <script src="buggies-config.js?v=3"></script>
 <script src="simple-tour.js?v=3"></script>
-<script src="tours-init.js?v=4"></script>
+<script src="tours-init.js?v=5"></script>
 <script src="hub.js?v=2"></script>
 </body>
 </html>
