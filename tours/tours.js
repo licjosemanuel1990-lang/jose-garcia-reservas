@@ -10,7 +10,10 @@
               people: $("people"), name: $("name"), phone: $("phone") };
   var M = 1 + T.margen;
 
-  function photo(file, w) { return "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(file) + "?width=" + (w || 640); }
+  function photo(file, w) {
+    if (/^img\//.test(file)) return file;   // foto propia
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(file) + "?width=" + (w || 640);
+  }
   function filePage(file) { return "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(file); }
   function usd(n, dec) {
     var whole = Math.round(n * 100) % 100 === 0;
@@ -66,7 +69,7 @@
       var img = document.createElement("img");
       img.alt = p.nombre; img.loading = "lazy"; img.src = photo(p.foto);
       img.onerror = function () { img.remove(); };
-      img.title = "Foto: " + (p.credito || "") + " · Wikimedia Commons";
+      if (p.credito) img.title = "Foto: " + p.credito + " · Wikimedia Commons";
       pic.appendChild(img);
     }
     var check = document.createElement("span");

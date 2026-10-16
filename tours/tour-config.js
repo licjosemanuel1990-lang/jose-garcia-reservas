@@ -32,7 +32,8 @@ window.JGT_TOUR = {
   //  grupoUSD     → costo fijo del grupo en dólares (ej. guía)
   //  opciones     → variantes para elegir; pueden tener su propio
   //                 porPersonaRD o grupoUSD (ej. con o sin guía)
-  //  foto         → nombre del archivo en Wikimedia Commons
+  //  foto         → "img/archivo.jpg" (foto propia en tours/img/)
+  //                 o nombre del archivo en Wikimedia Commons
   //  icono        → se usa si no hay foto
   // ---------------------------------------------------------
   paradas: [
@@ -81,8 +82,9 @@ window.JGT_TOUR = {
     },
     {
       id: "malecon",
-      nombre: "Letrero «Santo Domingo» en el Malecón",
-      descripcion: "Parada fotográfica junto al mar Caribe en el Malecón.",
+      nombre: "Letrero «♥ SD» en el Malecón",
+      descripcion: "Parada fotográfica en el famoso letrero frente al mar Caribe.",
+      foto: "img/malecon.jpg",
       icono: "📸",
       marcada: true
     },
@@ -91,6 +93,7 @@ window.JGT_TOUR = {
       nombre: "Almuerzo típico dominicano",
       descripcion: "Comida criolla en un restaurante local.",
       porPersonaRD: 700,
+      foto: "img/comida.jpg",
       icono: "🍽️",
       marcada: true
     },
@@ -99,6 +102,7 @@ window.JGT_TOUR = {
       nombre: "Sambil Santo Domingo",
       descripcion: "Tiempo para compras y descanso en el centro comercial Sambil.",
       cambiaTransporte: true,
+      foto: "img/sambil.jpg",
       icono: "🛍️",
       marcada: false
     }
