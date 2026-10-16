@@ -39,7 +39,7 @@ Después de editar, hay que **volver a publicar** (ver abajo); el cambio aparece
 
 - `factorIdaYVuelta: 0.78` → ida y vuelta = ida × 2 × 0.78 (22 % de descuento).
 - `esperaMaximaHoras: 4` → el descuento aplica si el regreso es el mismo día y hasta 4 h después de la hora de salida. Si se supera o el regreso es otro día: «A cotizar».
-- `maxPasajerosTarifaFija: 4` → con más pasajeros, «A cotizar» (no se inventan suplementos).
+- `pasajerosIncluidos: 4` y `cargoPasajeroAdicional: 10` → la tarifa cubre hasta 4 pasajeros; desde el quinto se suman US$10 por persona en cada trayecto. Ejemplo: Aeropuerto → Boca Chica con 6 pasajeros = 25 + 2 × 10 = US$45. En ida y vuelta se aplica la fórmula sobre ese total: 45 × 2 × 0.78 = US$70.20. Más de 15 pasajeros: «A cotizar».
 
 ## Publicar cambios
 

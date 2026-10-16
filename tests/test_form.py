@@ -117,8 +117,20 @@ with sync_playwright() as p:
     check("Origen y destino personalizados a la vez", "Origen: Villa Particular, Bávaro" in msg and "Destino: Hotel Nuevo, Miches" in msg)
 
     # Grupo grande
-    pg.select_option("#origin", "sdq"); pg.select_option("#destination", "boca"); pg.select_option("#passengers", "8")
-    check("Grupo de 8 pasajeros → A cotizar (sin inventar suplementos)", price(pg) == "A cotizar", price(pg))
+    pg.select_option("#origin", "sdq"); pg.select_option("#destination", "boca")
+    for pax, exp in [("4", "US$25.00"), ("5", "US$35.00"), ("8", "US$65.00"), ("15", "US$135.00"), ("16+", "A cotizar")]:
+        pg.select_option("#passengers", pax)
+        check(f"Pasajeros adicionales: {pax} pasajeros SDQ→Boca Chica = {exp}", price(pg) == exp, price(pg))
+    pg.select_option("#passengers", "6")
+    pg.click(".toggle label:has(input[value=round]) span")
+    pg.fill("#returnDate", DATE); pg.fill("#returnTime", "12:00")
+    check("Ida y vuelta con 6 pasajeros = (25+20)×2×0.78 = US$70.20", price(pg) == "US$70.20", price(pg))
+    msg = decode(submit(pg))
+    check("Ventana muestra US$70.20 y desglose de pasajeros adicionales",
+          modal_price(pg) == "US$70.20" and "2 pasajeros adicionales" in pg.locator("#cNote").text_content(), pg.locator("#cNote").text_content())
+    pg.click(".toggle label:has(input[value=one]) span")
+    pg.select_option("#origin", "sdq"); pg.select_option("#destination", "punta"); pg.select_option("#passengers", "7")
+    check("Punta Cana con 7 pasajeros = 150 + 3×10 = US$180", price(pg) == "US$180.00", price(pg))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))
 
     # --- Caso F: validaciones ---

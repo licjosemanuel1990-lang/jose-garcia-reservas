@@ -100,24 +100,33 @@
     if (custom) return { kind: "pending", reason: "custom" };
     var base = rateFor(s.o, s.d);
     if (base === null) return { kind: "pending", reason: "noRate" };
-    var pax = /^\d+$/.test(s.pax) ? Number(s.pax) : (s.pax ? Infinity : 0);
-    if (pax > CFG.maxPasajerosTarifaFija) return { kind: "pending", reason: "group", base: base };
-    if (s.trip === "one") return { kind: "price", amount: base, base: base, trip: "one" };
+    if (s.pax && !/^\d+$/.test(s.pax)) return { kind: "pending", reason: "group", base: base };
+    var pax = Number(s.pax) || 0;
+    var extraPax = Math.max(0, pax - CFG.pasajerosIncluidos);
+    var oneWay = base + extraPax * CFG.cargoPasajeroAdicional;
+    var info = { base: base, extraPax: extraPax, oneWay: oneWay };
+    if (s.trip === "one") return mix({ kind: "price", amount: oneWay, trip: "one" }, info);
 
-    var roundAmount = round2(base * 2 * CFG.factorIdaYVuelta);
+    var roundAmount = round2(oneWay * 2 * CFG.factorIdaYVuelta);
     var dep = toDate(s.date, s.time), ret = toDate(s.rDate, s.rTime);
-    if (!dep || !ret) return { kind: "price", amount: roundAmount, base: base, trip: "round", provisional: true };
+    if (!dep || !ret) return mix({ kind: "price", amount: roundAmount, trip: "round", provisional: true }, info);
     if (ret <= dep) return { kind: "invalidReturn" };
     var hours = (ret - dep) / 36e5;
     if (s.rDate !== s.date) return { kind: "pending", reason: "otherDay", base: base };
     if (hours > CFG.esperaMaximaHoras) return { kind: "pending", reason: "longWait", base: base };
-    return { kind: "price", amount: roundAmount, base: base, trip: "round" };
+    return mix({ kind: "price", amount: roundAmount, trip: "round" }, info);
+  }
+  function mix(a, b) { for (var k in b) a[k] = b[k]; return a; }
+  function extraText(q) {
+    if (!q.extraPax) return "Tarifa para hasta " + CFG.pasajerosIncluidos + " pasajeros.";
+    return "Tarifa base " + money(q.base) + " (hasta " + CFG.pasajerosIncluidos + " pasajeros) + " + q.extraPax +
+      (q.extraPax === 1 ? " pasajero adicional" : " pasajeros adicionales") + " × " + money(CFG.cargoPasajeroAdicional) + " = " + money(q.oneWay) + " por trayecto.";
   }
 
   var REASONS = {
     custom: "Ubicación fuera del tarifario: te enviaremos la cotización por WhatsApp.",
     noRate: "Esta ruta aún no tiene tarifa publicada: te cotizaremos por WhatsApp.",
-    group: "Para grupos de más de " + CFG.maxPasajerosTarifaFija + " pasajeros confirmamos vehículo y precio por WhatsApp.",
+    group: "Para grupos de más de 15 pasajeros confirmamos vehículo y precio por WhatsApp.",
     otherDay: "Regreso en otro día: la tarifa queda sujeta a confirmación (sin descuento automático).",
     longWait: "La espera supera " + CFG.esperaMaximaHoras + " horas: requiere cotización personalizada (sin descuento automático)."
   };
@@ -134,11 +143,11 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = "2 trayectos de " + money(q.base) + " con 22 % de descuento. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera" +
+          note = (q.extraPax ? extraText(q) + " " : "") + "2 trayectos de " + money(q.oneWay) + " con 22 % de descuento. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera" +
             (q.provisional ? " (válido si regresas el mismo día dentro de ese plazo)." : ".");
         } else {
           label = "Tarifa estimada · solo ida";
-          note = "Precio por vehículo, sujeto a confirmación de disponibilidad.";
+          note = extraText(q) + " Sujeto a confirmación de disponibilidad.";
         }
         break;
     }
@@ -280,9 +289,9 @@
       $("cLabel").textContent = "Precio del servicio";
       priceEl.textContent = money(q.amount);
       priceEl.classList.remove("pending");
-      $("cNote").textContent = q.trip === "round"
+      $("cNote").textContent = (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
         ? "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas."
-        : "Precio por vehículo, sujeto a confirmación de disponibilidad.";
+        : "Sujeto a confirmación de disponibilidad.");
     } else {
       $("cLabel").textContent = "Precio del servicio";
       priceEl.textContent = "A cotizar";

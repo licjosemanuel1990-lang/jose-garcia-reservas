@@ -16,9 +16,11 @@ window.JGT_CONFIG = {
   // hora de salida y la hora de regreso del mismo día.
   esperaMaximaHoras: 4,
 
-  // A partir de cuántos pasajeros la tarifa pasa a "A cotizar".
-  // (Grupos grandes: se confirma vehículo y precio por WhatsApp.)
-  maxPasajerosTarifaFija: 4,
+  // Las tarifas incluyen hasta este número de pasajeros...
+  pasajerosIncluidos: 4,
+  // ...y desde el siguiente se suma este cargo (US$) por cada pasajero
+  // adicional, en cada trayecto.
+  cargoPasajeroAdicional: 10,
 
   // ---------------------------------------------------------
   // LUGARES que aparecen en los menús de Origen y Destino.
