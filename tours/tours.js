@@ -105,6 +105,7 @@
     var h = document.createElement("h3"); h.textContent = p.nombre;
     var d = document.createElement("p"); d.textContent = p.descripcion;
     body.appendChild(h); body.appendChild(d);
+    if (p.historia) { var hi = document.createElement("p"); hi.className = "story"; hi.textContent = p.historia; body.appendChild(hi); }
 
     if (p.opciones) {
       var opts = document.createElement("div");
