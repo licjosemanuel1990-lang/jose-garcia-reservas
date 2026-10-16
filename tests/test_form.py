@@ -63,7 +63,7 @@ with sync_playwright() as p:
     # --- Caso A ---
     pg.select_option("#origin", "sdq"); pg.select_option("#destination", "boca")
     pg.fill("#date", DATE); pg.fill("#time", "10:00"); fill_client(pg, "2")
-    check("Caso A: solo ida SDQ→Boca Chica = US$25", price(pg) == "US$25.00", price(pg))
+    check("Caso A: solo ida SDQ→Boca Chica = US$25", price(pg) == "US$25", price(pg))
     u = submit(pg); msg = decode(u)
     check("Caso G: enlace a wa.me/18298182426", bool(u) and u.startswith("https://wa.me/18298182426?text="), (u or "")[:45])
     for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Origen: Aeropuerto Las Américas (SDQ)",
@@ -72,7 +72,7 @@ with sync_playwright() as p:
         check(f"Caso G: mensaje contiene «{frag}»", frag in msg)
     check("Mensaje corto: empieza en 'Nombre:' y sin tarifa/textos extra",
           msg.startswith("Nombre:") and "Tarifa" not in msg and "Hola" not in msg and "Entiendo" not in msg, msg.replace(chr(10)," | "))
-    check("Ventana previa muestra el precio US$25.00 antes de WhatsApp", modal_price(pg) == "US$25.00", modal_price(pg))
+    check("Ventana previa muestra el precio US$25 antes de WhatsApp", modal_price(pg) == "US$25", modal_price(pg))
     check("Ventana indica continuar por WhatsApp, sin confirmación falsa",
           "continúa por WhatsApp" in pg.locator("#confirmBox").text_content() and "confirmada" not in pg.locator("#confirmBox").text_content())
     check("La ventana se cierra sola tras pulsar WhatsApp", not pg.locator("#confirmBox").is_visible())
@@ -82,9 +82,9 @@ with sync_playwright() as p:
     pg.click("#swap")
     check("Caso D: botón intercambiar invierte la ruta",
           pg.input_value("#origin") == "boca" and pg.input_value("#destination") == "sdq")
-    check("Caso D: Boca Chica→SDQ = US$25", price(pg) == "US$25.00", price(pg))
+    check("Caso D: Boca Chica→SDQ = US$25", price(pg) == "US$25", price(pg))
     pg.select_option("#origin", "juan"); pg.select_option("#destination", "boca")
-    check("Ruta invertida Juan Dolio→Boca Chica = US$30", price(pg) == "US$30.00", price(pg))
+    check("Ruta invertida Juan Dolio→Boca Chica = US$30", price(pg) == "US$30", price(pg))
     pg.select_option("#origin", "colonial"); pg.select_option("#destination", "punta")
     check("Ruta sin tarifa (Zona Colonial→Punta Cana) = A cotizar", price(pg) == "A cotizar", price(pg))
 
@@ -92,9 +92,9 @@ with sync_playwright() as p:
     pg.select_option("#origin", "sdq"); pg.select_option("#destination", "boca")
     pg.click(".toggle label:has(input[value=round]) span")
     pg.fill("#returnDate", DATE); pg.fill("#returnTime", "13:30")
-    check("Caso B: ida y vuelta mismo día, 3,5 h = US$39", price(pg) == "US$39.00", price(pg))
+    check("Caso B: ida y vuelta mismo día, 3,5 h = US$39", price(pg) == "US$39", price(pg))
     msg = decode(submit(pg))
-    check("Caso B: mensaje con regreso; ventana muestra US$39", "Regreso: 23/10/2026 a las 1:30 p. m." in msg and modal_price(pg) == "US$39.00", modal_price(pg))
+    check("Caso B: mensaje con regreso; ventana muestra US$39", "Regreso: 23/10/2026 a las 1:30 p. m." in msg and modal_price(pg) == "US$39", modal_price(pg))
 
     # --- Caso E ---
     pg.fill("#returnTime", "15:30")
@@ -118,7 +118,7 @@ with sync_playwright() as p:
 
     # Grupo grande
     pg.select_option("#origin", "sdq"); pg.select_option("#destination", "boca")
-    for pax, exp in [("4", "US$25.00"), ("5", "US$35.00"), ("8", "US$65.00"), ("15", "US$135.00"), ("16+", "A cotizar")]:
+    for pax, exp in [("4", "US$25"), ("5", "US$35"), ("8", "US$65"), ("15", "US$135"), ("16+", "A cotizar")]:
         pg.select_option("#passengers", pax)
         check(f"Pasajeros adicionales: {pax} pasajeros SDQ→Boca Chica = {exp}", price(pg) == exp, price(pg))
     pg.select_option("#passengers", "6")
@@ -130,7 +130,7 @@ with sync_playwright() as p:
           modal_price(pg) == "US$70.20" and "2 pasajeros adicionales" in pg.locator("#cNote").text_content(), pg.locator("#cNote").text_content())
     pg.click(".toggle label:has(input[value=one]) span")
     pg.select_option("#origin", "sdq"); pg.select_option("#destination", "punta"); pg.select_option("#passengers", "7")
-    check("Punta Cana con 7 pasajeros = 150 + 3×10 = US$180", price(pg) == "US$180.00", price(pg))
+    check("Punta Cana con 7 pasajeros = 150 + 3×10 = US$180", price(pg) == "US$180", price(pg))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))
 
     # --- Caso F: validaciones ---
@@ -171,7 +171,7 @@ with sync_playwright() as p:
         pg, errs = new_page(br, dev)
         pg.select_option("#origin", "sdq"); pg.select_option("#destination", "punta")
         pg.fill("#date", DATE); pg.fill("#time", "09:15"); fill_client(pg, "3")
-        ok_price = price(pg) == "US$150.00"
+        ok_price = price(pg) == "US$150"
         overflow = pg.evaluate("document.documentElement.scrollWidth > window.innerWidth")
         u = submit(pg, f"{OUT}/ventana-{name.replace(' ', '-')}.png")
         check(f"Caso H ({name}): selectores, precio US$150, botón y sin desbordes", ok_price and u and not overflow and not errs,

@@ -30,7 +30,7 @@
   });
   function routeKey(a, b) { return [a, b].sort().join("|"); }
   function rateFor(a, b) { var r = rates[routeKey(a, b)]; return typeof r === "number" ? r : null; }
-  function money(n) { return "US$" + n.toFixed(2); }
+  function money(n) { return "US$" + (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2)); }
   function round2(n) { return Math.round(n * 100) / 100; }
 
   /* ---------- Construcción de menús ---------- */
