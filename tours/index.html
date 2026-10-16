@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=3">
-<link rel="stylesheet" href="tours.css?v=9">
+<link rel="stylesheet" href="tours.css?v=11">
 <link rel="stylesheet" href="saona.css?v=1">
 </head>
 <body>
@@ -46,8 +46,8 @@
         <span class="choice-body"><b>Tour Isla Saona</b><small>Todo incluido: catamarán, piscina natural y buffet dominicano.</small><span class="choice-go">Ver opciones →</span></span>
       </button>
       <button type="button" class="choice" data-tour="buggies">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ATV_on_a_muddy_trail_(5494218531).jpg?width=700" alt="">
-        <span class="choice-body"><b>Tour de Buggies y Four Wheel</b><small>Aventura en Comatillo: lodo, ríos, cascada, cacao, café y tabaco.</small><span class="choice-go">Ver opciones →</span></span>
+        <img src="img/b-fourwheel.jpg" alt="">
+        <span class="choice-body"><b>Tour de Buggies y Four Wheel</b><small>Aventura en Comatillo: bosque, ríos, barro y la cascada Salto Alto.</small><span class="choice-go">Ver opciones →</span></span>
       </button>
     </div>
   </section>
@@ -232,71 +232,105 @@
   <section class="s-card b-intro">
     <span class="s-badge">A 1 hora de Boca Chica</span>
     <h2>Buggies y Four Wheel en Comatillo</h2>
-    <p>Maneja tu propio buggy o four wheel por caminos de lodo, cruces de río y bosque tropical en Comatillo, Bayaguana. Adrenalina, naturaleza y la cultura del campo dominicano: su santuario, el tabaco, el cacao y el café.</p>
+    <p>Bosque, agua y barro en una sola salida. Maneja tu four wheel por senderos de tierra, cruza ríos, báñate en la cascada del Salto Alto y disfruta la vista desde la Loma de Managua. Una aventura en plena naturaleza, lejos de la playa.</p>
+  </section>
+
+  <section class="s-card">
+    <h2>Elige tu plan</h2>
+    <div class="plans">
+      <label class="plan">
+        <input type="radio" name="bPlanPick" value="basico" checked>
+        <span class="plan-tag">Más elegido</span>
+        <b>Tour Básico</b>
+        <small>Cruza el primer río hasta la cascada del Salto Alto. Ideal para tu primera aventura en four wheel.</small>
+        <ul><li>1er río</li><li>Cascada Salto Alto</li></ul>
+      </label>
+      <label class="plan">
+        <input type="radio" name="bPlanPick" value="plus">
+        <span class="plan-tag plus">Plus</span>
+        <b>Tour Plus</b>
+        <small>Dos ríos, la cascada del Salto Alto y La Orqueta: el recorrido más completo.</small>
+        <ul><li>2 ríos</li><li>Cascada Salto Alto</li><li>La Orqueta</li></ul>
+      </label>
+    </div>
+  </section>
+
+  <section class="s-gallery" aria-label="Fotos de la aventura">
+    <figure class="big"><img src="img/b-fourwheel.jpg" alt="Four wheel en el bosque de Comatillo"><figcaption>Senderos en el bosque</figcaption></figure>
+    <figure><img src="img/b-rio.jpg" alt="Cruce de río"><figcaption>Cruce de río</figcaption></figure>
+    <figure><img src="img/b-salto-alto.jpg" alt="Cascada Salto Alto"><figcaption>Cascada Salto Alto</figcaption></figure>
+    <figure><img src="img/b-loma-managua.jpg" alt="Mirador Loma de Managua"><figcaption>Loma de Managua</figcaption></figure>
+    <figure><img src="img/b-barro.jpg" alt="Four wheel lleno de barro"><figcaption>Mucho barro</figcaption></figure>
+    <figure><img src="img/b-coco.jpg" alt="Agua de coco en la ruta"><figcaption>Agua de coco en la ruta</figcaption></figure>
+    <figure><img src="img/b-ranchito.jpg" alt="Parada en el camino"><figcaption>Paradas en el campo</figcaption></figure>
+    <figure><img src="img/b-rio2.jpg" alt="Disfrutando el río"><figcaption>Refréscate en el río</figcaption></figure>
   </section>
 
   <section class="s-card">
     <h2>Lo que incluye tu aventura</h2>
     <ul class="incl">
       <li><span>🚐</span><div><b>Transporte privado</b>Ida y vuelta desde tu hotel hasta Comatillo.</div></li>
-      <li><span>🏎️</span><div><b>Buggy o four wheel</b>Tú eliges en qué vehículo vivir la aventura.</div></li>
-      <li><span>⛑️</span><div><b>Equipo de seguridad</b>Casco y gafas, con charla de seguridad antes de salir.</div></li>
-      <li><span>🧭</span><div><b>Guía local</b>Te acompaña durante toda la ruta.</div></li>
-      <li><span>☕</span><div><b>Degustación</b>Café, cacao y frutas en una casa típica del campo.</div></li>
-      <li><span>⛪</span><div><b>Cultura de Bayaguana</b>Su santuario histórico y el tabaco artesanal.</div></li>
+      <li><span>🏍️</span><div><b>Four wheel</b>Cada uno lleva 1 o 2 personas, como prefieras vivir la ruta.</div></li>
+      <li><span>🌳</span><div><b>Ruta natural</b>Bosque, ríos y barro con guía local.</div></li>
+      <li><span>🍛</span><div><b>Comida criolla (opcional)</b>Arroz, habichuelas, moro de guandules, pollo frito, cerdo guisado y ensalada.</div></li>
     </ul>
-  </section>
-
-  <section class="s-gallery" aria-label="Fotos de la aventura">
-    <figure class="big"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/ATV_on_a_muddy_trail_(5494218531).jpg?width=1000" alt="Four wheel en camino de lodo"><figcaption>Rutas de lodo y bosque</figcaption></figure>
-    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mud_storm_under_the_wheels_of_the_ATV_(50239934241).jpg?width=800" alt="Four wheel en el lodo"><figcaption>Four wheel en el lodo</figcaption></figure>
-    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Through_the_dirt_(50015093543).jpg?width=800" alt="Atravesando el lodo"><figcaption>Pura adrenalina</figcaption></figure>
-    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bayaguana,_Republica_Dominicana,_santuario.jpg?width=800" alt="Santuario de Bayaguana"><figcaption>Santuario de Bayaguana</figcaption></figure>
-    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Handmade_cigars._Tabacalera_de_Garcia_Factory._Casa_de_Campo,_La_Romana,_Dominican_Republic.jpg?width=800" alt="Cigarros hechos a mano"><figcaption>Cigarros hechos a mano</figcaption></figure>
-    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cacao_pods.jpg?width=800" alt="Cacao"><figcaption>Cacao</figcaption></figure>
-    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Coffee_beans_spilling_out_of_a_cup.jpg?width=800" alt="Café"><figcaption>Degustación de café</figcaption></figure>
   </section>
 
   <section class="s-card">
     <h2>Así será tu aventura</h2>
     <ol class="steps">
-      <li><b>Te recogemos</b> en tu hotel y viajamos cerca de 1 hora hasta Bayaguana.</li>
-      <li><b>Santuario del Santo Cristo de los Milagros</b>: la histórica iglesia de Bayaguana, centro de una de las peregrinaciones más importantes del país.</li>
-      <li><b>Tabaco artesanal</b>: ves cómo se secan las hojas y cómo se enrolla un cigarro a mano.</li>
-      <li><b>Casa típica del campo</b>: degustación de café, cacao y frutas de la zona.</li>
-      <li><b>Charla de seguridad en Comatillo</b>: recibes tu casco y gafas.</li>
-      <li><b>Ruta en buggy o four wheel</b> por lodo, cruces de río y bosque tropical.</li>
-      <li><b>Cascada Salto Alto</b>: caminata corta y tiempo para bañarte en sus pozas naturales.</li>
-      <li><b>Mirador y Ruta del Agua</b>: vistas del campo y cruces de arroyos.</li>
-      <li><b>Te llevamos de vuelta</b> a tu hotel.</li>
+      <li><b>Te recogemos</b> en tu hotel y viajamos cerca de 1 hora hasta Comatillo.</li>
+      <li><b>Recibes tu four wheel</b> y el equipo, con una charla de seguridad.</li>
+      <li><b>Arranca la ruta</b> por senderos de tierra, barro y bosque.</li>
+      <li><b>Cruzas el río</b> (dos ríos en el Tour Plus).</li>
+      <li><b>Cascada del Salto Alto</b>: tiempo para bañarte en sus pozas.</li>
+      <li><b>Tour Plus</b>: continúas hasta La Orqueta.</li>
+      <li><b>Comida criolla</b> si la agregaste, y regreso a tu hotel.</li>
     </ol>
-    <p class="note-warn" style="color:var(--muted)">El orden de las paradas puede variar según el día.</p>
+    <div class="shifts">
+      <div><b>Tanda mañana</b><span>Ruta de 9:00 a.m. a 12:00 p.m.</span><small>El clima fresco para entrar con energía.</small></div>
+      <div><b>Tanda tarde</b><span>Ruta de 2:00 p.m. a 5:00 p.m.</span><small>La luz de la tarde para vivir barro, río y bosque.</small></div>
+    </div>
   </section>
 
   <section class="s-card">
     <h2>Qué llevar</h2>
     <ul class="tips">
-      <li>Ropa que se pueda ensuciar y zapatos cerrados.</li>
+      <li>Ropa que se pueda ensuciar (mejor licra o ropa deportiva) y zapatos cerrados o de agua.</li>
+      <li>Pasamontañas o pañuelo y gafas para el polvo y el barro.</li>
       <li>Traje de baño, toalla y una muda de ropa para el regreso.</li>
-      <li>Protector solar, repelente y gafas de sol.</li>
+      <li>Funda impermeable para el celular, protector solar y repelente.</li>
     </ul>
     <p class="note-warn">No recomendado para embarazadas ni para personas con problemas de espalda o del corazón.</p>
   </section>
 
   <form id="buggiesForm" class="card" novalidate>
     <h2 id="bReservar"><span class="step">✓</span> Calcula tu precio y reserva</h2>
-    <div class="grid2">
+    <div class="grid2 stack-sm">
+      <div class="field">
+        <label for="bPlan">Plan *</label>
+        <select id="bPlan">
+          <option value="basico">Tour Básico (1er río + Salto Alto)</option>
+          <option value="plus">Tour Plus (2 ríos + Salto Alto + La Orqueta)</option>
+        </select>
+      </div>
       <div class="field">
         <label for="bPeople">Personas *</label>
         <select id="bPeople"></select>
         <p class="err" data-for="bPeople"></p>
       </div>
       <div class="field">
-        <label for="bVehicle">Vehículo *</label>
-        <select id="bVehicle">
-          <option value="buggy">Buggy</option>
-          <option value="four">Four wheel</option>
-          <option value="ambos">Buggy y four wheel (grupo mixto)</option>
+        <label for="bRide">¿Cómo van en el four wheel? *</label>
+        <select id="bRide">
+          <option value="pareja">De 2 en 2 (compartido)</option>
+          <option value="solo">Cada persona en su propio four wheel</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bFood">Comida criolla *</label>
+        <select id="bFood">
+          <option value="no">No, gracias</option>
+          <option value="si">Sí, agregar comida</option>
         </select>
       </div>
       <div class="field">
@@ -307,8 +341,8 @@
       <div class="field">
         <label for="bShift">Tanda *</label>
         <select id="bShift">
-          <option value="manana">Mañana</option>
-          <option value="tarde">Tarde</option>
+          <option value="manana">Mañana (ruta 9:00 a.m. – 12:00 p.m.)</option>
+          <option value="tarde">Tarde (ruta 2:00 p.m. – 5:00 p.m.)</option>
         </select>
       </div>
       <div class="field">
@@ -348,10 +382,9 @@
     <button type="submit" class="cta" id="bSubmitBtn">RESERVAR TOUR DE BUGGIES POR WHATSAPP</button>
 
     <div class="terms">
-      <p><b>Incluye:</b> transporte privado ida y vuelta, tu buggy o four wheel, equipo de seguridad, guía y las paradas del recorrido. El precio es el total del grupo.</p>
+      <p><b>Incluye:</b> transporte privado ida y vuelta y la ruta del plan elegido en four wheel. La comida criolla es opcional. El precio es el total del grupo.</p>
       <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
       <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
-      <p class="credits">Fotos de <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>: U.S. Fish and Wildlife Service (dominio público); Michał Siergiejevicz (four wheel, <a href="https://creativecommons.org/licenses/by/2.0/deed.es" target="_blank" rel="noopener">CC BY 2.0</a>); Guajiritonatural (santuario, CC0); Mstyslav Chernov (cigarros, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.es" target="_blank" rel="noopener">CC BY-SA 3.0</a>); FranHogan (cacao, <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>); café, CC0.</p>
     </div>
   </form>
   </section>
@@ -440,9 +473,9 @@
 <script src="tour-config.js?v=10"></script>
 <script src="tours.js?v=10"></script>
 <script src="saona-config.js?v=1"></script>
-<script src="buggies-config.js?v=1"></script>
-<script src="simple-tour.js?v=1"></script>
-<script src="tours-init.js?v=1"></script>
+<script src="buggies-config.js?v=2"></script>
+<script src="simple-tour.js?v=2"></script>
+<script src="tours-init.js?v=2"></script>
 <script src="hub.js?v=2"></script>
 </body>
 </html>

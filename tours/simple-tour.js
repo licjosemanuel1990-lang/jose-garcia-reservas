@@ -28,7 +28,8 @@ window.JGTSimpleTour = function (o) {
     if (!p) return { kind: "empty" };
     if (!/^\d+$/.test(p)) return { kind: "pending", reason: "Para grupos de más de " + C.maxPersonas + " personas te enviaremos el precio por WhatsApp." };
     if (els.pickupZone.value !== "boca") return { kind: "pending", reason: "Recogida fuera de Boca Chica: te cotizaremos el precio por WhatsApp." };
-    var n = Number(p), total = C.transporte + C.porPersona * n;
+    var n = Number(p);
+    var total = o.calc ? o.calc(n, els) : C.transporte + C.porPersona * n;
     return { kind: "price", total: total, people: n, perPerson: total / n };
   }
 
@@ -39,7 +40,8 @@ window.JGTSimpleTour = function (o) {
     if (q.kind === "price") {
       price = usd(q.total);
       note = "Total para " + q.people + (q.people === 1 ? " persona" : " personas") +
-        (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". " + o.priceNote;
+        (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". " +
+        (o.detail ? o.detail(q.people, els) : o.priceNote);
     }
     $("quotePrice").textContent = price;
     $("quotePrice").classList.toggle("pending", price === "A cotizar");
