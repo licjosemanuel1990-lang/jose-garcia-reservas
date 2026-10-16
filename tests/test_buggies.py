@@ -39,6 +39,7 @@ with sync_playwright() as p:
     check("Selector del formulario marca la tarjeta Plus", pg.is_checked('input[name="bPlanPick"][value="plus"]'))
     pg.select_option("#bPlan", "basico")
     check("Ya no menciona santuario ni tabaco", "Santuario" not in pg.locator("#buggiesTour").inner_text() and "tabaco" not in pg.locator("#buggiesTour").inner_text())
+    check("Nota muestra reserva del 30 % y resto al abordar", "Reserva con US$68 (30 %) y paga US$158 al abordar" in pg.locator("#bQuoteNote").inner_text(), pg.locator("#bQuoteNote").inner_text())
     check("Barra inferior muestra el total", "US$226" in pg.locator("#bBarPrice").inner_text())
     check("Muestra precio por persona en grupo", "US$113 por persona" in pg.locator("#bQuoteNote").inner_text())
     pg.select_option("#bPickupZone", "otra"); check("Otra zona = A cotizar", price() == "A cotizar"); pg.select_option("#bPickupZone", "boca")
@@ -55,11 +56,13 @@ with sync_playwright() as p:
     pg.select_option("#bPeople", "2"); pg.select_option("#bCount", "1")
     pg.fill("#bDate", DATE); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
     check("Ventana muestra US$242 (Plus, 2 personas) antes de WhatsApp", pg.locator("#bConfirmBox").is_visible() and pg.locator("#bCPrice").inner_text() == "US$242")
+    check("Ventana muestra reserva US$73 y resto US$169", "US$73" in pg.locator("#bCDeposit").inner_text() and "US$169" in pg.locator("#bCDeposit").inner_text() and pg.locator("#bCDeposit").is_visible())
+    check("Ventana de buggies no dice «sin pagos anticipados»", "Sin pagos anticipados" not in pg.locator("#bConfirmBox").inner_text())
     pg.screenshot(path=f"{OUT}/buggies-ventana.png")
     pg.click("#bWaLink"); pg.wait_for_timeout(600)
     u = pg.evaluate("window.__lastUrl") or ""; msg = urllib.parse.unquote(u.split("?text=", 1)[-1])
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
-    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Buggies y Four Wheel en Comatillo", "Plan: Tour Plus (2 ríos + Salto Alto + La Orqueta)", "Vehículo: Buggy", "Cantidad de vehículos: 1", "Comida: No, gracias", "Horario: Tarde · te recogemos 12:30 p.m. (ruta 2:00 – 5:00)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$242"]:
+    for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Buggies y Four Wheel en Comatillo", "Plan: Tour Plus (2 ríos + Salto Alto + La Orqueta)", "Vehículo: Buggy", "Cantidad de vehículos: 1", "Comida: No, gracias", "Horario: Tarde · te recogemos 12:30 p.m. (ruta 2:00 – 5:00)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$242", "Reserva (30 %): US$73", "Resto al abordar: US$169"]:
         check(f"Mensaje contiene «{f}»", f in msg)
     check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))

@@ -17,6 +17,7 @@ window.JGT_BUGGIES = {
     basico: { nombre: "Tour Básico", rd: 3500 + 1000, detalle: "1er río y cascada Salto Alto" },
     plus:   { nombre: "Tour Plus",   rd: 4000 + 1000, detalle: "2 ríos, cascada Salto Alto y La Orqueta" }
   },
+  deposito: 0.30,          // 30 % para reservar; el resto al abordar
   comidaRD: 375,           // RD$ por persona (opcional)
   maxPersonas: 15          // más personas → "A cotizar"
 };

@@ -104,3 +104,7 @@ body.has-bar{padding-bottom:86px}
 .shifts small{color:#c9d6e5}
 .s-gallery figure:last-child:nth-child(even){grid-column:1/-1}
 .shifts span b{color:#fff}
+.c-deposit{margin-top:10px;padding-top:10px;border-top:1px solid rgba(227,194,122,.5);font-size:14.5px;color:#fff}
+.c-deposit b{color:var(--gold-2)}
+.deposit-card{border-left:5px solid var(--gold);background:#fffaf0}
+.deposit-card p{margin:0;font-size:15px;line-height:1.55}

@@ -30,7 +30,9 @@ window.JGTSimpleTour = function (o) {
     if (els.pickupZone.value !== "boca") return { kind: "pending", reason: "Recogida fuera de Boca Chica: te cotizaremos el precio por WhatsApp." };
     var n = Number(p);
     var total = o.calc ? o.calc(n, els) : C.transporte + C.porPersona * n;
-    return { kind: "price", total: total, people: n, perPerson: total / n };
+    var q = { kind: "price", total: total, people: n, perPerson: total / n };
+    if (C.deposito) { q.deposit = Math.ceil(total * C.deposito); q.rest = total - q.deposit; }
+    return q;
   }
 
   var submitted = false;
@@ -41,7 +43,8 @@ window.JGTSimpleTour = function (o) {
       price = usd(q.total);
       note = "Total para " + q.people + (q.people === 1 ? " persona" : " personas") +
         (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". " +
-        (o.detail ? o.detail(q.people, els) : o.priceNote);
+        (o.detail ? o.detail(q.people, els) : o.priceNote) +
+        (q.deposit ? " Reserva con " + usd(q.deposit) + " (" + Math.round(C.deposito * 100) + " %) y paga " + usd(q.rest) + " al abordar." : "");
     }
     $("quotePrice").textContent = price;
     $("quotePrice").classList.toggle("pending", price === "A cotizar");
@@ -82,6 +85,7 @@ window.JGTSimpleTour = function (o) {
     L.push("Fecha: " + fmtDate(els.date.value));
     L.push("Personas: " + txt(els.people));
     L.push("Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar"));
+    if (q.deposit) { L.push("Reserva (" + Math.round(C.deposito * 100) + " %): " + usd(q.deposit)); L.push("Resto al abordar: " + usd(q.rest)); }
     return L.join("\n");
   }
   function whatsappUrl() { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(buildMessage()); }
@@ -93,6 +97,11 @@ window.JGTSimpleTour = function (o) {
     $("cPrice").textContent = q.kind === "price" ? usd(q.total) : "A cotizar";
     $("cPrice").classList.toggle("pending", q.kind !== "price");
     $("cNote").textContent = q.kind === "price" ? o.included : q.reason;
+    var dep = $("cDeposit");
+    if (dep) {
+      dep.classList.toggle("hidden", !q.deposit);
+      if (q.deposit) dep.innerHTML = "Para reservar: <b>" + usd(q.deposit) + "</b> (" + Math.round(C.deposito * 100) + " %) · Al abordar: <b>" + usd(q.rest) + "</b>";
+    }
     waLink.href = whatsappUrl();
     box.classList.remove("hidden");
     document.body.classList.add("modal-open");

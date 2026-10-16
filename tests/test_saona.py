@@ -39,6 +39,9 @@ with sync_playwright() as p:
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
     for f in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Excursión: Tour Isla Saona (todo incluido)", "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$170"]:
         check(f"Mensaje contiene «{f}»", f in msg)
+    check("Saona no pide reserva (sin depósito)", "Reserva (" not in msg)
+    for f in []:
+        check(f"Mensaje contiene «{f}»", f in msg)
     check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))
     pg.goto(BASE + "#saona", wait_until="load"); pg.wait_for_timeout(300)

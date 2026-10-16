@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1f3a">
 <title>Tours y excursiones | José García Transporte</title>
-<meta name="description" content="Tours desde Boca Chica: City Tour por Santo Domingo, Tour Isla Saona todo incluido y Tour de Buggies y Four Wheel en Comatillo. Sin pagos anticipados.">
+<meta name="description" content="Tours desde Boca Chica: City Tour por Santo Domingo, Tour Isla Saona todo incluido y Tour de Buggies y Four Wheel en Comatillo. Transporte privado desde tu hotel.">
 <meta property="og:title" content="Arma tu City Tour en Santo Domingo | José García Transporte">
 <meta property="og:description" content="Elige las paradas que quieras y recibe tu precio al instante.">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=3">
-<link rel="stylesheet" href="tours.css?v=12">
+<link rel="stylesheet" href="tours.css?v=13">
 <link rel="stylesheet" href="saona.css?v=1">
 </head>
 <body>
@@ -29,7 +29,7 @@
     </a>
     <div class="eyebrow">Saliendo desde Boca Chica</div>
     <h1>Tours y excursiones</h1>
-    <p class="lead">Elige tu aventura: City Tour por Santo Domingo, Tour Isla Saona todo incluido o Tour de Buggies y Four Wheel. Transporte privado desde tu hotel y sin pagos anticipados.</p>
+    <p class="lead">Elige tu aventura: City Tour por Santo Domingo, Tour Isla Saona todo incluido o Tour de Buggies y Four Wheel. Transporte privado desde tu hotel; City Tour e Isla Saona sin pagos anticipados.</p>
   </div>
 </header>
 
@@ -266,6 +266,11 @@
     <figure><img src="img/b-rio2.jpg" alt="Disfrutando el río"><figcaption>Refréscate en el río</figcaption></figure>
   </section>
 
+  <section class="s-card deposit-card">
+    <h2>Cómo reservar</h2>
+    <p>Este tour tiene <b>alta demanda</b>, por eso se reserva con el <b>30 %</b> del valor total. El <b>resto lo pagas al abordar</b> el vehículo el día del tour.</p>
+  </section>
+
   <section class="s-card">
     <h2>Lo que incluye tu aventura</h2>
     <ul class="incl">
@@ -393,7 +398,7 @@
 
     <div class="terms">
       <p><b>Incluye:</b> transporte privado ida y vuelta y la ruta del plan elegido en buggy o four wheel. La comida criolla es opcional. El precio es el total del grupo.</p>
-      <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
+      <p><b>Reserva:</b> por la alta demanda de este tour, se reserva con el 30 % del valor total. El resto lo pagas al abordar el vehículo. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
       <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
     </div>
   </form>
@@ -464,11 +469,12 @@
       <div class="quote-label">Precio total</div>
       <div class="c-price" id="bCPrice"></div>
       <div class="c-note" id="bCNote"></div>
+      <div class="c-deposit hidden" id="bCDeposit"></div>
     </div>
-    <p class="c-next">Para completar tu reserva, <b>continúa por WhatsApp</b> y envía el mensaje. Te confirmaremos la disponibilidad personalmente.</p>
+    <p class="c-next">Para completar tu reserva, <b>continúa por WhatsApp</b> y envía el mensaje. Te confirmaremos la disponibilidad y cómo hacer el pago de la reserva.</p>
     <a class="cta" id="bWaLink" href="#" rel="noopener">CONTINUAR EN WHATSAPP</a>
     <button type="button" class="back" id="bEditBtn">Modificar datos</button>
-    <p class="c-small">Sin pagos anticipados · Pagas al finalizar el servicio.</p>
+    <p class="c-small">Este tour se reserva con el 30 % por su alta demanda · El resto lo pagas al abordar.</p>
   </div>
 </div>
 
@@ -483,8 +489,8 @@
 <script src="tour-config.js?v=10"></script>
 <script src="tours.js?v=10"></script>
 <script src="saona-config.js?v=1"></script>
-<script src="buggies-config.js?v=3"></script>
-<script src="simple-tour.js?v=3"></script>
+<script src="buggies-config.js?v=4"></script>
+<script src="simple-tour.js?v=4"></script>
 <script src="tours-init.js?v=5"></script>
 <script src="hub.js?v=2"></script>
 </body>
