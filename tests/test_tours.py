@@ -85,7 +85,7 @@ with sync_playwright() as p:
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
     for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Tour: City Tour Santo Domingo",
                  "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Hora: 8:00 a. m.", "Personas: 2",
-                 "• Parque Nacional Los Tres Ojos", "• Faro a Colón (Con entrada al interior)", "• Alcázar de Colón", "• Fortaleza Ozama", "• Catedral Primada de América", "• Guía turístico certificado",
+                 "• Parque Nacional Los Tres Ojos", "• Faro a Colón (Con entrada al interior)", "• Alcázar de Colón", "• Fortaleza Ozama", "• Catedral Primada de América", "• Tour guiado en la Zona Colonial",
                  "Precio estimado: US$186"]:
         check(f"Mensaje contiene «{frag}»", frag in msg)
     check("Sambil no aparece si no se eligió", "Sambil" not in msg)

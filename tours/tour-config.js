@@ -85,11 +85,10 @@ window.JGT_TOUR = {
     },
     {
       id: "guia",
-      nombre: "Guía turístico certificado",
-      descripcion: "Te acompaña en la Zona Colonial y te cuenta su historia, incluyendo la Calle Las Damas y el Panteón Nacional.",
+      nombre: "Tour guiado en la Zona Colonial",
+      descripcion: "Un guía turístico certificado te acompaña por la Zona Colonial y te cuenta su historia, incluyendo la Calle Las Damas y el Panteón Nacional.",
       grupoUSD: 40,                   // por grupo
-      foto: "Aerial_view_Ciudad_Colonial_Santo_Domingo_09_2019_0067.jpg",
-      credito: "Mariordo, CC BY-SA 4.0",
+      foto: "img/guia.jpg",
       marcada: true
     },
     {

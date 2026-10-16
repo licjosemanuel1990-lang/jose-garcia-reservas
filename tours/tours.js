@@ -64,7 +64,10 @@
 
     var pic = document.createElement("div");
     pic.className = "pic";
-    pic.textContent = p.icono || "📍";
+    var ico = document.createElement("span");
+    ico.className = "ico"; ico.textContent = p.icono || "📍";
+    pic.appendChild(ico);
+    if (p.foto || p.fotos) pic.classList.add("has-img");
     if (p.fotos && p.fotos.length) {       // galería que rota sola
       var imgs = p.fotos.map(function (f, idx) {
         var im = document.createElement("img");
@@ -89,7 +92,7 @@
     } else if (p.foto) {
       var img = document.createElement("img");
       img.alt = p.nombre; img.loading = "lazy"; img.src = photo(p.foto);
-      img.onerror = function () { img.remove(); };
+      img.onerror = function () { img.remove(); pic.classList.remove("has-img"); };
       if (p.credito) img.title = "Foto: " + p.credito + " · Wikimedia Commons";
       pic.appendChild(img);
     }
