@@ -16,8 +16,8 @@ with sync_playwright() as p:
     check("Al tocar «Buggies» se abre Buggies y no el City Tour", pg.locator("#buggiesTour").is_visible() and not pg.locator("#cityTour").is_visible())
     price = lambda: pg.locator("#bQuotePrice").inner_text().strip()
     check("Título de la landing", "Buggies y Four Wheel en Comatillo" in pg.locator("#buggiesTour").inner_text())
-    check("Incluye 4 elementos (transporte, vehículo, seguridad, guía)", pg.locator("#buggiesTour .incl li").count() == 4)
-    check("Galería con 3 fotos", pg.locator("#buggiesTour .s-gallery img").count() == 3)
+    check("Incluye 6 elementos", pg.locator("#buggiesTour .incl li").count() == 6)
+    check("Galería con 7 fotos", pg.locator("#buggiesTour .s-gallery img").count() == 7)
     check("Se llama «Tour de Buggies y Four Wheel» en el selector", "Tour de Buggies y Four Wheel" in pg.locator('.choice[data-tour="buggies"]').inner_text())
     check("Sin personas elegidas no hay precio", price() == "—")
     for n, exp in [("1", "US$140"), ("2", "US$200"), ("4", "US$320"), ("10", "US$680"), ("15", "US$980"), ("16+", "A cotizar")]:
