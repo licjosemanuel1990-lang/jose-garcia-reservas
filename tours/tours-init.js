@@ -14,7 +14,7 @@ window.JGT_BUGGIESAPI = (function () {
     short: "Tour de Buggies", msgTour: "Buggies y Four Wheel en Comatillo",
     extras: [{ key: "plan", label: "Plan" }, { key: "ride", label: "Four wheel" }, { key: "food", label: "Comida" }, { key: "shift", label: "Tanda" }],
     calc: function (n, els) {
-      var rd = vehicles(n, els) * plan(els).rd + (els.food.value === "si" ? B.comidaRD * n : 0);
+      var rd = n * plan(els).rd + (els.food.value === "si" ? B.comidaRD * n : 0);
       return Math.ceil(B.transporte + rd / B.tasaCambio);
     },
     detail: function (n, els) {
