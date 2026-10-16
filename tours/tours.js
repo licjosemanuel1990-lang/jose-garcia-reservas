@@ -71,7 +71,7 @@
     if (p.fotos && p.fotos.length) {       // galería que rota sola
       var imgs = p.fotos.map(function (f, idx) {
         var im = document.createElement("img");
-        im.alt = f.titulo; im.loading = "lazy"; im.src = photo(f.foto);
+        im.alt = f.titulo; im.src = photo(f.foto);
         im.className = "slide" + (idx === 0 ? " show" : "");
         im.onerror = function () { im.remove(); };
         pic.appendChild(im);
@@ -91,7 +91,7 @@
       }, 3000);
     } else if (p.foto) {
       var img = document.createElement("img");
-      img.alt = p.nombre; img.loading = "lazy"; img.src = photo(p.foto);
+      img.alt = p.nombre; img.src = photo(p.foto);
       img.onerror = function () { img.remove(); pic.classList.remove("has-img"); };
       if (p.credito) img.title = "Foto: " + p.credito + " · Wikimedia Commons";
       pic.appendChild(img);
