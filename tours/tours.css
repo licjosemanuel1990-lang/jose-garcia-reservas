@@ -64,3 +64,19 @@ body{padding-bottom:86px}
 .tb-btn{flex:none;background:var(--wa);color:#fff;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:12px;font-size:15px}
 .tb-btn.off{background:#3a5274;color:#b9c6d6;pointer-events:none}
 @media(min-width:760px){.tourbar{left:50%;transform:translateX(-50%);max-width:760px;border-radius:16px 16px 0 0}}
+
+/* Bloque publicitario */
+.howto{display:none}
+.promo{border-radius:18px;overflow:hidden;margin:-2px 0 18px;background:linear-gradient(150deg,#0b1f3a 0%,#163e6e 60%,#1d5a8c 100%);color:#fff;box-shadow:0 10px 28px rgba(11,31,58,.25)}
+.promo-pics{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:3px;height:110px}
+.promo-pics img{width:100%;height:100%;object-fit:cover;display:block}
+.promo-body{padding:16px 16px 18px}
+.promo-kicker{margin:0;color:var(--gold-2);font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase}
+.promo-title{margin:4px 0 8px;font-family:"Playfair Display",Georgia,serif;font-size:24px;line-height:1.2;font-weight:700}
+.promo-text{margin:0 0 14px;color:#d9e4f1;font-size:14.5px;line-height:1.5}
+.promo-pay{background:var(--gold);color:var(--navy);border-radius:14px;padding:12px 14px;margin-bottom:14px;box-shadow:0 6px 16px rgba(201,162,74,.35)}
+.pay-big{display:block;font-size:24px;font-weight:900;line-height:1.1}
+.pay-sub{display:block;font-size:14px;font-weight:600;margin-top:3px}
+.promo-steps{display:flex;flex-wrap:wrap;gap:8px}
+.promo-steps span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 12px;font-size:13.5px}
+.hero-pay{display:inline-block;margin:12px 0 0;background:var(--gold);color:var(--navy);font-weight:700;border-radius:999px;padding:7px 14px;font-size:14px}

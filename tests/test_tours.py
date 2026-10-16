@@ -30,7 +30,7 @@ with sync_playwright() as p:
     check("Al abrir, ningún lugar está seleccionado", not any(is_on(pg, s) for s in ["tresojos", "faro", "alcazar", "fortaleza", "catedral", "guia", "palacio", "malecon", "comida", "plaza"]))
     check("Barra inferior invita a agregar", "Agregar" in pg.locator("#barCount").inner_text())
     check("Cada tarjeta muestra el botón «+ Agregar al tour»", pg.locator(".stop .add", has_text="+ Agregar al tour").count() == 10)
-    check("Instrucciones visibles para el cliente", pg.locator(".howto").is_visible())
+    check("Bloque publicitario visible con «$0 para reservar»", pg.locator(".promo").is_visible() and "$0 para reservar" in pg.locator(".promo").inner_text())
     for s_ in ["tresojos", "faro", "guia", "alcazar", "fortaleza", "catedral", "comida", "malecon", "palacio"]: toggle(pg, s_)
     check("Al agregar, el botón cambia a «✓ Agregado»", "Agregado" in pg.locator('.stop[data-id="tresojos"] .add').inner_text())
     check("Barra inferior muestra cantidad y precio", "9 lugares" in pg.locator("#barCount").inner_text() and "US$" in pg.locator("#barPrice").inner_text())
