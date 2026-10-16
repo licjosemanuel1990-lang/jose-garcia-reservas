@@ -100,9 +100,9 @@ with sync_playwright() as p:
     pg.fill("#returnTime", "15:30")
     check("Caso E: espera > 4 h → A cotizar (sin descuento)", price(pg) == "A cotizar" and "4 horas" in pg.locator("#quoteNote").inner_text(), price(pg))
     pg.fill("#returnDate", "2026-10-24"); pg.fill("#returnTime", "11:00")
-    check("Caso E: regreso otro día → A cotizar (sin descuento)", price(pg) == "A cotizar" and "otro día" in pg.locator("#quoteNote").inner_text(), price(pg))
+    check("Caso E: regreso otro día → misma tarifa US$39", price(pg) == "US$39" and "otro día" in pg.locator("#quoteNote").inner_text(), price(pg))
     msg = decode(submit(pg))
-    check("Caso E: ventana muestra 'A cotizar' con motivo", modal_price(pg) == "A cotizar" and "otro día" in pg.locator("#cNote").text_content())
+    check("Caso E: ventana muestra US$39 con regreso otro día", modal_price(pg) == "US$39" and "otro día" in pg.locator("#cNote").text_content())
     pg.click(".toggle label:has(input[value=one]) span")
 
     # --- Caso C ---

@@ -112,7 +112,7 @@
     if (!dep || !ret) return mix({ kind: "price", amount: roundAmount, trip: "round", provisional: true }, info);
     if (ret <= dep) return { kind: "invalidReturn" };
     var hours = (ret - dep) / 36e5;
-    if (s.rDate !== s.date) return { kind: "pending", reason: "otherDay", base: base };
+    if (s.rDate !== s.date) return mix({ kind: "price", amount: roundAmount, trip: "round", otherDay: true }, info);
     if (hours > CFG.esperaMaximaHoras) return { kind: "pending", reason: "longWait", base: base };
     return mix({ kind: "price", amount: roundAmount, trip: "round" }, info);
   }
@@ -127,7 +127,6 @@
     custom: "Ubicación fuera del tarifario: te enviaremos la cotización por WhatsApp.",
     noRate: "Esta ruta aún no tiene tarifa publicada: te cotizaremos por WhatsApp.",
     group: "Para grupos de más de 15 pasajeros confirmamos vehículo y precio por WhatsApp.",
-    otherDay: "Regreso en otro día: la tarifa queda sujeta a confirmación (sin descuento automático).",
     longWait: "La espera supera " + CFG.esperaMaximaHoras + " horas: requiere cotización personalizada (sin descuento automático)."
   };
 
@@ -143,8 +142,8 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = (q.extraPax ? extraText(q) + " " : "") + "2 trayectos de " + money(q.oneWay) + " con 22 % de descuento. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera" +
-            (q.provisional ? " (válido si regresas el mismo día dentro de ese plazo)." : ".");
+          note = (q.extraPax ? extraText(q) + " " : "") + "2 trayectos de " + money(q.oneWay) + " con 22 % de descuento." +
+            (q.otherDay ? " Regreso en otro día: misma tarifa." : " Si regresas el mismo día, incluye hasta " + CFG.esperaMaximaHoras + " h de espera.");
         } else {
           label = "Tarifa estimada · solo ida";
           note = extraText(q) + " Sujeto a confirmación de disponibilidad.";
@@ -290,7 +289,7 @@
       priceEl.textContent = money(q.amount);
       priceEl.classList.remove("pending");
       $("cNote").textContent = (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
-        ? "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas."
+        ? (q.otherDay ? "Ida y vuelta con regreso en otro día: misma tarifa con 22 % de descuento." : "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.")
         : "Sujeto a confirmación de disponibilidad.");
     } else {
       $("cLabel").textContent = "Precio del servicio";
