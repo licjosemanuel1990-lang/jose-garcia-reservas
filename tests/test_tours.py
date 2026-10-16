@@ -20,6 +20,7 @@ with sync_playwright() as p:
         errs = []
         pg.on("pageerror", lambda e: errs.append(str(e)))
         pg.goto(BASE, wait_until="load")
+        pg.click('.choice[data-tour="city"]'); pg.wait_for_timeout(200)
         return pg, errs
     def price(pg): return pg.locator("#quotePrice").inner_text().strip()
     def toggle(pg, sid): pg.click(f'.stop[data-id="{sid}"] h3')

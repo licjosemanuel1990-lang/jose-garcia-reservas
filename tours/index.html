@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1f3a">
-<title>City Tour Santo Domingo | José García Transporte</title>
-<meta name="description" content="Arma tu City Tour por Santo Domingo desde Boca Chica: Los Tres Ojos, Faro a Colón, Zona Colonial y más. Sin pagos anticipados.">
+<title>Tours y excursiones | José García Transporte</title>
+<meta name="description" content="Tours desde Boca Chica: arma tu City Tour por Santo Domingo o vive Isla Saona todo incluido. Sin pagos anticipados.">
 <meta property="og:title" content="Arma tu City Tour en Santo Domingo | José García Transporte">
 <meta property="og:description" content="Elige las paradas que quieras y recibe tu precio al instante.">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
@@ -13,7 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=3">
-<link rel="stylesheet" href="tours.css?v=7">
+<link rel="stylesheet" href="tours.css?v=8">
+<link rel="stylesheet" href="saona.css?v=1">
 </head>
 <body>
 
@@ -27,12 +28,27 @@
       </div>
     </a>
     <div class="eyebrow">Saliendo desde Boca Chica</div>
-    <h1>Arma tu City Tour por Santo Domingo</h1>
-    <p class="lead">Tú eliges qué visitar: agrega solo los lugares que te interesan y mira el precio al instante. Transporte privado desde tu hotel y sin pagos anticipados.</p>
+    <h1>Tours y excursiones</h1>
+    <p class="lead">Elige tu aventura: arma tu City Tour por Santo Domingo o vive Isla Saona todo incluido. Transporte privado desde tu hotel y sin pagos anticipados.</p>
   </div>
 </header>
 
 <main class="wrap main">
+  <section class="chooser card" aria-label="Elige tu tour">
+    <h2>¿Qué tour quieres hacer?</h2>
+    <div class="choices">
+      <button type="button" class="choice" data-tour="city">
+        <img src="img/catedral.jpg" alt="">
+        <span class="choice-body"><b>City Tour Santo Domingo</b><small>Arma tu recorrido: Tres Ojos, Zona Colonial, Malecón y más.</small><span class="choice-go">Ver opciones →</span></span>
+      </button>
+      <button type="button" class="choice" data-tour="saona">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/SAONA_PLAYA.jpg?width=700" alt="">
+        <span class="choice-body"><b>Isla Saona</b><small>Todo incluido: catamarán, piscina natural y buffet dominicano.</small><span class="choice-go">Ver opciones →</span></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="tour-pane hidden" id="cityTour">
   <form id="tourForm" class="card" novalidate>
 
     <section class="block">
@@ -115,9 +131,100 @@
       <p class="credits">Fotos de <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>: Martin Falbisoner (Faro a Colón), Mariordo (Palacio Nacional y portada), licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>.</p>
     </div>
   </form>
+  </section>
+
+  <section class="tour-pane hidden s-main" id="saonaTour">
+
+  <section class="s-card">
+    <h2>Todo esto está incluido</h2>
+    <ul class="incl">
+      <li><span>🚐</span><div><b>Transporte privado</b>Ida y vuelta desde tu hotel.</div></li>
+      <li><span>⛵</span><div><b>Catamarán</b>Navega por el Caribe con música y buen ambiente.</div></li>
+      <li><span>🌊</span><div><b>Piscina natural</b>Agua cristalina a la altura de la cintura, en medio del mar.</div></li>
+      <li><span>🏝️</span><div><b>Isla Saona</b>Tiempo libre en una de las playas más bellas del país.</div></li>
+      <li><span>🍽️</span><div><b>Buffet dominicano</b>Comida criolla servida en la isla.</div></li>
+    </ul>
+  </section>
+
+  <section class="s-gallery" aria-label="Fotos de la excursión">
+    <figure class="big"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/SAONA_PLAYA.jpg?width=1000" alt="Playa de Isla Saona"><figcaption>Playa de Isla Saona</figcaption></figure>
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Piscina_Natural_Saona.jpg?width=800" alt="Piscina natural"><figcaption>Piscina natural</figcaption></figure>
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Lucas_I_Catamaran.jpg?width=800" alt="Catamarán"><figcaption>Catamarán</figcaption></figure>
+    <figure><img src="img/comida.jpg" alt="Buffet dominicano"><figcaption>Buffet dominicano</figcaption></figure>
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Isla_Saona_II.jpg?width=800" alt="Llegando a Isla Saona"><figcaption>Llegando a la isla</figcaption></figure>
+  </section>
+
+  <section class="s-card">
+    <h2>Así será tu día</h2>
+    <ol class="steps">
+      <li><b>Te recogemos</b> en tu hotel en vehículo privado.</li>
+      <li><b>Subes al catamarán</b> y navegas rumbo a la isla.</li>
+      <li><b>Te bañas en la piscina natural</b>, en medio del mar.</li>
+      <li><b>Disfrutas la playa y el buffet</b> en Isla Saona.</li>
+      <li><b>Te llevamos de vuelta</b> a tu hotel.</li>
+    </ol>
+  </section>
+
+  <form id="saonaForm" class="card" novalidate>
+    <h2 id="sReservar"><span class="step">✓</span> Calcula tu precio y reserva</h2>
+    <div class="grid2">
+      <div class="field">
+        <label for="sPeople">Personas *</label>
+        <select id="sPeople"></select>
+        <p class="err" data-for="sPeople"></p>
+      </div>
+      <div class="field">
+        <label for="sDate">Fecha *</label>
+        <input id="sDate" type="date">
+        <p class="err" data-for="sDate"></p>
+      </div>
+      <div class="field">
+        <label for="sPickupZone">Recogida en *</label>
+        <select id="sPickupZone">
+          <option value="boca">Boca Chica</option>
+          <option value="otra">Otra zona — escribir</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sPickup">Hotel o dirección *</label>
+        <input id="sPickup" type="text" maxlength="160" placeholder="Ej.: Hotel Don Juan, Boca Chica">
+        <p class="err" data-for="sPickup"></p>
+      </div>
+    </div>
+
+    <section class="quote" aria-live="polite">
+      <div class="quote-label">Precio total del tour</div>
+      <div class="quote-price" id="sQuotePrice">—</div>
+      <div class="quote-note" id="sQuoteNote">Elige cuántas personas son.</div>
+    </section>
+
+    <div class="grid2 stack-sm">
+      <div class="field">
+        <label for="sName">Nombre completo *</label>
+        <input id="sName" type="text" autocomplete="name" maxlength="80" placeholder="Nombre y apellido">
+        <p class="err" data-for="sName"></p>
+      </div>
+      <div class="field">
+        <label for="sPhone">WhatsApp con código de país *</label>
+        <input id="sPhone" type="tel" autocomplete="tel" inputmode="tel" maxlength="22" placeholder="Ej.: +1 809 555 1234">
+        <p class="err" data-for="sPhone"></p>
+      </div>
+    </div>
+
+    <p class="form-error hidden" id="sFormError" role="alert">Revisa los campos marcados en rojo.</p>
+    <button type="submit" class="cta" id="sSubmitBtn">RESERVAR ISLA SAONA POR WHATSAPP</button>
+
+    <div class="terms">
+      <p><b>Incluye:</b> transporte privado ida y vuelta, catamarán, piscina natural, playa en Isla Saona y buffet dominicano. El precio es el total del grupo.</p>
+      <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
+      <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
+      <p class="credits">Fotos de <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>: Jordi Esquiva (playa), Danu Widjajanto (piscina natural), Melodygar (llegada a la isla), licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>; catamarán, dominio público (CC0).</p>
+    </div>
+  </form>
+  </section>
 </main>
 
-<div class="tourbar" id="tourBar" aria-live="polite">
+<div class="tourbar hidden" id="tourBar" aria-live="polite">
   <div class="tb-info">
     <span class="tb-count" id="barCount">Agrega tu primer lugar</span>
     <span class="tb-price" id="barPrice">Precio: —</span>
@@ -141,15 +248,42 @@
   </div>
 </div>
 
+<div class="s-bar hidden" id="sBar">
+  <div class="tb-info">
+    <span class="tb-count" id="sBarCount">Isla Saona · todo incluido</span>
+    <span class="tb-price" id="sBarPrice">Calcula tu precio</span>
+  </div>
+  <a href="#sReservar" class="tb-btn">Reservar</a>
+</div>
+
+<div class="overlay hidden" id="sConfirmBox" role="dialog" aria-modal="true" aria-labelledby="sCTitle">
+  <div class="sheet">
+    <h3 id="sCTitle">Tu excursión está lista</h3>
+    <p class="c-route" id="sCRoute"></p>
+    <div class="c-quote">
+      <div class="quote-label">Precio total</div>
+      <div class="c-price" id="sCPrice"></div>
+      <div class="c-note" id="sCNote"></div>
+    </div>
+    <p class="c-next">Para completar tu reserva, <b>continúa por WhatsApp</b> y envía el mensaje. Te confirmaremos la disponibilidad personalmente.</p>
+    <a class="cta" id="sWaLink" href="#" rel="noopener">CONTINUAR EN WHATSAPP</a>
+    <button type="button" class="back" id="sEditBtn">Modificar datos</button>
+    <p class="c-small">Sin pagos anticipados · Pagas al finalizar el servicio.</p>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="wrap">
     <b>José García Transporte</b> · Moviendo Personas. Creando Confianza.<br>
-    <a href="../">Reservar un traslado</a> · <a href="../saona/">Isla Saona</a> · <a href="https://wa.me/18298182426" target="_blank" rel="noopener">WhatsApp +1 829-818-2426</a>
+    <a href="../">Reservar un traslado</a> · <a href="https://wa.me/18298182426" target="_blank" rel="noopener">WhatsApp +1 829-818-2426</a>
   </div>
 </footer>
 
 <script src="../routes.js?v=3"></script>
 <script src="tour-config.js?v=10"></script>
-<script src="tours.js?v=9"></script>
+<script src="tours.js?v=10"></script>
+<script src="saona-config.js?v=1"></script>
+<script src="saona.js?v=2"></script>
+<script src="hub.js?v=1"></script>
 </body>
 </html>

@@ -1,17 +1,4 @@
-/* Isla Saona — landing (usa colores de ../styles.css) */
-a.brand{color:inherit;text-decoration:none}
-.s-hero{position:relative;color:#fff;padding:24px 0 70px;min-height:520px;display:flex;flex-direction:column;
-  background:#0e5f86 url("https://commons.wikimedia.org/wiki/Special:FilePath/Saona_Island.jpg?width=1400") center/cover no-repeat;border-bottom:3px solid var(--gold)}
-.s-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,31,58,.55) 0%,rgba(11,31,58,.25) 40%,rgba(11,31,58,.85) 100%)}
-.s-hero .wrap{position:relative;display:flex;flex-direction:column;flex:1;width:100%}
-.s-hero-text{margin-top:auto;padding-top:120px}
-.s-badge{display:inline-block;background:var(--gold);color:var(--navy);font-weight:800;font-size:13px;border-radius:999px;padding:6px 12px;letter-spacing:.3px}
-.s-hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(30px,7vw,46px);line-height:1.12;margin:12px 0 10px;text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.s-hero p{margin:0;font-size:16px;color:#eef4fb;max-width:560px;text-shadow:0 1px 8px rgba(0,0,0,.4)}
-.s-cta{display:inline-block;margin-top:18px;background:var(--wa);color:#fff;font-weight:800;text-decoration:none;padding:15px 22px;border-radius:14px;font-size:16px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-.s-hero .s-small{margin-top:10px;font-size:13.5px;color:#d9e6f3}
-
-.s-main{margin-top:-40px;margin-bottom:28px;position:relative;display:flex;flex-direction:column;gap:18px}
+.s-main{display:flex;flex-direction:column;gap:18px}
 .s-card{background:#fff;border-radius:18px;box-shadow:0 12px 40px rgba(11,31,58,.12);padding:22px 18px}
 @media(min-width:600px){.s-card{padding:28px}}
 .s-card h2{font-family:"Playfair Display",Georgia,serif;font-size:24px;color:var(--navy);margin:0 0 14px;display:block}
@@ -32,13 +19,12 @@ a.brand{color:inherit;text-decoration:none}
 .steps li{margin-bottom:6px}
 .steps b{color:var(--navy)}
 
-#reservar{scroll-margin-top:16px}
+#sReservar{scroll-margin-top:16px}
 .quote-price.pending{font-size:24px}
 .credits{font-size:12px}
 .credits a{color:var(--muted)}
 
 /* Barra fija */
-body{padding-bottom:86px}
 .s-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--navy);color:#fff;border-top:3px solid var(--gold);box-shadow:0 -6px 20px rgba(0,0,0,.2)}
 .tb-info{flex:1;display:flex;flex-direction:column;min-width:0}
 .tb-count{font-size:12.5px;color:#d3deeb}
