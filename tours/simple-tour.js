@@ -7,7 +7,7 @@ window.JGTSimpleTour = function (o) {
   function id(k) { return o.prefix + k.charAt(0).toUpperCase() + k.slice(1); }
   function $(k) { return document.getElementById(id(k)); }
   var form = document.getElementById(o.form);
-  var keys = ["people", "date", "pickup", "name", "phone"];
+  var keys = ["people"].concat(o.extraKeys || []).concat(["date", "pickup", "name", "phone"]);
   var els = {};
   ["people", "date", "pickupZone", "pickup", "name", "phone"].concat((o.extras || []).map(function (e) { return e.key; }))
     .forEach(function (k) { els[k] = $(k); });
@@ -61,6 +61,7 @@ window.JGTSimpleTour = function (o) {
     if (els.pickup.value.trim().length < 3) e.pickup = "Escribe el hotel o la dirección de recogida.";
     var nm = els.name.value.trim();
     if (nm.length < 3 || !/[a-zA-ZÀ-ÿ]/.test(nm)) e.name = "Escribe tu nombre completo.";
+    if (o.extraValidate) { var x = o.extraValidate(els); for (var k in x) if (!e[k]) e[k] = x[k]; }
     var pd = els.phone.value.replace(/\D/g, "");
     if (!pd) e.phone = "Escribe tu número de WhatsApp.";
     else if (pd.length < 10 || pd.length > 15) e.phone = "Número incompleto. Incluye el código de país (ej.: +1 809 555 1234).";

@@ -232,7 +232,7 @@
   <section class="s-card b-intro">
     <span class="s-badge">A 1 hora de Boca Chica</span>
     <h2>Buggies y Four Wheel en Comatillo</h2>
-    <p>Bosque, agua y barro en una sola salida. Maneja tu four wheel por senderos de tierra, cruza ríos, báñate en la cascada del Salto Alto y disfruta la vista desde la Loma de Managua. Una aventura en plena naturaleza, lejos de la playa.</p>
+    <p>Bosque, agua y barro en una sola salida. Maneja tu buggy o four wheel por senderos de tierra, cruza ríos, báñate en la cascada del Salto Alto y disfruta la vista desde la Loma de Managua. Una aventura en plena naturaleza, lejos de la playa.</p>
   </section>
 
   <section class="s-card">
@@ -242,7 +242,7 @@
         <input type="radio" name="bPlanPick" value="basico" checked>
         <span class="plan-tag">Más elegido</span>
         <b>Tour Básico</b>
-        <small>Cruza el primer río hasta la cascada del Salto Alto. Ideal para tu primera aventura en four wheel.</small>
+        <small>Cruza el primer río hasta la cascada del Salto Alto. Ideal para tu primera aventura en buggy o four wheel.</small>
         <ul><li>1er río</li><li>Cascada Salto Alto</li></ul>
       </label>
       <label class="plan">
@@ -270,7 +270,7 @@
     <h2>Lo que incluye tu aventura</h2>
     <ul class="incl">
       <li><span>🚐</span><div><b>Transporte privado</b>Ida y vuelta desde tu hotel hasta Comatillo.</div></li>
-      <li><span>🏍️</span><div><b>Four wheel</b>Cada uno lleva 1 o 2 personas, como prefieras vivir la ruta.</div></li>
+      <li><span>🏍️</span><div><b>Buggy o four wheel</b>Tú eliges el vehículo. Cada uno lleva 1 o 2 personas, como prefieras vivir la ruta.</div></li>
       <li><span>🌳</span><div><b>Ruta natural</b>Bosque, ríos y barro con guía local.</div></li>
       <li><span>🍛</span><div><b>Comida criolla (opcional)</b>Arroz, habichuelas, moro de guandules, pollo frito, cerdo guisado y ensalada.</div></li>
     </ul>
@@ -280,7 +280,7 @@
     <h2>Así será tu aventura</h2>
     <ol class="steps">
       <li><b>Te recogemos</b> en tu hotel y viajamos cerca de 1 hora hasta Comatillo.</li>
-      <li><b>Recibes tu four wheel</b> y el equipo, con una charla de seguridad.</li>
+      <li><b>Recibes tu buggy o four wheel</b> y el equipo, con una charla de seguridad.</li>
       <li><b>Arranca la ruta</b> por senderos de tierra, barro y bosque.</li>
       <li><b>Cruzas el río</b> (dos ríos en el Tour Plus).</li>
       <li><b>Cascada del Salto Alto</b>: tiempo para bañarte en sus pozas.</li>
@@ -320,11 +320,18 @@
         <p class="err" data-for="bPeople"></p>
       </div>
       <div class="field">
-        <label for="bRide">¿Cómo van en el four wheel? *</label>
-        <select id="bRide">
-          <option value="pareja">De 2 en 2 (compartido)</option>
-          <option value="solo">Cada persona en su propio four wheel</option>
+        <label for="bVehicle">Vehículo *</label>
+        <select id="bVehicle">
+          <option value="four">Four wheel</option>
+          <option value="buggy">Buggy</option>
+          <option value="ambos">Buggy y four wheel</option>
         </select>
+      </div>
+      <div class="field">
+        <label for="bCount">Cantidad de vehículos *</label>
+        <select id="bCount"></select>
+        <p class="hint" id="bCountHint">Cada vehículo lleva 1 o 2 personas.</p>
+        <p class="err" data-for="bCount"></p>
       </div>
       <div class="field">
         <label for="bFood">Comida criolla *</label>
@@ -382,7 +389,7 @@
     <button type="submit" class="cta" id="bSubmitBtn">RESERVAR TOUR DE BUGGIES POR WHATSAPP</button>
 
     <div class="terms">
-      <p><b>Incluye:</b> transporte privado ida y vuelta y la ruta del plan elegido en four wheel. La comida criolla es opcional. El precio es el total del grupo.</p>
+      <p><b>Incluye:</b> transporte privado ida y vuelta y la ruta del plan elegido en buggy o four wheel. La comida criolla es opcional. El precio es el total del grupo.</p>
       <p>Sin pagos anticipados: pagas al finalizar el servicio. La reserva queda confirmada cuando te respondamos por WhatsApp.</p>
       <p>Cualquier servicio, tiempo de espera o condición fuera de estos parámetros estará sujeto a negociación y acuerdo previo entre ambas partes.</p>
     </div>
@@ -474,8 +481,8 @@
 <script src="tours.js?v=10"></script>
 <script src="saona-config.js?v=1"></script>
 <script src="buggies-config.js?v=3"></script>
-<script src="simple-tour.js?v=2"></script>
-<script src="tours-init.js?v=3"></script>
+<script src="simple-tour.js?v=3"></script>
+<script src="tours-init.js?v=4"></script>
 <script src="hub.js?v=2"></script>
 </body>
 </html>
