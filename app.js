@@ -142,8 +142,7 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = (q.extraPax ? extraText(q) + " " : "") + (q.otherDay ? "Regreso en otro día: 2 trayectos de " + money(q.oneWay) + " a tarifa normal (el 22 % de descuento aplica solo si regresas el mismo día)."
-            : "2 trayectos de " + money(q.oneWay) + " con 22 % de descuento por regresar el mismo día. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera.");
+          note = q.otherDay ? "Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + "." : (q.extraPax ? extraText(q) + " " : "") + ("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento por regresar el mismo día. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera.");
         } else {
           label = "Tarifa estimada · solo ida";
           note = extraText(q) + " Sujeto a confirmación de disponibilidad.";
@@ -288,8 +287,8 @@
       $("cLabel").textContent = "Precio del servicio";
       priceEl.textContent = money(q.amount);
       priceEl.classList.remove("pending");
-      $("cNote").textContent = (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
-        ? (q.otherDay ? "Ida y vuelta con regreso en otro día: 2 trayectos a tarifa normal." : "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.")
+      $("cNote").textContent = q.otherDay ? "Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + "." : (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
+        ? ("Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.")
         : "Sujeto a confirmación de disponibilidad.");
     } else {
       $("cLabel").textContent = "Precio del servicio";
