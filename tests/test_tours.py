@@ -26,9 +26,9 @@ with sync_playwright() as p:
     def is_on(pg, sid): return "on" in pg.get_attribute(f'.stop[data-id="{sid}"]', "class")
 
     pg, errs = page()
-    check("Menú muestra 7 paradas", pg.locator(".stop").count() == 7)
+    check("Menú muestra 10 paradas (Alcázar, Fortaleza y Catedral por separado)", pg.locator(".stop").count() == 10)
     check("Por defecto: todas marcadas salvo plaza comercial",
-          all(is_on(pg, s) for s in ["tresojos", "faro", "colonial", "palacio", "malecon", "comida"]) and not is_on(pg, "plaza"))
+          all(is_on(pg, s) for s in ["tresojos", "faro", "alcazar", "fortaleza", "catedral", "guia", "palacio", "malecon", "comida"]) and not is_on(pg, "plaza"))
     pg.select_option("#people", "2")
     check("2 personas, todo incluido (Faro con entrada) = US$186", price(pg) == "US$186", price(pg))
     pg.click('.stop[data-id="faro"] .opts label:nth-child(2)')
@@ -44,19 +44,21 @@ with sync_playwright() as p:
     toggle(pg, "tresojos")
     pg.select_option("#people", "6")
     check("6 personas (2 adicionales × US$10 en transporte) = US$338", price(pg) == "US$338", price(pg))
-    for s in ["tresojos", "faro", "colonial", "comida"]: toggle(pg, s)
+    for s in ["tresojos", "faro", "alcazar", "fortaleza", "catedral", "guia", "comida"]: toggle(pg, s)
     pg.select_option("#people", "2")
     check("Solo paradas gratis (Palacio + Malecón) = transporte + 10 % = US$77", price(pg) == "US$77", price(pg))
     for s in ["palacio", "malecon"]: toggle(pg, s)
     check("Sin paradas: no hay precio", price(pg) == "—")
-    for s in ["tresojos", "faro", "colonial", "palacio", "malecon", "comida"]: toggle(pg, s)
+    for s in ["tresojos", "faro", "alcazar", "fortaleza", "catedral", "guia", "palacio", "malecon", "comida"]: toggle(pg, s)
     check("Las tarjetas no muestran precios internos", "US$" not in pg.locator("#stops").inner_text() and "RD$" not in pg.locator("#stops").inner_text())
-    pg.click('.stop[data-id="colonial"] .opts label:nth-child(2)')
-    check("Zona Colonial sin guía = US$142", price(pg) == "US$142", price(pg))
-    check("Elegir 'sin guía' no desmarca la Zona Colonial", is_on(pg, "colonial"))
-    pg.click('.stop[data-id="colonial"] .opts label:nth-child(1)')
-    check("Zona Colonial con guía turístico certificado = US$186", price(pg) == "US$186", price(pg))
-    check("Opción de guía certificado visible", "Con guía turístico certificado" in pg.locator('.stop[data-id="colonial"]').inner_text())
+    toggle(pg, "guia")
+    check("Sin guía turístico = US$142", price(pg) == "US$142", price(pg))
+    toggle(pg, "guia")
+    check("Con guía turístico certificado = US$186", price(pg) == "US$186", price(pg))
+    toggle(pg, "alcazar")
+    check("Quitar solo el Alcázar = US$179", price(pg) == "US$179", price(pg))
+    check("Fortaleza y Catedral siguen marcadas", is_on(pg, "fortaleza") and is_on(pg, "catedral"))
+    toggle(pg, "alcazar")
     check("Plaza comercial es Sambil", "Sambil" in pg.locator('.stop[data-id="plaza"]').inner_text())
     pg.select_option("#people", "16+")
     check("Más de 15 personas = A cotizar", price(pg) == "A cotizar")
@@ -83,7 +85,7 @@ with sync_playwright() as p:
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
     for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Tour: City Tour Santo Domingo",
                  "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Hora: 8:00 a. m.", "Personas: 2",
-                 "• Parque Nacional Los Tres Ojos", "• Faro a Colón (Con entrada al interior)", "• Zona Colonial (Con guía turístico certificado)",
+                 "• Parque Nacional Los Tres Ojos", "• Faro a Colón (Con entrada al interior)", "• Alcázar de Colón", "• Fortaleza Ozama", "• Catedral Primada de América", "• Guía turístico certificado",
                  "Precio estimado: US$186"]:
         check(f"Mensaje contiene «{frag}»", frag in msg)
     check("Sambil no aparece si no se eligió", "Sambil" not in msg)

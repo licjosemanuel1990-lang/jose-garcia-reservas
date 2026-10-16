@@ -60,20 +60,36 @@ window.JGT_TOUR = {
       marcada: true
     },
     {
-      id: "colonial",
-      nombre: "Zona Colonial",
-      descripcion: "La primera ciudad de América. Visitamos el Alcázar de Colón, la Fortaleza Ozama y la Catedral Primada de América, además del Panteón Nacional, el Museo de las Casas Reales y la Calle Las Damas.",
-      porPersonaRD: 600,              // entradas a monumentos (por persona)
-      opciones: [
-        { id: "guia",   nombre: "Con guía turístico certificado", grupoUSD: 40 },
-        { id: "libre",  nombre: "Sin guía (recorrido libre)",      grupoUSD: 0 }
-      ],
-      // Varias fotos: se muestran una tras otra con su nombre
-      fotos: [
-        { foto: "img/alcazar.jpg",         titulo: "Alcázar de Colón" },
-        { foto: "img/fortaleza-ozama.jpg", titulo: "Fortaleza Ozama" },
-        { foto: "img/catedral.jpg",        titulo: "Catedral Primada de América" }
-      ],
+      id: "alcazar",
+      nombre: "Alcázar de Colón",
+      descripcion: "Palacio de Diego Colón, hijo de Cristóbal Colón, en la Zona Colonial.",
+      porPersonaRD: 200,              // parte de los RD$600 de entradas en Zona Colonial
+      foto: "img/alcazar.jpg",
+      marcada: true
+    },
+    {
+      id: "fortaleza",
+      nombre: "Fortaleza Ozama",
+      descripcion: "La fortaleza militar más antigua de América, junto al río Ozama.",
+      porPersonaRD: 200,
+      foto: "img/fortaleza-ozama.jpg",
+      marcada: true
+    },
+    {
+      id: "catedral",
+      nombre: "Catedral Primada de América",
+      descripcion: "La primera catedral construida en América.",
+      porPersonaRD: 200,
+      foto: "img/catedral.jpg",
+      marcada: true
+    },
+    {
+      id: "guia",
+      nombre: "Guía turístico certificado",
+      descripcion: "Te acompaña en la Zona Colonial y te cuenta su historia, incluyendo la Calle Las Damas y el Panteón Nacional.",
+      grupoUSD: 40,                   // por grupo
+      foto: "Aerial_view_Ciudad_Colonial_Santo_Domingo_09_2019_0067.jpg",
+      credito: "Mariordo, CC BY-SA 4.0",
       marcada: true
     },
     {
