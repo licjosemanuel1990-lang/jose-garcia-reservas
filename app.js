@@ -127,7 +127,7 @@
     custom: "Ubicación fuera del tarifario: te enviaremos la cotización por WhatsApp.",
     noRate: "Esta ruta aún no tiene tarifa publicada: te cotizaremos por WhatsApp.",
     group: "Para grupos de más de 15 pasajeros confirmamos vehículo y precio por WhatsApp.",
-    longWait: "La espera supera " + CFG.esperaMaximaHoras + " horas: requiere cotización personalizada (sin descuento automático)."
+    longWait: "Espera de más de " + CFG.esperaMaximaHoras + " horas: no aplica el 22 % de descuento. Te cotizamos por WhatsApp."
   };
 
   function renderQuote() {
@@ -142,7 +142,7 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = q.otherDay ? "Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + "." : (q.extraPax ? extraText(q) + " " : "") + ("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento por regresar el mismo día. Incluye hasta " + CFG.esperaMaximaHoras + " h de espera.");
+          note = q.otherDay ? "Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + "." : (q.extraPax ? extraText(q) + " " : "") + ("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento: regreso el mismo día, máximo " + CFG.esperaMaximaHoras + " horas de espera.");
         } else {
           label = "Tarifa estimada · solo ida";
           note = extraText(q) + " Sujeto a confirmación de disponibilidad.";
