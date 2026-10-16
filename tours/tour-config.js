@@ -43,8 +43,7 @@ window.JGT_TOUR = {
       descripcion: "Cuevas y lagos subterráneos de agua cristalina. Incluye el cruce en barquito al lago escondido.",
       porPersonaRD: 300,              // entrada RD$200 + barquito RD$100
       detalleCosto: "Entrada y barquito incluidos",
-      foto: "Santo_Domingo_Este_-_Los_Tres_Ojos_0941.JPG",
-      credito: "Phyrexian, CC BY-SA 4.0",
+      foto: "img/tres-ojos.jpg",
       marcada: false
     },
     {
