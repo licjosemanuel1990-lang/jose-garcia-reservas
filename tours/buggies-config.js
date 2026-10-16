@@ -14,9 +14,10 @@ window.JGT_BUGGIES = {
   tasaCambio: 62,          // RD$ por cada US$
   transporte: 80,          // US$ por grupo (ida y vuelta desde Boca Chica)
   margenRD: 1000,          // RD$ que sumamos a cada plan (por four wheel)
+                           // Básico 3,500 + 1,000 = RD$4,500 · Plus 4,000 + 1,000 = RD$5,000
   planes: {
-    basico:  { nombre: "Tour Básico",  rd: 3350, detalle: "Loma de Managua y río Salto Alto" },
-    plus:    { nombre: "Tour Plus",    rd: 3850, detalle: "Básico + río La Jorqueta" },
+    basico:  { nombre: "Tour Básico",  rd: 3500, detalle: "Loma de Managua y río Salto Alto" },
+    plus:    { nombre: "Tour Plus",    rd: 4000, detalle: "Básico + río La Jorqueta" },
     premium: { nombre: "Tour Premium", rd: 4050, detalle: "Básico + río privado, piscina y tobogán", minPersonas: 10 }
   },
   extra300ccRD: 300,       // RD$ por four wheel de 300cc

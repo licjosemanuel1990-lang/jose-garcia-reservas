@@ -26,21 +26,21 @@ with sync_playwright() as p:
     check("Horario mañana: recogida 7:30 a.m.", "7:30 a.m." in pg.locator('#bShift option[value="manana"]').inner_text())
     check("Horario tarde: recogida 12:30 p.m.", "12:30 p.m." in pg.locator('#bShift option[value="tarde"]').inner_text())
     check("Sin personas no hay precio", price() == "—")
-    for n, exp in [("1", "US$151"), ("2", "US$151"), ("3", "US$221"), ("4", "US$221"), ("16+", "A cotizar")]:
+    for n, exp in [("1", "US$153"), ("2", "US$153"), ("3", "US$226"), ("4", "US$226"), ("16+", "A cotizar")]:
         pg.select_option("#bPeople", n); check(f"Básico, {n} persona(s), four wheels sugeridos = {exp}", price() == exp, price())
     pg.select_option("#bPeople", "2")
     check("Con 2 personas sugiere 1 four wheel", pg.input_value("#bCount") == "1")
-    check("Precio por four wheel: 2 personas en 1 = US$151 (US$75.50 c/u)", price() == "US$151" and "US$75.50 por persona" in note(), note())
-    check("Nota con reserva 30 % y resto al abordar", "Reserva con US$46 (30 %) y paga US$105 al abordar" in note(), note())
-    check("Barra inferior muestra el total", "US$151" in pg.locator("#bBarPrice").inner_text())
+    check("Precio por four wheel: 2 personas en 1 = US$153 (US$76.50 c/u)", price() == "US$153" and "US$76.50 por persona" in note(), note())
+    check("Nota con reserva 30 % y resto al abordar", "Reserva con US$46 (30 %) y paga US$107 al abordar" in note(), note())
+    check("Barra inferior muestra el total", "US$153" in pg.locator("#bBarPrice").inner_text())
     pg.select_option("#bCount", "2")
-    check("2 personas en 2 four wheels = US$221", price() == "US$221", price())
+    check("2 personas en 2 four wheels = US$226", price() == "US$226", price())
     pg.select_option("#bCount", "1"); pg.select_option("#bSize", "300")
-    check("1 four wheel de 300cc = US$155", price() == "US$155" and "300cc" in note(), price())
+    check("1 four wheel de 300cc = US$158", price() == "US$158" and "300cc" in note(), price())
     pg.select_option("#bSize", "std"); pg.select_option("#bFood", "si")
-    check("2 personas + comida = US$163", price() == "US$163", price())
+    check("2 personas + comida = US$165", price() == "US$165", price())
     pg.select_option("#bFood", "no"); pg.select_option("#bPlan", "plus")
-    check("Plus, 2 personas en 1 four wheel = US$159", price() == "US$159", price())
+    check("Plus, 2 personas en 1 four wheel = US$161", price() == "US$161", price())
     check("Selector del formulario marca la tarjeta Plus", pg.is_checked('input[name="bPlanPick"][value="plus"]'))
     pg.select_option("#bPlan", "premium"); pg.select_option("#bPeople", "10")
     check("Premium, 10 personas en 5 four wheels = US$488", price() == "US$488", price())
@@ -59,16 +59,16 @@ with sync_playwright() as p:
     pg.fill("#bDate", "2026-10-01"); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
     check("Fecha pasada bloqueada", not pg.locator("#bConfirmBox").is_visible())
     pg.fill("#bDate", DATE); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
-    check("Ventana muestra US$159 antes de WhatsApp", pg.locator("#bConfirmBox").is_visible() and pg.locator("#bCPrice").inner_text() == "US$159")
-    check("Ventana muestra reserva US$48 y resto US$111", "US$48" in pg.locator("#bCDeposit").inner_text() and "US$111" in pg.locator("#bCDeposit").inner_text())
+    check("Ventana muestra US$161 antes de WhatsApp", pg.locator("#bConfirmBox").is_visible() and pg.locator("#bCPrice").inner_text() == "US$161")
+    check("Ventana muestra reserva US$49 y resto US$112", "US$49" in pg.locator("#bCDeposit").inner_text() and "US$112" in pg.locator("#bCDeposit").inner_text())
     pg.screenshot(path=f"{OUT}/fourwheel-ventana.png")
     pg.click("#bWaLink"); pg.wait_for_timeout(600)
     u = pg.evaluate("window.__lastUrl") or ""; msg = urllib.parse.unquote(u.split("?text=", 1)[-1])
     check("Enlace a wa.me/18298182426", u.startswith("https://wa.me/18298182426?text="))
     for f in ["Nombre: Cliente de Prueba", "Excursión: Four Wheel en Comatillo", "Plan: Tour Plus (+ río La Jorqueta)", "Four wheels: 1",
               "Tipo: Estándar", "Comida: No, gracias", "Horario: Tarde · te recogemos 12:30 p.m. (ruta 2:00 – 5:00)",
-              "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$159",
-              "Reserva (30 %): US$48", "Resto al abordar: US$111"]:
+              "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$161",
+              "Reserva (30 %): US$49", "Resto al abordar: US$112"]:
         check(f"Mensaje contiene «{f}»", f in msg)
     check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))
