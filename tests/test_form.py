@@ -33,11 +33,18 @@ def fill_client(pg, pax="2"):
     pg.fill("#name", "Cliente de Prueba")
     pg.fill("#phone", "+1 809 555 1234")
 
-def submit(pg):
+def submit(pg, shot=None):
     pg.evaluate("window.__lastUrl = null")
+    if pg.locator("#confirmBox").is_visible(): pg.click("#editBtn")
     pg.click("#submitBtn")
     pg.wait_for_timeout(300)
+    if not pg.locator("#confirmBox").is_visible(): return None
+    if shot: pg.screenshot(path=shot)
+    pg.click("#waLink")
+    pg.wait_for_timeout(600)
     return pg.evaluate("window.__lastUrl")
+
+def modal_price(pg): return pg.locator("#cPrice").text_content().strip()
 
 def decode(u): return urllib.parse.unquote(u.split("?text=", 1)[1]) if u else ""
 
@@ -61,9 +68,14 @@ with sync_playwright() as p:
     check("Caso G: enlace a wa.me/18298182426", bool(u) and u.startswith("https://wa.me/18298182426?text="), (u or "")[:45])
     for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Origen: Aeropuerto Las Américas (SDQ)",
                  "Destino: Boca Chica", "Fecha: 23/10/2026", "Hora: 10:00 a. m.", "Pasajeros: 2",
-                 "Servicio: Solo ida", "Tarifa estimada: US$25.00", "sujeta a confirmación de disponibilidad"]:
+                 "Servicio: Solo ida", "Maletas grandes: 0", "Equipaje de mano: 0"]:
         check(f"Caso G: mensaje contiene «{frag}»", frag in msg)
-    check("No se muestra confirmación falsa", "no está confirmada" in pg.locator("#afterNote").inner_text())
+    check("Mensaje corto: empieza en 'Nombre:' y sin tarifa/textos extra",
+          msg.startswith("Nombre:") and "Tarifa" not in msg and "Hola" not in msg and "Entiendo" not in msg, msg.replace(chr(10)," | "))
+    check("Ventana previa muestra el precio US$25.00 antes de WhatsApp", modal_price(pg) == "US$25.00", modal_price(pg))
+    check("Ventana indica continuar por WhatsApp, sin confirmación falsa",
+          "continúa por WhatsApp" in pg.locator("#confirmBox").text_content() and "confirmada" not in pg.locator("#confirmBox").text_content())
+    check("La ventana se cierra sola tras pulsar WhatsApp", not pg.locator("#confirmBox").is_visible())
     pg.screenshot(path=f"{OUT}/movil-caso-A.png", full_page=True)
 
     # --- Caso D (intercambiar) ---
@@ -82,7 +94,7 @@ with sync_playwright() as p:
     pg.fill("#returnDate", DATE); pg.fill("#returnTime", "13:30")
     check("Caso B: ida y vuelta mismo día, 3,5 h = US$39", price(pg) == "US$39.00", price(pg))
     msg = decode(submit(pg))
-    check("Caso B: mensaje con regreso y tarifa US$39", "Regreso: 23/10/2026 a las 1:30 p. m." in msg and "Tarifa estimada: US$39.00" in msg)
+    check("Caso B: mensaje con regreso; ventana muestra US$39", "Regreso: 23/10/2026 a las 1:30 p. m." in msg and modal_price(pg) == "US$39.00", modal_price(pg))
 
     # --- Caso E ---
     pg.fill("#returnTime", "15:30")
@@ -90,7 +102,7 @@ with sync_playwright() as p:
     pg.fill("#returnDate", "2026-10-24"); pg.fill("#returnTime", "11:00")
     check("Caso E: regreso otro día → A cotizar (sin descuento)", price(pg) == "A cotizar" and "otro día" in pg.locator("#quoteNote").inner_text(), price(pg))
     msg = decode(submit(pg))
-    check("Caso E: mensaje dice 'A cotizar' y motivo", "Tarifa: A cotizar" in msg and "otro día" in msg)
+    check("Caso E: ventana muestra 'A cotizar' con motivo", modal_price(pg) == "A cotizar" and "otro día" in pg.locator("#cNote").text_content())
     pg.click(".toggle label:has(input[value=one]) span")
 
     # --- Caso C ---
@@ -99,7 +111,7 @@ with sync_playwright() as p:
     pg.fill("#destinationOther", "Hotel Nuevo, Miches")
     check("Caso C: destino personalizado = A cotizar", price(pg) == "A cotizar", price(pg))
     msg = decode(submit(pg))
-    check("Caso C: mensaje conserva «Hotel Nuevo, Miches»", "Destino: Hotel Nuevo, Miches" in msg and "Tarifa: A cotizar" in msg)
+    check("Caso C: mensaje conserva «Hotel Nuevo, Miches»; ventana 'A cotizar'", "Destino: Hotel Nuevo, Miches" in msg and modal_price(pg) == "A cotizar")
     pg.select_option("#origin", "__otro__"); pg.fill("#originOther", "Villa Particular, Bávaro")
     msg = decode(submit(pg))
     check("Origen y destino personalizados a la vez", "Origen: Villa Particular, Bávaro" in msg and "Destino: Hotel Nuevo, Miches" in msg)
@@ -149,7 +161,7 @@ with sync_playwright() as p:
         pg.fill("#date", DATE); pg.fill("#time", "09:15"); fill_client(pg, "3")
         ok_price = price(pg) == "US$150.00"
         overflow = pg.evaluate("document.documentElement.scrollWidth > window.innerWidth")
-        u = submit(pg)
+        u = submit(pg, f"{OUT}/ventana-{name.replace(' ', '-')}.png")
         check(f"Caso H ({name}): selectores, precio US$150, botón y sin desbordes", ok_price and u and not overflow and not errs,
               f"precio={price(pg)} desborde={overflow}")
         pg.screenshot(path=f"{OUT}/{name.replace(' ', '-')}.png", full_page=True)

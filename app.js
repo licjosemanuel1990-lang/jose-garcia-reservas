@@ -14,8 +14,8 @@
     originOther: $("originOther"), destinationOther: $("destinationOther"),
     date: $("date"), time: $("time"), returnDate: $("returnDate"), returnTime: $("returnTime"),
     passengers: $("passengers"), bags: $("bags"), carry: $("carry"),
-    flight: $("flight"), airline: $("airline"), tripNotes: $("tripNotes"),
-    name: $("name"), phone: $("phone"), clientNotes: $("clientNotes")
+    flight: $("flight"), airline: $("airline"),
+    name: $("name"), phone: $("phone")
   };
 
   /* ---------- Datos (única fuente: routes.js) ---------- */
@@ -217,15 +217,14 @@
     $("formError").classList.toggle("hidden", Object.keys(e).length === 0);
   }
 
-  /* ---------- Mensaje de WhatsApp ---------- */
+  /* ---------- Mensaje de WhatsApp (solo datos esenciales) ---------- */
   function buildMessage() {
-    var s = readState(), q = computeQuote(s);
+    var s = readState();
     var L = [];
-    L.push("Hola, deseo solicitar un traslado con José García Transporte.", "");
     L.push("Nombre: " + els.name.value.trim());
     L.push("WhatsApp: " + els.phone.value.trim());
-    L.push("Origen: " + s.oText + (s.o === OTHER ? " (ubicación escrita por el cliente)" : ""));
-    L.push("Destino: " + s.dText + (s.d === OTHER ? " (ubicación escrita por el cliente)" : ""));
+    L.push("Origen: " + s.oText);
+    L.push("Destino: " + s.dText);
     L.push("Servicio: " + (s.trip === "round" ? "Ida y vuelta" : "Solo ida"));
     L.push("Fecha: " + fmtDate(s.date));
     L.push("Hora: " + fmtTime(s.time));
@@ -237,17 +236,6 @@
       if (els.flight.value.trim()) L.push("Vuelo: " + els.flight.value.trim().toUpperCase());
       if (els.airline.value.trim()) L.push("Aerolínea: " + els.airline.value.trim());
     }
-    if (els.tripNotes.value.trim()) L.push("Instrucciones: " + els.tripNotes.value.trim());
-    if (els.clientNotes.value.trim()) L.push("Observaciones: " + els.clientNotes.value.trim());
-    L.push("");
-    if (q.kind === "price") {
-      L.push("Tarifa estimada: " + money(q.amount));
-      if (q.trip === "round") L.push("Condición: ida y vuelta el mismo día con hasta " + CFG.esperaMaximaHoras + " h de espera (22 % de descuento).");
-    } else {
-      L.push("Tarifa: A cotizar");
-      if (q.reason && REASONS[q.reason]) L.push("Motivo: " + REASONS[q.reason]);
-    }
-    L.push("", "Entiendo que la reserva está sujeta a confirmación de disponibilidad y que el pago se realiza al finalizar el servicio.");
     return L.join("\n");
   }
   function whatsappUrl() { return "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(buildMessage()); }
@@ -279,10 +267,40 @@
       try { target.focus({ preventScroll: true }); } catch (x) { target.focus(); }
       return;
     }
-    var url = whatsappUrl();
-    $("afterNote").classList.remove("hidden");
-    if (typeof window.__JGT_CAPTURE__ === "function") { window.__JGT_CAPTURE__(url); return; } // solo pruebas
-    window.location.href = url;
+    openConfirm();
+  });
+
+  /* ---------- Ventana previa con el precio ---------- */
+  var box = $("confirmBox"), waLink = $("waLink");
+  function openConfirm() {
+    var s = readState(), q = computeQuote(s);
+    $("cRoute").textContent = s.oText + " → " + s.dText + " · " + (s.trip === "round" ? "Ida y vuelta" : "Solo ida");
+    var priceEl = $("cPrice");
+    if (q.kind === "price") {
+      $("cLabel").textContent = "Precio del servicio";
+      priceEl.textContent = money(q.amount);
+      priceEl.classList.remove("pending");
+      $("cNote").textContent = q.trip === "round"
+        ? "Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas."
+        : "Precio por vehículo, sujeto a confirmación de disponibilidad.";
+    } else {
+      $("cLabel").textContent = "Precio del servicio";
+      priceEl.textContent = "A cotizar";
+      priceEl.classList.add("pending");
+      $("cNote").textContent = (REASONS[q.reason] || "Te enviaremos el precio por WhatsApp.");
+    }
+    waLink.href = whatsappUrl();
+    box.classList.remove("hidden");
+    document.body.classList.add("modal-open");
+    waLink.focus();
+  }
+  function closeConfirm() { box.classList.add("hidden"); document.body.classList.remove("modal-open"); }
+  $("editBtn").addEventListener("click", closeConfirm);
+  box.addEventListener("click", function (e) { if (e.target === box) closeConfirm(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeConfirm(); });
+  waLink.addEventListener("click", function (e) {
+    if (typeof window.__JGT_CAPTURE__ === "function") { e.preventDefault(); window.__JGT_CAPTURE__(waLink.href); } // solo pruebas
+    setTimeout(closeConfirm, 400); // al volver de WhatsApp, el formulario queda visible
   });
 
   // Acceso para pruebas automáticas

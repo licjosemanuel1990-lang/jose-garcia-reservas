@@ -48,7 +48,7 @@ Opcional: conectar este repositorio de GitHub al proyecto de Vercel (Vercel → 
 
 ## Pruebas
 
-`python3 tests/test_form.py <URL> <carpeta_capturas>` — ejecuta 44 comprobaciones (casos A–H del proyecto maestro) en Chromium con vistas de iPhone, Android y computadora. Las pruebas **no envían mensajes** a WhatsApp: capturan el enlace generado.
+`python3 tests/test_form.py <URL> <carpeta_capturas>` — ejecuta 47 comprobaciones (casos A–H del proyecto maestro) en Chromium con vistas de iPhone, Android y computadora. Las pruebas **no envían mensajes** a WhatsApp: capturan el enlace generado.
 
 ## Mejora futura: panel de administración
 
