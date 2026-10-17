@@ -145,7 +145,7 @@
     var sel = selected();
     if (!sel.length) return { kind: "empty" };
     var ppl = els.people.value;
-    if (ppl && !/^\d+$/.test(ppl)) return { kind: "pending", reason: "Para grupos de más de " + T.maxPersonas + " personas te enviaremos el precio por WhatsApp." };
+    if (ppl && !/^\d+$/.test(ppl)) return { kind: "pending", reason: L("Para grupos de más de " + T.maxPersonas + " personas te enviaremos el precio por WhatsApp.", "For groups of more than " + T.maxPersonas + " people we will send you the price on WhatsApp.") };
     if (els.pickupZone.value !== "boca") return { kind: "pending", reason: "Recogida fuera de Boca Chica: te cotizaremos el transporte por WhatsApp." };
     var n = Number(ppl) || 1;
     var plaza = sel.some(function (p) { return p.cambiaTransporte; });
@@ -172,16 +172,17 @@
     else if (q.kind === "pending") { price = "A cotizar"; note = q.reason; }
     else {
       price = usd(q.total);
-      note = q.assumed ? "Precio para 1 persona. Elige cuántas personas son para calcular el total."
-                       : "Total para " + q.people + (q.people === 1 ? " persona" : " personas") + ". Incluye transporte privado, entradas y servicios elegidos.";
+      note = q.assumed ? L("Precio para 1 persona. Elige cuántas personas son para calcular el total.", "Price for 1 person. Choose how many people to see the total.")
+                       : L("Total para " + q.people + (q.people === 1 ? " persona" : " personas") + ". Incluye transporte privado, entradas y servicios elegidos.",
+                           "Total for " + q.people + (q.people === 1 ? " person" : " people") + ". Includes private transportation, tickets and chosen services.");
     }
     $("quoteLabel").textContent = label;
     $("quotePrice").textContent = price;
     $("quotePrice").classList.toggle("pending", price === "A cotizar");
     $("quoteNote").textContent = note;
     var n = selected().length;
-    $("barCount").textContent = n ? n + (n === 1 ? " lugar elegido" : " lugares elegidos") : "Toca «+ Agregar» en los lugares";
-    $("barPrice").textContent = n ? (price === "A cotizar" ? "Precio: a cotizar" : "Tu tour: " + price) : "y mira tu precio aquí";
+    $("barCount").textContent = n ? n + L(n === 1 ? " lugar elegido" : " lugares elegidos", n === 1 ? " place chosen" : " places chosen") : "Toca «+ Agregar» en los lugares";
+    $("barPrice").textContent = n ? (price === "A cotizar" ? "Precio: a cotizar" : L("Tu tour: ", "Your tour: ") + price) : "y mira tu precio aquí";
     $("barBtn").classList.toggle("off", !n);
     if (submitted) validate();
     return q;
@@ -226,10 +227,11 @@
     L.push("Recogida: " + els.pickup.value.trim() + (els.pickupZone.value === "boca" ? " (Boca Chica)" : ""));
     L.push("Fecha: " + fmtDate(els.date.value));
     L.push("Hora: " + fmtTime(els.time.value));
-    L.push("Personas: " + els.people.options[els.people.selectedIndex].text);
+    L.push("Personas: " + esText(els.people));
     L.push("Paradas:");
     selected().forEach(function (p) { L.push(stopLine(p)); });
     L.push("Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar"));
+    if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
   }
   function whatsappUrl() { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(buildMessage()); }
@@ -238,7 +240,7 @@
   var box = $("confirmBox"), waLink = $("waLink");
   function openConfirm() {
     var q = computeQuote();
-    $("cRoute").textContent = T.nombre + " · " + selected().length + " paradas · " + els.people.options[els.people.selectedIndex].text + " personas";
+    $("cRoute").textContent = T.nombre + " · " + selected().length + L(" paradas · ", " stops · ") + els.people.options[els.people.selectedIndex].text + L(" personas", " people");
     $("cPrice").textContent = q.kind === "price" ? usd(q.total) : "A cotizar";
     $("cPrice").classList.toggle("pending", q.kind !== "price");
     $("cNote").textContent = q.kind === "price" ? "Precio total del grupo, con transporte privado incluido." : q.reason;

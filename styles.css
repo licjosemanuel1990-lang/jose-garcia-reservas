@@ -59,7 +59,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy-2);
 @media(max-width:600px){
   .route{grid-template-columns:1fr}
   .swap{margin:-4px auto 10px;transform:none;width:100%;height:42px;font-size:15px}
-  .swap::after{content:" Intercambiar origen y destino";font-size:14px}
+  .swap::after{content:" " attr(aria-label);font-size:14px}
 }
 
 /* Tipo de servicio */
@@ -111,3 +111,10 @@ body.modal-open{overflow:hidden}
 .svc-switch a,.svc-switch span{display:flex;align-items:center;justify-content:center;text-align:center;padding:12px 8px;border-radius:10px;font-weight:800;font-size:15px;text-decoration:none;color:#fff;line-height:1.2}
 .svc-switch .on{background:var(--gold);color:var(--navy)}
 .svc-switch a:hover{background:rgba(255,255,255,.12)}
+
+.pick-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 0;max-width:520px}
+.pick-cta{margin:0;font-weight:800;font-size:15px;color:var(--gold-2);line-height:1.3}
+.pick-row + .svc-switch{margin-top:8px}
+.lang-switch{flex:none;display:flex;border:1px solid rgba(227,194,122,.6);border-radius:999px;overflow:hidden}
+.lang-switch button{font:inherit;font-weight:800;font-size:13px;padding:7px 11px;border:0;background:transparent;color:#fff;cursor:pointer}
+.lang-switch button.on{background:var(--gold);color:var(--navy)}

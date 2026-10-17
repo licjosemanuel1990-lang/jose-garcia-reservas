@@ -26,8 +26,8 @@ window.JGTSimpleTour = function (o) {
   function computeQuote() {
     var p = els.people.value;
     if (!p) return { kind: "empty" };
-    if (!/^\d+$/.test(p)) return { kind: "pending", reason: "Para grupos de más de " + C.maxPersonas + " personas te enviaremos el precio por WhatsApp." };
-    if (els.pickupZone.value !== "boca") return { kind: "pending", reason: "Recogida fuera de Boca Chica: te cotizaremos el precio por WhatsApp." };
+    if (!/^\d+$/.test(p)) return { kind: "pending", reason: L("Para grupos de más de " + C.maxPersonas + " personas te enviaremos el precio por WhatsApp.", "For groups of more than " + C.maxPersonas + " people we will send you the price on WhatsApp.") };
+    if (els.pickupZone.value !== "boca") return { kind: "pending", reason: T("Recogida fuera de Boca Chica: te cotizaremos el precio por WhatsApp.") };
     var n = Number(p);
     var total = o.calc ? o.calc(n, els) : C.transporte + C.porPersona * n;
     var q = { kind: "price", total: total, people: n, perPerson: total / n };
@@ -41,15 +41,19 @@ window.JGTSimpleTour = function (o) {
     if (q.kind === "pending") { price = "A cotizar"; note = q.reason; }
     if (q.kind === "price") {
       price = usd(q.total);
-      note = "Total para " + q.people + (q.people === 1 ? " persona" : " personas") +
-        (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". " +
-        (o.detail ? o.detail(q.people, els) : o.priceNote) +
-        (q.deposit ? " Reserva con " + usd(q.deposit) + " (" + Math.round(C.deposito * 100) + " %) y paga " + usd(q.rest) + " al abordar." : "");
+      var pct = C.deposito ? Math.round(C.deposito * 100) : 0;
+      note = L("Total para " + q.people + (q.people === 1 ? " persona" : " personas") +
+        (q.people > 1 ? " (" + usd(q.perPerson) + " por persona)" : "") + ". ",
+        "Total for " + q.people + (q.people === 1 ? " person" : " people") +
+        (q.people > 1 ? " (" + usd(q.perPerson) + " per person)" : "") + ". ") +
+        (o.detail ? o.detail(q.people, els) : T(o.priceNote)) +
+        (q.deposit ? L(" Reserva con " + usd(q.deposit) + " (" + pct + " %) y paga " + usd(q.rest) + " al abordar.",
+                       " Book with " + usd(q.deposit) + " (" + pct + "%) and pay " + usd(q.rest) + " when you board.") : "");
     }
     $("quotePrice").textContent = price;
     $("quotePrice").classList.toggle("pending", price === "A cotizar");
     $("quoteNote").textContent = note;
-    $("barCount").textContent = o.short + (q.kind === "price" ? " · " + q.people + (q.people === 1 ? " persona" : " personas") : "");
+    $("barCount").textContent = T(o.short) + (q.kind === "price" ? " · " + q.people + L(q.people === 1 ? " persona" : " personas", q.people === 1 ? " person" : " people") : "");
     $("barPrice").textContent = q.kind === "price" ? "Total: " + price : (q.kind === "pending" ? "Precio: a cotizar" : "Calcula tu precio");
     els.pickup.placeholder = els.pickupZone.value === "boca" ? "Ej.: Hotel Don Juan, Boca Chica" : "Hotel, barrio o ciudad";
     if (submitted) validate();
@@ -80,12 +84,13 @@ window.JGTSimpleTour = function (o) {
   function buildMessage() {
     var q = computeQuote();
     var L = ["Nombre: " + els.name.value.trim(), "WhatsApp: " + els.phone.value.trim(), "Excursión: " + o.msgTour];
-    (o.extras || []).forEach(function (e) { L.push(e.label + ": " + txt(els[e.key])); });
+    (o.extras || []).forEach(function (e) { L.push(e.label + ": " + esText(els[e.key])); });
     L.push("Recogida: " + els.pickup.value.trim() + (els.pickupZone.value === "boca" ? " (Boca Chica)" : ""));
     L.push("Fecha: " + fmtDate(els.date.value));
-    L.push("Personas: " + txt(els.people));
+    L.push("Personas: " + esText(els.people));
     L.push("Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar"));
     if (q.deposit) { L.push("Reserva (" + Math.round(C.deposito * 100) + " %): " + usd(q.deposit)); L.push("Resto al abordar: " + usd(q.rest)); }
+    if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
   }
   function whatsappUrl() { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(buildMessage()); }
@@ -93,14 +98,15 @@ window.JGTSimpleTour = function (o) {
   var box = $("confirmBox"), waLink = $("waLink");
   function openConfirm() {
     var q = computeQuote();
-    $("cRoute").textContent = o.short + " · " + fmtDate(els.date.value) + " · " + txt(els.people) + " personas";
+    $("cRoute").textContent = T(o.short) + " · " + fmtDate(els.date.value) + " · " + txt(els.people) + L(" personas", " people");
     $("cPrice").textContent = q.kind === "price" ? usd(q.total) : "A cotizar";
     $("cPrice").classList.toggle("pending", q.kind !== "price");
-    $("cNote").textContent = q.kind === "price" ? o.included : q.reason;
+    $("cNote").textContent = q.kind === "price" ? T(o.included) : q.reason;
     var dep = $("cDeposit");
     if (dep) {
       dep.classList.toggle("hidden", !q.deposit);
-      if (q.deposit) dep.innerHTML = "Para reservar: <b>" + usd(q.deposit) + "</b> (" + Math.round(C.deposito * 100) + " %) · Al abordar: <b>" + usd(q.rest) + "</b>";
+      if (q.deposit) dep.innerHTML = L("Para reservar: <b>" + usd(q.deposit) + "</b> (" + Math.round(C.deposito * 100) + " %) · Al abordar: <b>" + usd(q.rest) + "</b>",
+        "To book: <b>" + usd(q.deposit) + "</b> (" + Math.round(C.deposito * 100) + "%) · When you board: <b>" + usd(q.rest) + "</b>");
     }
     waLink.href = whatsappUrl();
     box.classList.remove("hidden");

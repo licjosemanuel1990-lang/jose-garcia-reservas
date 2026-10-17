@@ -13,7 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=6">
+<script src="i18n.js?v=2"></script>
 </head>
 <body>
 
@@ -25,6 +26,10 @@
         <div class="brand-name">José García <span>Transporte</span></div>
         <div class="brand-tag">Moviendo Personas. Creando Confianza.</div>
       </div>
+    </div>
+    <div class="pick-row">
+      <p class="pick-cta">👇 ¿Qué quieres reservar? Elige una opción:</p>
+      <div class="lang-switch" role="group" aria-label="Idioma"><button type="button" data-lang="es">ES</button><button type="button" data-lang="en">EN</button></div>
     </div>
     <nav class="svc-switch" aria-label="Servicios">
       <span class="on" aria-current="page">🚐 Traslados</span>
@@ -97,7 +102,7 @@
           <input id="returnTime" type="time">
           <p class="err" data-for="returnTime"></p>
         </div>
-        <p class="hint full"><b>22 % de descuento</b> solo si regresas <b>el mismo día</b> y <b>dentro de <span id="waitHours">4</span> horas</b> desde la hora de salida. Más de 4 horas u otro día: no aplica el descuento.</p>
+        <p class="hint full" id="roundHint"><b>22 % de descuento</b> solo si regresas <b>el mismo día</b> y <b>dentro de 4 horas</b> desde la hora de salida. Más de 4 horas u otro día: no aplica el descuento.</p>
       </div>
 
       <div class="grid3">
@@ -194,6 +199,6 @@
 </footer>
 
 <script src="routes.js?v=3"></script>
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>

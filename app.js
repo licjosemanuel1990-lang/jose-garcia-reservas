@@ -51,7 +51,9 @@
   fillCount(els.passengers, 1, MAX_PAX_LIST, "Elige", "Más de " + MAX_PAX_LIST);
   fillCount(els.bags, 0, 10, null, "Más de 10");
   fillCount(els.carry, 0, 10, null, "Más de 10");
-  $("waitHours").textContent = String(CFG.esperaMaximaHoras);
+  var H = CFG.esperaMaximaHoras;
+  $("roundHint").innerHTML = L("<b>22 % de descuento</b> solo si regresas <b>el mismo día</b> y <b>dentro de " + H + " horas</b> desde la hora de salida. Más de " + H + " horas u otro día: no aplica el descuento.",
+    "<b>22% off</b> only if you return <b>the same day</b> and <b>within " + H + " hours</b> of the departure time. More than " + H + " hours or another day: no discount.");
 
   /* ---------- Fechas ---------- */
   function pad(n) { return (n < 10 ? "0" : "") + n; }
@@ -116,18 +118,22 @@
     if (hours > CFG.esperaMaximaHoras) return { kind: "pending", reason: "longWait", base: base };
     return mix({ kind: "price", amount: roundAmount, trip: "round" }, info);
   }
+  function legs(q) { return L("Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + ".", "Outbound " + money(q.oneWay) + " + return " + money(q.oneWay) + "."); }
   function mix(a, b) { for (var k in b) a[k] = b[k]; return a; }
   function extraText(q) {
-    if (!q.extraPax) return "Tarifa para hasta " + CFG.pasajerosIncluidos + " pasajeros.";
-    return "Tarifa base " + money(q.base) + " (hasta " + CFG.pasajerosIncluidos + " pasajeros) + " + q.extraPax +
-      (q.extraPax === 1 ? " pasajero adicional" : " pasajeros adicionales") + " × " + money(CFG.cargoPasajeroAdicional) + " = " + money(q.oneWay) + " por trayecto.";
+    var P = CFG.pasajerosIncluidos;
+    if (!q.extraPax) return L("Tarifa para hasta " + P + " pasajeros.", "Fare for up to " + P + " passengers.");
+    return L("Tarifa base " + money(q.base) + " (hasta " + P + " pasajeros) + " + q.extraPax +
+      (q.extraPax === 1 ? " pasajero adicional" : " pasajeros adicionales") + " × " + money(CFG.cargoPasajeroAdicional) + " = " + money(q.oneWay) + " por trayecto.",
+      "Base fare " + money(q.base) + " (up to " + P + " passengers) + " + q.extraPax +
+      (q.extraPax === 1 ? " extra passenger" : " extra passengers") + " × " + money(CFG.cargoPasajeroAdicional) + " = " + money(q.oneWay) + " per leg.");
   }
 
   var REASONS = {
-    custom: "Ubicación fuera del tarifario: te enviaremos la cotización por WhatsApp.",
-    noRate: "Esta ruta aún no tiene tarifa publicada: te cotizaremos por WhatsApp.",
-    group: "Para grupos de más de 15 pasajeros confirmamos vehículo y precio por WhatsApp.",
-    longWait: "Espera de más de " + CFG.esperaMaximaHoras + " horas: no aplica el 22 % de descuento. Te cotizamos por WhatsApp."
+    custom: L("Ubicación fuera del tarifario: te enviaremos la cotización por WhatsApp.", "Location not on our fare list: we will send you a quote on WhatsApp."),
+    noRate: L("Esta ruta aún no tiene tarifa publicada: te cotizaremos por WhatsApp.", "This route has no published fare yet: we will quote it on WhatsApp."),
+    group: L("Para grupos de más de 15 pasajeros confirmamos vehículo y precio por WhatsApp.", "For groups of more than 15 passengers we confirm the vehicle and price on WhatsApp."),
+    longWait: L("Espera de más de " + CFG.esperaMaximaHoras + " horas: no aplica el 22 % de descuento. Te cotizamos por WhatsApp.", "Wait of more than " + CFG.esperaMaximaHoras + " hours: the 22% discount does not apply. We will quote it on WhatsApp.")
   };
 
   function renderQuote() {
@@ -142,10 +148,11 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = q.otherDay ? "Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + "." : (q.extraPax ? extraText(q) + " " : "") + ("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento: regreso el mismo día, máximo " + CFG.esperaMaximaHoras + " horas de espera.");
+          note = q.otherDay ? legs(q) : (q.extraPax ? extraText(q) + " " : "") + L("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento: regreso el mismo día, máximo " + CFG.esperaMaximaHoras + " horas de espera.",
+            "2 legs of " + money(q.oneWay) + " with 22% off: same-day return, maximum " + CFG.esperaMaximaHoras + " hours of waiting.");
         } else {
           label = "Tarifa estimada · solo ida";
-          note = extraText(q) + " Sujeto a confirmación de disponibilidad.";
+          note = extraText(q) + " " + T("Sujeto a confirmación de disponibilidad.");
         }
         break;
     }
@@ -236,13 +243,14 @@
     L.push("Fecha: " + fmtDate(s.date));
     L.push("Hora: " + fmtTime(s.time));
     if (s.trip === "round") L.push("Regreso: " + fmtDate(s.rDate) + " a las " + fmtTime(s.rTime));
-    L.push("Pasajeros: " + els.passengers.options[els.passengers.selectedIndex].text);
-    L.push("Maletas grandes: " + els.bags.options[els.bags.selectedIndex].text);
-    L.push("Equipaje de mano: " + els.carry.options[els.carry.selectedIndex].text);
+    L.push("Pasajeros: " + esText(els.passengers));
+    L.push("Maletas grandes: " + esText(els.bags));
+    L.push("Equipaje de mano: " + esText(els.carry));
     if (!$("flightBlock").classList.contains("hidden")) {
       if (els.flight.value.trim()) L.push("Vuelo: " + els.flight.value.trim().toUpperCase());
       if (els.airline.value.trim()) L.push("Aerolínea: " + els.airline.value.trim());
     }
+    if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
   }
   function whatsappUrl() { return "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(buildMessage()); }
@@ -281,15 +289,15 @@
   var box = $("confirmBox"), waLink = $("waLink");
   function openConfirm() {
     var s = readState(), q = computeQuote(s);
-    $("cRoute").textContent = s.oText + " → " + s.dText + " · " + (s.trip === "round" ? "Ida y vuelta" : "Solo ida");
+    $("cRoute").textContent = T(s.oText) + " → " + T(s.dText) + " · " + T(s.trip === "round" ? "Ida y vuelta" : "Solo ida");
     var priceEl = $("cPrice");
     if (q.kind === "price") {
       $("cLabel").textContent = "Precio del servicio";
       priceEl.textContent = money(q.amount);
       priceEl.classList.remove("pending");
-      $("cNote").textContent = q.otherDay ? "Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + "." : (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
-        ? ("Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.")
-        : "Sujeto a confirmación de disponibilidad.");
+      $("cNote").textContent = q.otherDay ? legs(q) : (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
+        ? L("Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.", "Same-day round trip, with up to " + CFG.esperaMaximaHoras + " h of waiting included.")
+        : T("Sujeto a confirmación de disponibilidad."));
     } else {
       $("cLabel").textContent = "Precio del servicio";
       priceEl.textContent = "A cotizar";

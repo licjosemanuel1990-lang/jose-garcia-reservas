@@ -23,10 +23,10 @@ window.JGT_BUGGIESAPI = (function () {
       if (!els.count.value) e.count = "Elige cuántos four wheels.";
       else if (n && /^\d+$/.test(els.people.value)) {
         if (v > n) e.count = "No puede haber más four wheels que personas.";
-        else if (v * 2 < n) e.count = "Cada four wheel lleva máximo 2 personas: necesitan al menos " + Math.ceil(n / 2) + ".";
+        else if (v * 2 < n) e.count = L("Cada four wheel lleva máximo 2 personas: necesitan al menos " + Math.ceil(n / 2) + ".", "Each four wheel carries at most 2 people: you need at least " + Math.ceil(n / 2) + ".");
       }
       var p = plan(els);
-      if (p.minPersonas && n && n < p.minPersonas) e.people = "El " + p.nombre + " requiere mínimo " + p.minPersonas + " personas.";
+      if (p.minPersonas && n && n < p.minPersonas) e.people = L("El " + p.nombre + " requiere mínimo " + p.minPersonas + " personas.", "The " + T(p.nombre) + " requires at least " + p.minPersonas + " people.");
       return e;
     },
     calc: function (n, els) {
@@ -37,9 +37,12 @@ window.JGT_BUGGIESAPI = (function () {
     },
     detail: function (n, els) {
       var v = fw(els, n), p = plan(els);
-      return p.nombre + " · " + fwName(v) + (els.size.value === "300" ? " de 300cc" : "") +
+      return L(p.nombre + " · " + fwName(v) + (els.size.value === "300" ? " de 300cc" : "") +
         (els.food.value === "si" ? " · con comida criolla" : "") + ". Incluye transporte privado." +
-        (p.minPersonas ? " Mínimo " + p.minPersonas + " personas, sujeto a disponibilidad." : "");
+        (p.minPersonas ? " Mínimo " + p.minPersonas + " personas, sujeto a disponibilidad." : ""),
+        T(p.nombre) + " · " + fwName(v) + (els.size.value === "300" ? " (300cc)" : "") +
+        (els.food.value === "si" ? " · with Creole food" : "") + ". Includes private transportation." +
+        (p.minPersonas ? " Minimum " + p.minPersonas + " people, subject to availability." : ""));
     },
     included: "Incluye transporte privado ida y vuelta y la ruta en four wheel."
   });
@@ -52,7 +55,8 @@ window.JGT_BUGGIESAPI = (function () {
   ppl.addEventListener("change", function () {
     var n = Number(ppl.value);
     if (!n) { hint.textContent = "Cada four wheel lleva 1 o 2 personas."; return; }
-    hint.textContent = "Para " + n + (n === 1 ? " persona" : " personas") + ": entre " + Math.ceil(n / 2) + " y " + n + (n === 1 ? " four wheel." : " four wheels.") + " Si van de 2 en 2, pagan menos.";
+    hint.textContent = L("Para " + n + (n === 1 ? " persona" : " personas") + ": entre " + Math.ceil(n / 2) + " y " + n + (n === 1 ? " four wheel." : " four wheels.") + " Si van de 2 en 2, pagan menos.",
+      "For " + n + (n === 1 ? " person" : " people") + ": between " + Math.ceil(n / 2) + " and " + n + (n === 1 ? " four wheel." : " four wheels.") + " Riding 2 per four wheel costs less.");
     var v = Number(cnt.value);
     if (!touched || !v || v > n || v * 2 < n) { cnt.value = String(Math.ceil(n / 2)); cnt.dispatchEvent(new Event("change", { bubbles: true })); touched = false; }
   });
