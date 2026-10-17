@@ -105,3 +105,9 @@ a.cta{text-decoration:none}
 .back{display:block;width:100%;margin-top:10px;min-height:48px;border:1.5px solid var(--line);border-radius:14px;background:var(--white);color:var(--navy);font:inherit;font-weight:700;cursor:pointer}
 .c-small{text-align:center;font-size:13px;color:var(--muted);margin:12px 0 0}
 body.modal-open{overflow:hidden}
+
+/* Selector Traslados / Tours (un solo enlace) */
+.svc-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:18px 0 4px;padding:5px;background:rgba(255,255,255,.1);border:1px solid rgba(227,194,122,.45);border-radius:14px;max-width:520px}
+.svc-switch a,.svc-switch span{display:flex;align-items:center;justify-content:center;text-align:center;padding:12px 8px;border-radius:10px;font-weight:800;font-size:15px;text-decoration:none;color:#fff;line-height:1.2}
+.svc-switch .on{background:var(--gold);color:var(--navy)}
+.svc-switch a:hover{background:rgba(255,255,255,.12)}
