@@ -31,7 +31,7 @@ with sync_playwright() as p:
     pg.select_option("#bPeople", "2")
     check("Con 2 personas sugiere 1 four wheel", pg.input_value("#bCount") == "1")
     check("Precio por four wheel: 2 personas en 1 = US$170 (US$85 c/u)", price() == "US$170" and "US$85 por persona" in note(), note())
-    check("Nota con reserva 30 % y resto al abordar", "Reserva con US$51 (30 %) y paga US$119 al abordar" in note(), note())
+    check("Nota con reserva 50 % y resto al abordar", "Reserva con US$85 (50 %) y paga US$85 al abordar" in note(), note())
     check("Barra inferior muestra el total", "US$170" in pg.locator("#bBarPrice").inner_text())
     pg.select_option("#bCount", "2")
     check("2 personas en 2 four wheels = US$240", price() == "US$240", price())
@@ -60,7 +60,7 @@ with sync_playwright() as p:
     check("Fecha pasada bloqueada", not pg.locator("#bConfirmBox").is_visible())
     pg.fill("#bDate", DATE); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
     check("Ventana muestra US$180 antes de WhatsApp", pg.locator("#bConfirmBox").is_visible() and pg.locator("#bCPrice").inner_text() == "US$180")
-    check("Ventana muestra reserva US$54 y resto US$126", "US$54" in pg.locator("#bCDeposit").inner_text() and "US$126" in pg.locator("#bCDeposit").inner_text())
+    check("Ventana muestra reserva US$90 y resto US$90", "US$90" in pg.locator("#bCDeposit").inner_text() and "US$90" in pg.locator("#bCDeposit").inner_text())
     pg.screenshot(path=f"{OUT}/fourwheel-ventana.png")
     pg.click("#bWaLink"); pg.wait_for_timeout(600)
     u = pg.evaluate("window.__lastUrl") or ""; msg = urllib.parse.unquote(u.split("?text=", 1)[-1])
@@ -68,7 +68,7 @@ with sync_playwright() as p:
     for f in ["Nombre: Cliente de Prueba", "Excursión: Four Wheel en Comatillo", "Plan: Tour Plus (+ río La Jorqueta)", "Four wheels: 1",
               "Tipo: Estándar", "Comida: No, gracias", "Horario: Tarde · te recogemos 12:30 p.m. (ruta 2:00 – 5:00)",
               "Recogida: Hotel Don Juan (Boca Chica)", "Fecha: 23/10/2026", "Personas: 2", "Precio estimado: US$180",
-              "Reserva (30 %): US$54", "Resto al abordar: US$126"]:
+              "Reserva (50 %): US$90", "Resto al abordar: US$90"]:
         check(f"Mensaje contiene «{f}»", f in msg)
     check("Sin desbordes horizontales", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     check("Sin errores de JavaScript", not errs, "; ".join(errs))

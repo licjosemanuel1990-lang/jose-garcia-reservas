@@ -22,7 +22,7 @@ window.JGT_BUGGIES = {
     premium: { nombre: "Tour Premium", rd: 4050, detalle: "Básico + río privado, piscina y tobogán", minPersonas: 10 }
   },
   extra300ccRD: 300,       // RD$ por four wheel de 300cc
-  deposito: 0.30,          // 30 % para reservar; el resto al abordar
+  deposito: 0.50,          // 50 % para reservar; el resto al abordar
   comidaRD: 375,           // RD$ por persona (opcional)
   maxPersonas: 15          // más personas → "A cotizar"
 };
