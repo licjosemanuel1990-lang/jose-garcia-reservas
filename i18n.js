@@ -420,13 +420,13 @@
   function trText(n) {
     var v = n.nodeValue, k = norm(v);
     if (!k || !EN.hasOwnProperty(k)) return;
-    var m = v.match(/^(\s*)[\s\S]*?(\s*)$/);
-    n.nodeValue = m[1] + EN[k] + m[2];
+    var m = v.match(/^(\s*)[\s\S]*?(\s*)$/), nv = m[1] + EN[k] + m[2];
+    if (nv !== v) n.nodeValue = nv;   // si no cambia, no se toca (evita un ciclo sin fin)
   }
   function trEl(el) {
     ATTRS.forEach(function (a) {
       var v = el.getAttribute && el.getAttribute(a);
-      if (v && EN.hasOwnProperty(norm(v))) el.setAttribute(a, EN[norm(v)]);
+      if (v && EN.hasOwnProperty(norm(v)) && EN[norm(v)] !== v) el.setAttribute(a, EN[norm(v)]);
     });
     if (el.tagName === "OPTION" && !el.dataset.es) el.dataset.es = el.text;
   }
