@@ -33,7 +33,9 @@
       }
       return { it: it, d: d };
     });
-    return { rows: rows, on: on, sub: sub, disc: disc, total: sub - disc, dep: dep, pending: pending };
+    var total = sub - disc;
+    if (on && C.deposito) dep = Math.ceil(total * C.deposito);   // el combo se reserva con el 50 %
+    return { rows: rows, on: on, sub: sub, disc: disc, total: total, dep: dep, rest: total - dep, pending: pending };
   }
 
   /* Mensaje único para el propietario (siempre en español) */
@@ -51,7 +53,10 @@
     L.push("Subtotal: " + usd(r.sub) + (r.pending ? " + " + r.pending + " a cotizar" : ""));
     if (r.disc) L.push("Descuento combo: −" + usd(r.disc));
     L.push("Total estimado: " + usd(r.total) + (r.pending ? " + servicios a cotizar" : ""));
-    if (r.dep) L.push("Reserva Four Wheel Comatillo (50 %): " + usd(r.dep));
+    if (r.dep) {
+      L.push((r.on ? "Reserva del combo (" + Math.round(C.deposito * 100) + " %): " : "Reserva Four Wheel Comatillo (50 %): ") + usd(r.dep));
+      L.push("Resto al abordar: " + usd(r.rest) + (r.pending ? " + servicios a cotizar" : ""));
+    }
     if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
   }
@@ -120,7 +125,8 @@
       '<div><span>Subtotal</span><span>' + usd(r.sub) + (r.pending ? L(" + a cotizar", " + quote") : "") + '</span></div>' +
       (r.disc ? '<div class="save"><span>' + L("Descuento combo", "Combo discount") + '</span><span>−' + usd(r.disc) + '</span></div>' : "") +
       '<div class="tot"><span>Total</span><span>' + usd(r.total) + '</span></div>' +
-      (r.dep ? '<div><span>' + L("Para reservar (Four Wheel Comatillo 50 %)", "To book (Four Wheel Comatillo 50%)") + '</span><span>' + usd(r.dep) + '</span></div>' : "");
+      (r.dep ? '<div><span>' + (r.on ? L("Para reservar el combo (50 %)", "To book the combo (50%)") : L("Para reservar (Four Wheel Comatillo 50 %)", "To book (Four Wheel Comatillo 50%)")) + '</span><span>' + usd(r.dep) + '</span></div>' +
+               '<div><span>' + L("Al abordar", "When you board") + '</span><span>' + usd(r.rest) + '</span></div>' : "");
     var hint = !r.on
       ? L("Agrega 1 servicio más y activa los precios de combo: recogida en el aeropuerto US$20, regreso US$15, City Tour −US$10, four wheels más baratos.",
           "Add 1 more service to unlock combo prices: airport pickup US$20, return US$15, City Tour −US$10, cheaper four wheels.")

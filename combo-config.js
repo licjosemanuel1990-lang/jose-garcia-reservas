@@ -12,10 +12,12 @@
  *  Isla Saona                                     precio normal (suma como servicio)
  *
  *  Otros traslados suman como servicio, con su precio normal.
+ *  El combo se reserva con el 50 % del total; el resto se paga al abordar.
  * ============================================================
  */
 window.JGT_COMBO = {
   minServicios: 2,
+  deposito: 0.50,          // el combo se reserva con el 50 %; el resto se paga al abordar
   traslado: {
     aeropuerto: "sdq", hotel: "boca",
     recogida: 20,          // SDQ → Boca Chica

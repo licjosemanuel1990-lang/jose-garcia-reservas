@@ -32,7 +32,7 @@ with sync_playwright() as p:
     check("1 servicio: sin precios de combo", "1 servicio" in bar(pg) and "ahorras" not in bar(pg), bar(pg))
     pg.click("#comboOpen"); check("Pista: agrega 1 servicio más", "Agrega 1 servicio más" in pg.locator("#comboHint").inner_text()); pg.click("#comboClose")
 
-    # 2) Saona 2 personas: US$170 (sin cambio)
+    # 2) Saona 2 personas: US$180 (sin cambio)
     pg.goto(BASE + "?r=2#saona", wait_until="load")
     pg.select_option("#sPeople", "2"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300); pg.click("#sConfirmBoxCombo"); pg.wait_for_timeout(300)
     check("2 servicios: recogida a US$20 → ahorras US$5", "2 servicios" in bar(pg) and "US$5" in bar(pg), bar(pg))
@@ -59,22 +59,25 @@ with sync_playwright() as p:
     check("6 servicios: City Tour −US$10 → ahorras US$48", "US$48" in bar(pg), bar(pg))
 
     r = calc(pg)
-    check(f"Subtotal 25+170+170+70+45+{city}", r["sub"] == 480 + city, str(r["sub"]))
-    check("Total = subtotal − US$48", r["total"] == 480 + city - 48, str(r["total"]))
-    check("Reserva Comatillo 50 % de US$162 = US$81", r["dep"] == 81, str(r["dep"]))
+    check(f"Subtotal 25+180+170+70+45+{city}", r["sub"] == 490 + city, str(r["sub"]))
+    check("Total = subtotal − US$48", r["total"] == 490 + city - 48, str(r["total"]))
+    import math
+    dep = math.ceil((490 + city - 48) / 2)
+    check("El combo se reserva con el 50 % del total", r["dep"] == dep and r["rest"] == 490 + city - 48 - dep, f'{r["dep"]} / {r["rest"]}')
 
     pg.click("#comboOpen"); pg.wait_for_timeout(300)
     check("Ventana lista 6 servicios", pg.locator("#comboList li").count() == 6)
     check("Precio tachado en 5 servicios (Saona no)", pg.locator("#comboList s").count() == 5)
+    check("Ventana muestra reserva del 50 % y pago al abordar", "Para reservar el combo (50 %)" in pg.locator("#comboSum").inner_text() and "Al abordar" in pg.locator("#comboSum").inner_text())
     check("Pista: precios de combo activados", "Precios de combo activados" in pg.locator("#comboHint").inner_text())
     check("Sin desbordes con la ventana abierta", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     pg.screenshot(path=f"{OUT}/combo-ventana.png")
     pg.click("#comboWa"); pg.wait_for_timeout(300)
     msg = urllib.parse.unquote((pg.evaluate("window.__lastUrl") or "").split("?text=", 1)[-1])
     for f in ["🎁 COMBO · 6 servicios", "Nombre: Cliente Combo", "1) Traslado: Aeropuerto Las Américas (SDQ) → Boca Chica", "Precio: US$25 − US$5 combo = US$20",
-              "2) Tour Isla Saona (todo incluido)", "Precio: US$170\n", "Precio: US$170 − US$8 combo = US$162", "Precio: US$70 − US$5 combo = US$65",
+              "2) Tour Isla Saona (todo incluido)", "Precio: US$180\n", "Precio: US$170 − US$8 combo = US$162", "Precio: US$70 − US$5 combo = US$65",
               "5) Traslado: Boca Chica → Aeropuerto Las Américas (SDQ)", "Precio: US$45 − US$20 combo = US$25", "Descuento combo: −US$48",
-              "Reserva Four Wheel Comatillo (50 %): US$81"]:
+              "Reserva del combo (50 %): US$", "Resto al abordar: US$"]:
         check(f"Mensaje contiene «{f.strip()}»", f in msg)
     check("El nombre aparece una sola vez", msg.count("Nombre:") == 1)
     pg.wait_for_timeout(800)
@@ -87,6 +90,7 @@ with sync_playwright() as p:
     pg.click("#comboOpen"); pg.click("#comboClear"); pg.wait_for_timeout(200)
     check("Vaciar combo oculta la barra", not pg.locator("#comboBar").is_visible())
 
+    check("Preguntas: pago al abordar y combo con 50 %", "al abordar el vehículo" in pg.locator(".faq").inner_text(include_hidden=True) if False else pg.evaluate("document.querySelector('.faq').textContent.includes('al abordar el vehículo') && document.querySelector('.faq').textContent.includes('los combos se reservan con el 50 %')"))
     check("Preguntas frecuentes en tours (6)", pg.locator(".faq details").count() == 6)
     check("Aviso del combo en el selector", "Arma tu combo" in pg.locator(".chooser").inner_text())
     check("Sin errores de JavaScript", not errs, "; ".join(errs))
