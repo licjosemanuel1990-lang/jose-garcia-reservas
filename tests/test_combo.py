@@ -33,36 +33,36 @@ with sync_playwright() as p:
     check("El combo sigue al pasar a tours", "1 servicio" in pg.locator("#comboBar").inner_text())
     pg.select_option("#sPeople", "2"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300)
     pg.click("#sConfirmBoxCombo"); pg.wait_for_timeout(300)
-    check("2 servicios: ahorras US$10", "2 servicios" in pg.locator("#comboBar").inner_text() and "US$10" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+    check("2 servicios: solo el traslado baja US$3 (Saona sin descuento)", "2 servicios" in pg.locator("#comboBar").inner_text() and "US$3" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
 
     # 3) Comatillo 2 personas, 1 four wheel (US$170, reserva 50 %)
     pg.goto(BASE + "?r=2#buggies", wait_until="load")
     pg.select_option("#bPeople", "2"); datos(pg, "b"); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
     pg.click("#bConfirmBoxCombo"); pg.wait_for_timeout(300)
-    check("3 servicios: US$15 × 2 tours = ahorras US$30", "US$30" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+    check("3 servicios: traslado US$4 + Comatillo US$4 = ahorras US$8", "US$8" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
 
     # 4) Four Wheel Boca Chica 2 personas (US$70) — cuenta pero sin descuento
     pg.goto(BASE + "?r=3#fwboca", wait_until="load")
     pg.select_option("#fPeople", "2"); datos(pg, "f"); pg.click("#fSubmitBtn"); pg.wait_for_timeout(300)
     pg.click("#fConfirmBoxCombo"); pg.wait_for_timeout(300)
-    check("4 servicios: US$20 × 2 tours = ahorras US$40", "4 servicios" in pg.locator("#comboBar").inner_text() and "US$40" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+    check("4 servicios: US$5 × 3 (traslado, Comatillo, Boca Chica) = ahorras US$15", "4 servicios" in pg.locator("#comboBar").inner_text() and "US$15" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
 
     r = pg.evaluate("JGT_COMBOAPI.calc(JGT_COMBOAPI.load())")
     check("Subtotal 25+170+170+70 = US$435", r["sub"] == 435, str(r["sub"]))
-    check("Total con descuento = US$395", r["total"] == 395, str(r["total"]))
-    check("Reserva Comatillo 50 % de US$150 = US$75", r["dep"] == 75, str(r["dep"]))
+    check("Total con descuento = US$420", r["total"] == 420, str(r["total"]))
+    check("Reserva Comatillo 50 % de US$165 = US$83", r["dep"] == 83, str(r["dep"]))
 
     pg.click("#comboOpen"); pg.wait_for_timeout(300)
     check("Ventana del combo lista 4 servicios", pg.locator("#comboList li").count() == 4)
-    check("Muestra precio tachado en tours con descuento", pg.locator("#comboList s").count() == 2)
+    check("Precio tachado en 3 servicios (Saona no)", pg.locator("#comboList s").count() == 3)
     check("Dice que ya tiene el mayor descuento", "mayor descuento" in pg.locator("#comboHint").inner_text())
     check("Sin desbordes con la ventana abierta", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
     pg.screenshot(path=f"{OUT}/combo-ventana.png")
     pg.click("#comboWa"); pg.wait_for_timeout(300)
     msg = urllib.parse.unquote((pg.evaluate("window.__lastUrl") or "").split("?text=", 1)[-1])
     for f in ["🎁 COMBO · 4 servicios", "Nombre: Cliente Combo", "1) Traslado: Aeropuerto Las Américas (SDQ) → Boca Chica", "2) Tour Isla Saona (todo incluido)",
-              "Precio: US$170 − US$20 combo = US$150", "3) Four Wheel en Comatillo", "4) Four Wheel Boca Chica", "Precio: US$70",
-              "Subtotal: US$435", "Descuento combo: −US$40 (US$20 por tour)", "Total estimado: US$395", "Reserva Four Wheel Comatillo (50 %): US$75"]:
+              "Precio: US$25 − US$5 combo = US$20", "Precio: US$170\n", "3) Four Wheel en Comatillo", "Precio: US$170 − US$5 combo = US$165", "4) Four Wheel Boca Chica", "Precio: US$70 − US$5 combo = US$65",
+              "Subtotal: US$435", "Descuento combo: −US$15", "Total estimado: US$420", "Reserva Four Wheel Comatillo (50 %): US$83"]:
         check(f"Mensaje contiene «{f}»", f in msg)
     check("El nombre aparece una sola vez", msg.count("Nombre:") == 1)
     pg.wait_for_timeout(800)
@@ -72,7 +72,7 @@ with sync_playwright() as p:
     pg.goto(BASE + "?r=4#saona", wait_until="load")
     pg.select_option("#sPeople", "1"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300); pg.click("#sConfirmBoxCombo")
     check("Con 1 servicio no hay descuento", "ahorras" not in pg.locator("#comboBar").inner_text())
-    pg.click("#comboOpen"); check("Pista: agrega 1 servicio más", "Agrega 1 servicio más" in pg.locator("#comboHint").inner_text())
+    pg.click("#comboOpen"); check("Pista: mientras más servicios, más ahorras", "Mientras más servicios" in pg.locator("#comboHint").inner_text())
     pg.click("#comboList .rm"); pg.wait_for_timeout(200)
     check("Quitar el último cierra y oculta la barra", not pg.locator("#comboBar").is_visible() and not pg.locator("#comboBox").is_visible())
 

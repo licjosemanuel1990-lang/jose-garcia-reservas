@@ -17,23 +17,29 @@
   function save(list) { mem = list; try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
   function usd(n) { return "US$" + (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2)); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function level(n) { var d = 0; C.niveles.forEach(function (l) { if (n >= l.servicios) d = l.descuento; }); return d; }
-  function nextLevel(n) { for (var i = 0; i < C.niveles.length; i++) if (C.niveles[i].servicios > n) return C.niveles[i]; return null; }
+  function levelIdx(n) { var k = -1; C.niveles.forEach(function (m, i) { if (n >= m) k = i; }); return k; }
+  function nextNeed(n) { for (var i = 0; i < C.niveles.length; i++) if (C.niveles[i] > n) return C.niveles[i]; return 0; }
+  function discountFor(it, k) {
+    var t = C.descuentos[it.tipo];
+    if (k < 0 || !t || it.total == null) return 0;
+    if (it.tipo === "traslado" && !it.aeropuerto) return 0;
+    return Math.min(t[k], it.total);
+  }
 
   /* Cálculo del combo */
-  function calc(list) {
-    var per = level(list.length), sub = 0, disc = 0, dep = 0, pending = 0, eligible = 0;
+  function calc(list, kForce) {
+    var k = kForce != null ? kForce : levelIdx(list.length), sub = 0, disc = 0, dep = 0, pending = 0;
     var rows = list.map(function (it) {
       var d = 0;
       if (it.total == null) pending++;
       else {
         sub += it.total;
-        if (per && C.conDescuento.indexOf(it.tipo) >= 0) { d = Math.min(per, it.total); disc += d; eligible++; }
+        d = discountFor(it, k); disc += d;
         if (it.deposito) dep += Math.ceil((it.total - d) * it.deposito);
       }
       return { it: it, d: d };
     });
-    return { rows: rows, per: per, sub: sub, disc: disc, total: sub - disc, dep: dep, pending: pending, eligible: eligible };
+    return { rows: rows, k: k, sub: sub, disc: disc, total: sub - disc, dep: dep, pending: pending };
   }
 
   /* Mensaje único para el propietario (siempre en español) */
@@ -49,7 +55,7 @@
     });
     L.push("");
     L.push("Subtotal: " + usd(r.sub) + (r.pending ? " + " + r.pending + " a cotizar" : ""));
-    if (r.disc) L.push("Descuento combo: −" + usd(r.disc) + " (US$" + r.per + " por tour)");
+    if (r.disc) L.push("Descuento combo: −" + usd(r.disc));
     L.push("Total estimado: " + usd(r.total) + (r.pending ? " + servicios a cotizar" : ""));
     if (r.dep) L.push("Reserva Four Wheel Comatillo (50 %): " + usd(r.dep));
     if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
@@ -118,16 +124,21 @@
     }).join("");
     $("comboSum").innerHTML =
       '<div><span>Subtotal</span><span>' + usd(r.sub) + (r.pending ? L(" + a cotizar", " + quote") : "") + '</span></div>' +
-      (r.disc ? '<div class="save"><span>' + L("Descuento combo", "Combo discount") + ' (US$' + r.per + L(" por tour)", " per tour)") + '</span><span>−' + usd(r.disc) + '</span></div>' : "") +
+      (r.disc ? '<div class="save"><span>' + L("Descuento combo", "Combo discount") + '</span><span>−' + usd(r.disc) + '</span></div>' : "") +
       '<div class="tot"><span>Total</span><span>' + usd(r.total) + '</span></div>' +
       (r.dep ? '<div><span>' + L("Para reservar (Four Wheel Comatillo 50 %)", "To book (Four Wheel Comatillo 50%)") + '</span><span>' + usd(r.dep) + '</span></div>' : "");
-    var nx = nextLevel(n);
-    $("comboHint").textContent = nx
-      ? L("Agrega " + (nx.servicios - n) + (nx.servicios - n === 1 ? " servicio más" : " servicios más") + " y ahorra US$" + nx.descuento + " en cada tour (City Tour, Isla Saona, Four Wheel Comatillo).",
-          "Add " + (nx.servicios - n) + " more service" + (nx.servicios - n === 1 ? "" : "s") + " and save US$" + nx.descuento + " on each tour (City Tour, Saona Island, Four Wheel Comatillo).")
-      : L("¡Tienes el mayor descuento: US$" + r.per + " en cada tour!", "You have the biggest discount: US$" + r.per + " on each tour!");
-    if (n && !r.eligible && r.per) $("comboHint").textContent = L("El descuento se aplica a City Tour, Isla Saona y Four Wheel Comatillo. Agrega uno para ahorrar US$" + r.per + ".",
-      "The discount applies to City Tour, Saona Island and Four Wheel Comatillo. Add one to save US$" + r.per + ".");
+    var need = nextNeed(n), hint;
+    if (need) {
+      var more = calc(list, levelIdx(need)).disc - r.disc, faltan = need - n;
+      hint = more > 0
+        ? L("Agrega " + faltan + (faltan === 1 ? " servicio más" : " servicios más") + " y lo que ya tienes baja US$" + more + " más.",
+            "Add " + faltan + " more service" + (faltan === 1 ? "" : "s") + " and what you already have drops another US$" + more + ".")
+        : L("Mientras más servicios, más ahorras: hasta US$20 en City Tour y US$5 en traslados del aeropuerto y four wheels.",
+            "The more services, the more you save: up to US$20 on the City Tour and US$5 on airport transfers and four wheels.");
+    } else hint = r.disc ? L("¡Tienes el mayor descuento del combo!", "You have the biggest combo discount!")
+      : L("Isla Saona no lleva descuento. Agrega un City Tour, un traslado del aeropuerto o un four wheel para ahorrar.",
+          "Saona Island has no discount. Add a City Tour, an airport transfer or a four wheel to save.");
+    $("comboHint").textContent = hint;
     $("comboWa").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(message(list));
   }
   function open() {
@@ -153,9 +164,8 @@
   function toast(n) {
     var t = $("comboToast");
     if (!t) { t = document.createElement("div"); t.className = "combo-toast"; t.id = "comboToast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
-    var nx = nextLevel(n);
     t.innerHTML = "✓ " + L("Agregado a tu combo (" + n + "). ", "Added to your combo (" + n + "). ") +
-      (nx ? L("Con " + nx.servicios + " servicios ahorras US$" + nx.descuento + " por tour. ", "With " + nx.servicios + " services you save US$" + nx.descuento + " per tour. ") : "") +
+      L("Mientras más servicios, más ahorras. ", "The more services, the more you save. ") +
       '<br><a href="' + hrefTransfers + '">' + L("+ Traslado", "+ Transfer") + '</a><a href="' + hrefTours + '">' + L("+ Tour", "+ Tour") + '</a>';
     t.classList.remove("hidden"); clearTimeout(toastT);
     toastT = setTimeout(function () { t.classList.add("hidden"); }, 7000);

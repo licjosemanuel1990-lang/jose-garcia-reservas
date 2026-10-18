@@ -2,23 +2,26 @@
  * ============================================================
  *  COMBO — ARMA TU PAQUETE
  *  El cliente agrega traslados y tours a su combo.
- *  Mientras más servicios elige, más se descuenta en CADA tour
- *  con transporte propio (City Tour, Isla Saona, Four Wheel Comatillo).
+ *  Mientras más servicios elige, más se descuenta en cada uno.
  *
- *  Por qué no se pierde dinero: el descuento sale del transporte
- *  (vehículo propio, US$70–110 por tour). Nunca toca catamarán,
- *  buffet, entradas ni four wheels, que se pagan a terceros.
- *  Los traslados y el Four Wheel Boca Chica suman al conteo,
+ *  Servicios en el combo:      2     3     4 o más
+ *  City Tour                 US$10 US$15 US$20
+ *  Traslado con aeropuerto   US$3  US$4  US$5
+ *  Four Wheel Comatillo      US$3  US$4  US$5
+ *  Four Wheel Boca Chica     US$3  US$4  US$5
+ *  Isla Saona                 —     —     —   (cuenta como servicio, sin descuento)
+ *
+ *  Los traslados que no tocan un aeropuerto cuentan como servicio,
  *  pero no tienen descuento.
  * ============================================================
  */
 window.JGT_COMBO = {
-  // servicios en el combo → US$ de descuento en cada tour con transporte
-  niveles: [
-    { servicios: 2, descuento: 10 },
-    { servicios: 3, descuento: 15 },
-    { servicios: 4, descuento: 20 }   // 4 o más
-  ],
-  conDescuento: ["city", "saona", "buggies"],
+  niveles: [2, 3, 4],            // servicios necesarios para cada nivel
+  descuentos: {                  // US$ por servicio en cada nivel
+    city:     [10, 15, 20],
+    traslado: [3, 4, 5],         // solo si el traslado incluye un aeropuerto
+    buggies:  [3, 4, 5],
+    fwboca:   [3, 4, 5]
+  },
   maxServicios: 8
 };

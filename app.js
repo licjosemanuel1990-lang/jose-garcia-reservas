@@ -324,6 +324,7 @@
     var s = readState(), q = computeQuote(s);
     return { tipo: "traslado", titulo: "Traslado: " + s.oText + " → " + s.dText,
       resumen: fmtDate(s.date) + " · " + L(s.trip === "round" ? "Ida y vuelta" : "Solo ida", s.trip === "round" ? "Round trip" : "One way"),
+      aeropuerto: !!((placeById[s.o] && placeById[s.o].aeropuerto) || (placeById[s.d] && placeById[s.d].aeropuerto)),
       total: q.kind === "price" ? q.amount : null, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
   };
 
