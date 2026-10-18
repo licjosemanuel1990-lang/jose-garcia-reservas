@@ -77,6 +77,7 @@
     "Hotel o dirección de origen": "Hotel or address of origin",
     "Hotel o dirección de destino": "Hotel or address of destination",
     "Santo Domingo Centro": "Santo Domingo (downtown)",
+    "Terminal de Cruceros La Romana": "La Romana Cruise Terminal",
     "San Pedro de Macorís Centro": "San Pedro de Macorís (downtown)",
     "Otra ubicación — escribir dirección": "Other location — type the address",
     "Hotel, aeropuerto, barrio, ciudad o dirección": "Hotel, airport, neighborhood, city or address",

@@ -32,6 +32,7 @@ window.JGT_CONFIG = {
   //            una vez usado en las tarifas)
   //  nombre  → lo que ve el cliente
   //  aeropuerto → true si es un aeropuerto (pide número de vuelo)
+  //  puntoFijo  → true si es un lugar exacto (no pide hotel ni dirección)
   //  activo  → false para ocultarlo sin borrarlo
   // ---------------------------------------------------------
   lugares: [
@@ -42,6 +43,7 @@ window.JGT_CONFIG = {
     { id: "centro",   nombre: "Santo Domingo Centro",          activo: true },
     { id: "sanpedro", nombre: "San Pedro de Macorís Centro",   activo: true },
     { id: "romana",   nombre: "La Romana",                     activo: true },
+    { id: "cruceroromana", nombre: "Terminal de Cruceros La Romana", puntoFijo: true, activo: true },
     { id: "bayahibe", nombre: "Bayahíbe",                      activo: true },
     { id: "punta",    nombre: "Punta Cana / Bávaro",           activo: true },
     { id: "uvero",    nombre: "Uvero Alto / Macao",            activo: true }
@@ -68,6 +70,7 @@ window.JGT_CONFIG = {
     { a: "boca", b: "centro",   usd: 45 },
     { a: "boca", b: "sanpedro", usd: 35 },
     { a: "boca", b: "romana",   usd: 80 },
+    { a: "boca", b: "cruceroromana", usd: 85 },
     { a: "boca", b: "bayahibe", usd: 90 },
     { a: "boca", b: "punta",    usd: 150 },
     { a: "boca", b: "uvero",    usd: 165 }

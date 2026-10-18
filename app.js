@@ -85,7 +85,7 @@
     return placeById[sel.value] ? placeById[sel.value].nombre : "";
   }
   /* Lugar de la lista que no es aeropuerto: pide el hotel o la dirección */
-  function needsPlace(v) { return !!(placeById[v] && !placeById[v].aeropuerto); }
+  function needsPlace(v) { return !!(placeById[v] && !placeById[v].aeropuerto && !placeById[v].puntoFijo); }
   function isAirport(v, other) { return placeById[v] ? !!placeById[v].aeropuerto : (v === OTHER && /aeropuerto|airport/i.test(other.value)); }
   /* Nombre completo para el mensaje: «Boca Chica (Hotel X)»; los aeropuertos van solos */
   function fullLabel(sel, other, place) {

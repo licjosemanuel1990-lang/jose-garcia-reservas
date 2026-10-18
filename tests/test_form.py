@@ -62,7 +62,7 @@ with sync_playwright() as p:
     pg, errs = new_page(br)
     n_o = pg.locator("#origin option").count()
     n_d = pg.locator("#destination option").count()
-    check("Menús de origen/destino con opciones", n_o == 12 and n_d == 12, f"origen={n_o} destino={n_d}")
+    check("Menús de origen/destino con opciones", n_o == 13 and n_d == 13, f"origen={n_o} destino={n_d}")
     check("Opción 'Otra ubicación — escribir dirección' presente",
           pg.locator("#origin option", has_text="Otra ubicación — escribir dirección").count() == 1)
     check("Selector de pasajeros con opciones", pg.locator("#passengers option").count() == 17)
