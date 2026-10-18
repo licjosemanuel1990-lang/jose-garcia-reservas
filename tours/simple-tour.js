@@ -140,7 +140,8 @@ window.JGTSimpleTour = function (o) {
   window.JGT_COMBO_ITEMS[o.prefix + "ConfirmBox"] = function () {
     var q = computeQuote();
     return { tipo: o.tipo, titulo: o.msgTour, resumen: fmtDate(els.date.value) + " · " + els.people.value + L(" personas", " people"),
-      total: q.kind === "price" ? q.total : null, deposito: C.deposito || 0, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
+      total: q.kind === "price" ? q.total : null, totalCombo: q.kind === "price" && o.comboCalc && window.JGT_COMBO ? o.comboCalc(q.people, els, window.JGT_COMBO) : null,
+      deposito: C.deposito || 0, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
   };
 
   refresh();

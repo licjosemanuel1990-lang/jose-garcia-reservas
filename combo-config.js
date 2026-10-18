@@ -1,27 +1,30 @@
 /*
  * ============================================================
- *  COMBO — ARMA TU PAQUETE
- *  El cliente agrega traslados y tours a su combo.
- *  Mientras más servicios elige, más se descuenta en cada uno.
+ *  COMBO — PRECIOS ESPECIALES
+ *  Con 2 o más servicios en el combo, cada servicio pasa a su
+ *  precio de combo:
  *
- *  Servicios en el combo:      2     3     4 o más
- *  City Tour                 US$10 US$15 US$20
- *  Traslado con aeropuerto   US$3  US$4  US$5
- *  Four Wheel Comatillo      US$3  US$4  US$5
- *  Four Wheel Boca Chica     US$3  US$4  US$5
- *  Isla Saona                 —     —     —   (cuenta como servicio, sin descuento)
+ *  Recogida en el aeropuerto (SDQ → Boca Chica)  US$20 hasta 4 personas, +US$5 por persona adicional
+ *  Regreso al aeropuerto (Boca Chica → SDQ)      US$15 hasta 4 personas, +US$5 por persona adicional
+ *  Four Wheel Comatillo                           RD$500 menos por four wheel
+ *  Four Wheel Boca Chica                          US$5 menos por four wheel
+ *  City Tour                                      US$10 menos
+ *  Isla Saona                                     precio normal (suma como servicio)
  *
- *  Los traslados que no tocan un aeropuerto cuentan como servicio,
- *  pero no tienen descuento.
+ *  Otros traslados suman como servicio, con su precio normal.
  * ============================================================
  */
 window.JGT_COMBO = {
-  niveles: [2, 3, 4],            // servicios necesarios para cada nivel
-  descuentos: {                  // US$ por servicio en cada nivel
-    city:     [10, 15, 20],
-    traslado: [3, 4, 5],         // solo si el traslado incluye un aeropuerto
-    buggies:  [3, 4, 5],
-    fwboca:   [3, 4, 5]
+  minServicios: 2,
+  traslado: {
+    aeropuerto: "sdq", hotel: "boca",
+    recogida: 20,          // SDQ → Boca Chica
+    regreso: 15,           // Boca Chica → SDQ
+    pasajerosIncluidos: 4,
+    adicional: 5           // US$ por persona desde la quinta
   },
+  comatilloRDporFourWheel: 500,
+  fwbocaPorFourWheel: 5,
+  cityTour: 10,
   maxServicios: 8
 };

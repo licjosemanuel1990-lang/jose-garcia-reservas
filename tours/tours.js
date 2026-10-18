@@ -277,7 +277,8 @@
   window.JGT_COMBO_ITEMS.confirmBox = function () {
     var q = computeQuote();
     return { tipo: "city", titulo: T.nombre, resumen: fmtDate(els.date.value) + " · " + selected().length + L(" paradas · ", " stops · ") + els.people.value + L(" personas", " people"),
-      total: q.kind === "price" ? q.total : null, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
+      total: q.kind === "price" ? q.total : null,
+      totalCombo: q.kind === "price" && window.JGT_COMBO ? Math.max(0, q.total - window.JGT_COMBO.cityTour) : null, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
   };
   window.JGT_TOURAPI = { computeQuote: computeQuote, buildMessage: buildMessage };
   refresh();

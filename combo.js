@@ -17,29 +17,23 @@
   function save(list) { mem = list; try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
   function usd(n) { return "US$" + (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2)); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function levelIdx(n) { var k = -1; C.niveles.forEach(function (m, i) { if (n >= m) k = i; }); return k; }
-  function nextNeed(n) { for (var i = 0; i < C.niveles.length; i++) if (C.niveles[i] > n) return C.niveles[i]; return 0; }
-  function discountFor(it, k) {
-    var t = C.descuentos[it.tipo];
-    if (k < 0 || !t || it.total == null) return 0;
-    if (it.tipo === "traslado" && !it.aeropuerto) return 0;
-    return Math.min(t[k], it.total);
-  }
-
+  /* Cada servicio trae su precio normal (total) y su precio de combo (totalCombo) */
+  function active(n) { return n >= C.minServicios; }
   /* Cálculo del combo */
-  function calc(list, kForce) {
-    var k = kForce != null ? kForce : levelIdx(list.length), sub = 0, disc = 0, dep = 0, pending = 0;
+  function calc(list) {
+    var on = active(list.length), sub = 0, disc = 0, dep = 0, pending = 0;
     var rows = list.map(function (it) {
       var d = 0;
       if (it.total == null) pending++;
       else {
         sub += it.total;
-        d = discountFor(it, k); disc += d;
+        if (on && it.totalCombo != null) d = Math.max(0, it.total - it.totalCombo);
+        disc += d;
         if (it.deposito) dep += Math.ceil((it.total - d) * it.deposito);
       }
       return { it: it, d: d };
     });
-    return { rows: rows, k: k, sub: sub, disc: disc, total: sub - disc, dep: dep, pending: pending };
+    return { rows: rows, on: on, sub: sub, disc: disc, total: sub - disc, dep: dep, pending: pending };
   }
 
   /* Mensaje único para el propietario (siempre en español) */
@@ -127,17 +121,12 @@
       (r.disc ? '<div class="save"><span>' + L("Descuento combo", "Combo discount") + '</span><span>−' + usd(r.disc) + '</span></div>' : "") +
       '<div class="tot"><span>Total</span><span>' + usd(r.total) + '</span></div>' +
       (r.dep ? '<div><span>' + L("Para reservar (Four Wheel Comatillo 50 %)", "To book (Four Wheel Comatillo 50%)") + '</span><span>' + usd(r.dep) + '</span></div>' : "");
-    var need = nextNeed(n), hint;
-    if (need) {
-      var more = calc(list, levelIdx(need)).disc - r.disc, faltan = need - n;
-      hint = more > 0
-        ? L("Agrega " + faltan + (faltan === 1 ? " servicio más" : " servicios más") + " y lo que ya tienes baja US$" + more + " más.",
-            "Add " + faltan + " more service" + (faltan === 1 ? "" : "s") + " and what you already have drops another US$" + more + ".")
-        : L("Mientras más servicios, más ahorras: hasta US$20 en City Tour y US$5 en traslados del aeropuerto y four wheels.",
-            "The more services, the more you save: up to US$20 on the City Tour and US$5 on airport transfers and four wheels.");
-    } else hint = r.disc ? L("¡Tienes el mayor descuento del combo!", "You have the biggest combo discount!")
-      : L("Isla Saona no lleva descuento. Agrega un City Tour, un traslado del aeropuerto o un four wheel para ahorrar.",
-          "Saona Island has no discount. Add a City Tour, an airport transfer or a four wheel to save.");
+    var hint = !r.on
+      ? L("Agrega 1 servicio más y activa los precios de combo: recogida en el aeropuerto US$20, regreso US$15, City Tour −US$10, four wheels más baratos.",
+          "Add 1 more service to unlock combo prices: airport pickup US$20, return US$15, City Tour −US$10, cheaper four wheels.")
+      : (r.disc ? L("¡Precios de combo activados! Ahorras " + usd(r.disc) + ".", "Combo prices unlocked! You save " + usd(r.disc) + ".")
+                : L("Precios de combo activados. Isla Saona mantiene su precio; agrega un traslado del aeropuerto, City Tour o four wheel para ahorrar.",
+                    "Combo prices unlocked. Saona Island keeps its price; add an airport transfer, City Tour or four wheel to save."));
     $("comboHint").textContent = hint;
     $("comboWa").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(message(list));
   }
@@ -165,7 +154,7 @@
     var t = $("comboToast");
     if (!t) { t = document.createElement("div"); t.className = "combo-toast"; t.id = "comboToast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
     t.innerHTML = "✓ " + L("Agregado a tu combo (" + n + "). ", "Added to your combo (" + n + "). ") +
-      L("Mientras más servicios, más ahorras. ", "The more services, the more you save. ") +
+      (n < C.minServicios ? L("Agrega otro servicio para activar los precios de combo. ", "Add another service to unlock combo prices. ") : L("Precios de combo activados. ", "Combo prices unlocked. ")) +
       '<br><a href="' + hrefTransfers + '">' + L("+ Traslado", "+ Transfer") + '</a><a href="' + hrefTours + '">' + L("+ Tour", "+ Tour") + '</a>';
     t.classList.remove("hidden"); clearTimeout(toastT);
     toastT = setTimeout(function () { t.classList.add("hidden"); }, 7000);

@@ -65,6 +65,5 @@ Un panel protegido para editar destinos sin tocar archivos necesita una base de 
 ## Combo (arma tu paquete)
 
 - El cliente agrega traslados y tours con «🎁 Agregar a mi combo» y envía todo junto en un solo WhatsApp.
-- Descuento por cantidad de servicios (2 / 3 / 4 o más): City Tour −US$10/15/20; traslados con aeropuerto y four wheels (Comatillo y Boca Chica) −US$3/4/5 c/u.
-- Isla Saona cuenta como servicio, pero no recibe descuento. Los traslados sin aeropuerto tampoco.
-- Niveles en `combo-config.js`; lógica en `combo.js`. El combo se guarda en el navegador del cliente y se vacía al enviarlo.
+- Con 2 o más servicios, precios de combo: recogida SDQ→Boca Chica US$20 y regreso US$15 (hasta 4 personas; +US$5 por persona adicional), City Tour −US$10, Four Wheel Comatillo −RD$500 por four wheel, Four Wheel Boca Chica −US$5 por four wheel. Isla Saona y otros traslados mantienen su precio.
+- Precios de combo en `combo-config.js`; lógica en `combo.js`. El combo se guarda en el navegador del cliente y se vacía al enviarlo.

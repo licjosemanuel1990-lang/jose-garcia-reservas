@@ -319,13 +319,22 @@
   });
 
   // Combo: este traslado se puede agregar al carrito de servicios
+  /* Precio de combo: SDQ → Boca Chica US$20, Boca Chica → SDQ US$15, +US$5 por persona desde la quinta */
+  function comboPrice(s, q) {
+    var K = window.JGT_COMBO && window.JGT_COMBO.traslado;
+    if (!K || q.kind !== "price" || !/^\d+$/.test(s.pax || "")) return null;
+    var ext = Math.max(0, Number(s.pax) - K.pasajerosIncluidos) * K.adicional;
+    var pick = K.recogida + ext, ret = K.regreso + ext;
+    var leg = s.o === K.aeropuerto && s.d === K.hotel ? pick : (s.o === K.hotel && s.d === K.aeropuerto ? ret : null);
+    if (leg == null) return null;
+    return s.trip === "round" ? pick + ret : leg;
+  }
   window.JGT_COMBO_ITEMS = window.JGT_COMBO_ITEMS || {};
   window.JGT_COMBO_ITEMS.confirmBox = function () {
     var s = readState(), q = computeQuote(s);
     return { tipo: "traslado", titulo: "Traslado: " + s.oText + " → " + s.dText,
       resumen: fmtDate(s.date) + " · " + L(s.trip === "round" ? "Ida y vuelta" : "Solo ida", s.trip === "round" ? "Round trip" : "One way"),
-      aeropuerto: !!((placeById[s.o] && placeById[s.o].aeropuerto) || (placeById[s.d] && placeById[s.d].aeropuerto)),
-      total: q.kind === "price" ? q.amount : null, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
+      total: q.kind === "price" ? q.amount : null, totalCombo: comboPrice(s, q), msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
   };
 
   // Acceso para pruebas automáticas
