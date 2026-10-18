@@ -1,57 +1,94 @@
-"""Pruebas del combo aeropuerto y preguntas frecuentes. Uso: python3 -I test_combo.py <URL_BASE> <carpeta>"""
-import sys, urllib.parse, re
+"""Pruebas del combo (carrito de servicios) y preguntas frecuentes.
+Uso: python3 -I test_combo.py <URL_BASE> <carpeta>"""
+import sys, urllib.parse
 from playwright.sync_api import sync_playwright
 ROOT = sys.argv[1].rstrip("/") + "/"; BASE = ROOT + "tours/"; OUT = sys.argv[2]; DATE = "2026-10-23"
 res = []
 def check(n, c, d=""):
     res.append(bool(c)); print(("PASA " if c else "FALLA") + " | " + n + (" | " + d if d else ""))
-def num(s): m = re.search(r"US\$(\d+)", s); return int(m.group(1)) if m else None
+def datos(pg, p, pickup=True):
+    pg.fill(f"#{p}Date", DATE)
+    if pickup: pg.fill(f"#{p}Pickup", "Hotel Don Juan")
+    pg.fill(f"#{p}Name", "Cliente Combo"); pg.fill(f"#{p}Phone", "+1 809 555 1234")
 with sync_playwright() as p:
     br = p.chromium.launch()
     ctx = br.new_context(**p.devices["iPhone 13"], timezone_id="America/Santo_Domingo", locale="es-DO")
     pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};")
     errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
-    pg.goto(BASE, wait_until="load")
-    check("Aviso del combo en el selector", "Combo aeropuerto" in pg.locator(".chooser").inner_text())
-    # Saona
-    pg.click('.choice[data-tour="saona"]'); pg.select_option("#sPeople", "2")
-    check("Saona 2 personas sin combo = US$170", pg.locator("#sQuotePrice").inner_text() == "US$170")
-    pg.check("#sCombo")
-    check("Saona 2 personas con combo = US$155", pg.locator("#sQuotePrice").inner_text() == "US$155", pg.locator("#sQuotePrice").inner_text())
-    check("Nota menciona el combo", "combo aeropuerto" in pg.locator("#sQuoteNote").inner_text())
-    pg.fill("#sDate", DATE); pg.fill("#sPickup", "Hotel Don Juan"); pg.fill("#sName", "Cliente de Prueba"); pg.fill("#sPhone", "+1 809 555 1234")
-    pg.click("#sSubmitBtn"); pg.wait_for_timeout(300); pg.click("#sWaLink"); pg.wait_for_timeout(500)
-    msg = urllib.parse.unquote((pg.evaluate("window.__lastUrl") or "").split("?text=", 1)[-1])
-    check("Mensaje Saona dice combo y precio US$155", "Combo aeropuerto: sí" in msg and "Precio estimado: US$155" in msg)
-    # Comatillo: el 50 % se calcula sobre el precio con descuento
-    pg.goto(BASE + "?r=2#buggies", wait_until="load"); pg.select_option("#bPeople", "2")
-    pg.check("#bCombo")
-    check("Comatillo 2 personas con combo = US$155", pg.locator("#bQuotePrice").inner_text() == "US$155", pg.locator("#bQuotePrice").inner_text())
-    check("Reserva 50 % sobre US$155 = US$78", "US$78 (50 %)" in pg.locator("#bQuoteNote").inner_text(), pg.locator("#bQuoteNote").inner_text())
-    # Four Wheel Boca Chica no tiene combo
+
+    # 1) Traslado SDQ → Boca Chica (US$25)
+    pg.goto(ROOT, wait_until="load"); pg.evaluate("localStorage.clear()"); pg.reload(wait_until="load")
+    check("Sin combo no se ve la barra", not pg.locator("#comboBar").is_visible())
+    check("Traslados: tarjeta del combo con niveles", pg.locator(".combo-card .combo-levels li").count() == 3)
+    pg.select_option("#destination", "boca"); pg.fill("#date", DATE); pg.fill("#time", "14:00")
+    pg.select_option("#passengers", "2"); pg.fill("#name", "Cliente Combo"); pg.fill("#phone", "+1 809 555 1234")
+    pg.click("#submitBtn"); pg.wait_for_timeout(300)
+    check("Ventana del traslado tiene «Agregar a mi combo»", pg.locator("#confirmBoxCombo").is_visible())
+    pg.click("#confirmBoxCombo"); pg.wait_for_timeout(300)
+    check("Barra: 1 servicio", "1 servicio" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+    check("Aviso de agregado", pg.locator("#comboToast").is_visible())
+
+    # 2) Saona 2 personas (US$170)
+    pg.goto(BASE + "?r=1#saona", wait_until="load")
+    check("El combo sigue al pasar a tours", "1 servicio" in pg.locator("#comboBar").inner_text())
+    pg.select_option("#sPeople", "2"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300)
+    pg.click("#sConfirmBoxCombo"); pg.wait_for_timeout(300)
+    check("2 servicios: ahorras US$10", "2 servicios" in pg.locator("#comboBar").inner_text() and "US$10" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+
+    # 3) Comatillo 2 personas, 1 four wheel (US$170, reserva 50 %)
+    pg.goto(BASE + "?r=2#buggies", wait_until="load")
+    pg.select_option("#bPeople", "2"); datos(pg, "b"); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300)
+    pg.click("#bConfirmBoxCombo"); pg.wait_for_timeout(300)
+    check("3 servicios: US$15 × 2 tours = ahorras US$30", "US$30" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+
+    # 4) Four Wheel Boca Chica 2 personas (US$70) — cuenta pero sin descuento
     pg.goto(BASE + "?r=3#fwboca", wait_until="load")
-    check("Four Wheel Boca Chica sin casilla de combo", pg.locator("#fCombo").count() == 0)
-    # City Tour
-    pg.goto(BASE + "?r=4#city", wait_until="load"); pg.locator("#stops .stop").first.click(); pg.select_option("#people", "2")
-    a = num(pg.locator("#quotePrice").inner_text()); pg.check("#combo"); b = num(pg.locator("#quotePrice").inner_text())
-    check("City Tour: combo resta US$15", a and b and a - b == 15, f"{a} → {b}")
+    pg.select_option("#fPeople", "2"); datos(pg, "f"); pg.click("#fSubmitBtn"); pg.wait_for_timeout(300)
+    pg.click("#fConfirmBoxCombo"); pg.wait_for_timeout(300)
+    check("4 servicios: US$20 × 2 tours = ahorras US$40", "4 servicios" in pg.locator("#comboBar").inner_text() and "US$40" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+
+    r = pg.evaluate("JGT_COMBOAPI.calc(JGT_COMBOAPI.load())")
+    check("Subtotal 25+170+170+70 = US$435", r["sub"] == 435, str(r["sub"]))
+    check("Total con descuento = US$395", r["total"] == 395, str(r["total"]))
+    check("Reserva Comatillo 50 % de US$150 = US$75", r["dep"] == 75, str(r["dep"]))
+
+    pg.click("#comboOpen"); pg.wait_for_timeout(300)
+    check("Ventana del combo lista 4 servicios", pg.locator("#comboList li").count() == 4)
+    check("Muestra precio tachado en tours con descuento", pg.locator("#comboList s").count() == 2)
+    check("Dice que ya tiene el mayor descuento", "mayor descuento" in pg.locator("#comboHint").inner_text())
+    check("Sin desbordes con la ventana abierta", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
+    pg.screenshot(path=f"{OUT}/combo-ventana.png")
+    pg.click("#comboWa"); pg.wait_for_timeout(300)
+    msg = urllib.parse.unquote((pg.evaluate("window.__lastUrl") or "").split("?text=", 1)[-1])
+    for f in ["🎁 COMBO · 4 servicios", "Nombre: Cliente Combo", "1) Traslado: Aeropuerto Las Américas (SDQ) → Boca Chica", "2) Tour Isla Saona (todo incluido)",
+              "Precio: US$170 − US$20 combo = US$150", "3) Four Wheel en Comatillo", "4) Four Wheel Boca Chica", "Precio: US$70",
+              "Subtotal: US$435", "Descuento combo: −US$40 (US$20 por tour)", "Total estimado: US$395", "Reserva Four Wheel Comatillo (50 %): US$75"]:
+        check(f"Mensaje contiene «{f}»", f in msg)
+    check("El nombre aparece una sola vez", msg.count("Nombre:") == 1)
+    pg.wait_for_timeout(800)
+    check("Tras enviar, el combo se vacía", not pg.locator("#comboBar").is_visible())
+
+    # Quitar servicios baja el descuento
+    pg.goto(BASE + "?r=4#saona", wait_until="load")
+    pg.select_option("#sPeople", "1"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300); pg.click("#sConfirmBoxCombo")
+    check("Con 1 servicio no hay descuento", "ahorras" not in pg.locator("#comboBar").inner_text())
+    pg.click("#comboOpen"); check("Pista: agrega 1 servicio más", "Agrega 1 servicio más" in pg.locator("#comboHint").inner_text())
+    pg.click("#comboList .rm"); pg.wait_for_timeout(200)
+    check("Quitar el último cierra y oculta la barra", not pg.locator("#comboBar").is_visible() and not pg.locator("#comboBox").is_visible())
+
     # Preguntas frecuentes
     check("Preguntas frecuentes en tours (6)", pg.locator(".faq details").count() == 6)
-    pg.locator(".faq summary", has_text="cancelar").click()
-    check("Política: cancelación gratis 24 h", "Cancelación gratis hasta 24 horas" in pg.locator(".faq").inner_text())
-    check("Sin errores de JavaScript (tours)", not errs, "; ".join(errs))
-    check("Sin desbordes (tours)", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
-    pg.goto(ROOT, wait_until="load")
-    check("Traslados: tarjeta del combo y enlace a tours", pg.locator(".combo-card a[href='tours/']").count() == 1)
-    check("Traslados: preguntas frecuentes", pg.locator(".faq details").count() == 6)
-    check("Sin desbordes (traslados)", not pg.evaluate("document.documentElement.scrollWidth > window.innerWidth"))
-    pg.locator(".combo-card").scroll_into_view_if_needed(); pg.screenshot(path=f"{OUT}/combo-traslados.png")
+    check("Aviso del combo en el selector", "Arma tu combo" in pg.locator(".chooser").inner_text())
+    check("Sin errores de JavaScript", not errs, "; ".join(errs))
+
     # Inglés
     pg.goto(ROOT + "?lang=en", wait_until="load")
     t = pg.locator(".faq").inner_text() + pg.locator(".combo-card").inner_text()
-    check("EN: preguntas y combo traducidos", "Frequently asked questions" in t and "Airport + tour combo" in t and "¿" not in t, t[:120])
-    pg.goto(BASE + "?lang=en#saona", wait_until="load")
-    check("EN: casilla del combo traducida", "Airport combo: save US$15" in pg.locator("#saonaForm").inner_text())
-    check("Sin errores de JavaScript", not errs, "; ".join(errs))
+    check("EN: preguntas y combo traducidos", "Frequently asked questions" in t and "Build your combo" in t and "¿" not in t and "servicios" not in t, t[:160])
+    pg.goto(BASE + "?lang=en#saona", wait_until="load"); pg.select_option("#sPeople", "2"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300)
+    check("EN: botón del combo en inglés", "Add to my combo" in pg.locator("#sConfirmBoxCombo").inner_text())
+    pg.click("#sConfirmBoxCombo"); pg.wait_for_timeout(200)
+    check("EN: barra en inglés", "Your combo: 1 service" in pg.locator("#comboBar").inner_text(), pg.locator("#comboBar").inner_text())
+    check("Sin errores de JavaScript (EN)", not errs, "; ".join(errs))
     br.close()
 print(f"\nRESULTADO: {sum(res)}/{len(res)} pruebas superadas"); sys.exit(0 if all(res) else 1)

@@ -12,8 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=7">
-<script src="../i18n.js?v=5"></script>
+<link rel="stylesheet" href="../styles.css?v=8">
+<script src="../i18n.js?v=6"></script>
 <link rel="stylesheet" href="tours.css?v=16">
 <link rel="stylesheet" href="saona.css?v=1">
 </head>
@@ -45,7 +45,7 @@
 <main class="wrap main">
   <section class="chooser card" aria-label="Elige tu tour">
     <h2>¿Qué tour quieres hacer?</h2>
-    <p class="combo-promo">✈️ <b>Combo aeropuerto:</b> reserva tu traslado del aeropuerto + City Tour, Isla Saona o Four Wheel en Comatillo y ahorra US$15 en el tour.</p>
+    <p class="combo-promo">🎁 <b>Arma tu combo:</b> agrega traslados y tours, y mientras más servicios elijas, más ahorras en cada tour: 2 servicios −US$10 · 3 servicios −US$15 · 4 o más −US$20.</p>
     <div class="choices">
       <button type="button" class="choice" data-tour="city">
         <img src="img/catedral.jpg" alt="">
@@ -133,8 +133,6 @@
       </div>
     </section>
 
-    <label class="combo-pick"><input type="checkbox" id="combo"><span><b>✈️ Combo aeropuerto: ahorra US$15</b><small>Marca si también reservas tu traslado del aeropuerto con nosotros.</small></span></label>
-
     <section class="quote" aria-live="polite">
       <div class="quote-label" id="quoteLabel">Precio del tour</div>
       <div class="quote-price" id="quotePrice">—</div>
@@ -212,8 +210,6 @@
         <p class="err" data-for="sPickup"></p>
       </div>
     </div>
-
-    <label class="combo-pick"><input type="checkbox" id="sCombo"><span><b>✈️ Combo aeropuerto: ahorra US$15</b><small>Marca si también reservas tu traslado del aeropuerto con nosotros.</small></span></label>
 
     <section class="quote" aria-live="polite">
       <div class="quote-label">Precio total del tour</div>
@@ -399,8 +395,6 @@
       </div>
     </div>
 
-    <label class="combo-pick"><input type="checkbox" id="bCombo"><span><b>✈️ Combo aeropuerto: ahorra US$15</b><small>Marca si también reservas tu traslado del aeropuerto con nosotros.</small></span></label>
-
     <section class="quote" aria-live="polite">
       <div class="quote-label">Precio total del tour</div>
       <div class="quote-price" id="bQuotePrice">—</div>
@@ -557,8 +551,8 @@
       <p>Sí. Elige «Otra zona» en el formulario y te enviamos el precio por WhatsApp.</p>
     </details>
     <details>
-      <summary>¿Cómo funciona el combo aeropuerto?</summary>
-      <p>Si reservas tu traslado del aeropuerto y un City Tour, Isla Saona o Four Wheel en Comatillo, te descontamos US$15 del tour. Solo marca la casilla «Combo aeropuerto» en el formulario del tour. Aplica un descuento por reserva.</p>
+      <summary>¿Cómo funciona el combo?</summary>
+      <p>Agrega cada servicio con el botón «Agregar a mi combo» y al final envía todo junto por WhatsApp. Con 2 servicios ahorras US$10 en cada tour, con 3 ahorras US$15 y con 4 o más ahorras US$20. El descuento aplica a City Tour, Isla Saona y Four Wheel en Comatillo; los traslados y el Four Wheel Boca Chica cuentan como servicios del combo.</p>
     </details>
     <details>
       <summary>¿Puedo cambiar o cancelar mi reserva?</summary>
@@ -680,13 +674,14 @@
 
 <script src="../routes.js?v=3"></script>
 <script src="tour-config.js?v=10"></script>
-<script src="tours.js?v=12"></script>
-<script src="combo-config.js?v=1"></script>
+<script src="tours.js?v=13"></script>
 <script src="saona-config.js?v=1"></script>
 <script src="buggies-config.js?v=8"></script>
 <script src="fwboca-config.js?v=2"></script>
-<script src="simple-tour.js?v=6"></script>
-<script src="tours-init.js?v=12"></script>
+<script src="simple-tour.js?v=7"></script>
+<script src="tours-init.js?v=13"></script>
 <script src="hub.js?v=3"></script>
+<script src="../combo-config.js?v=1"></script>
+<script src="../combo.js?v=2"></script>
 </body>
 </html>

@@ -61,3 +61,10 @@ Opcional: conectar este repositorio de GitHub al proyecto de Vercel (Vercel → 
 ## Mejora futura: panel de administración
 
 Un panel protegido para editar destinos sin tocar archivos necesita una base de datos y un inicio de sesión. No está incluido en esta versión.
+
+## Combo (arma tu paquete)
+
+- El cliente agrega traslados y tours con «🎁 Agregar a mi combo» y envía todo junto en un solo WhatsApp.
+- Descuento por cantidad de servicios, en **cada** tour con transporte propio (City Tour, Isla Saona, Four Wheel Comatillo): 2 servicios −US$10, 3 −US$15, 4 o más −US$20.
+- Traslados y Four Wheel Boca Chica cuentan para el nivel, pero no reciben descuento.
+- Niveles en `combo-config.js`; lógica en `combo.js`. El combo se guarda en el navegador del cliente y se vacía al enviarlo.

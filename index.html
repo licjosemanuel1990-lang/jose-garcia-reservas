@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=7">
-<script src="i18n.js?v=5"></script>
+<link rel="stylesheet" href="styles.css?v=8">
+<script src="i18n.js?v=6"></script>
 </head>
 <body>
 
@@ -173,8 +173,14 @@
   </form>
 
   <section class="card combo-card">
-    <h2>✈️ Combo aeropuerto + tour</h2>
-    <p>¿Vienes a pasear? Reserva tu traslado del aeropuerto y un City Tour, Isla Saona o Four Wheel en Comatillo, y ahorra US$15 en el tour.</p>
+    <h2>🎁 Arma tu combo: traslados + tours</h2>
+    <p>Agrega tu traslado del aeropuerto y los tours que quieras con el botón «Agregar a mi combo». Mientras más servicios elijas, más ahorras en cada tour:</p>
+    <ul class="combo-levels">
+      <li><b>2 servicios:</b> US$10 menos en cada tour</li>
+      <li><b>3 servicios:</b> US$15 menos en cada tour</li>
+      <li><b>4 o más:</b> US$20 menos en cada tour</li>
+    </ul>
+    <p class="combo-ex">Ejemplo: llegada del aeropuerto + City Tour + Isla Saona + Four Wheel en Comatillo + regreso al aeropuerto = ahorras US$60.</p>
     <a class="combo-go" href="tours/">Ver tours →</a>
   </section>
 
@@ -197,8 +203,8 @@
       <p>Sí. Elige «Otra zona» en el formulario y te enviamos el precio por WhatsApp.</p>
     </details>
     <details>
-      <summary>¿Cómo funciona el combo aeropuerto?</summary>
-      <p>Si reservas tu traslado del aeropuerto y un City Tour, Isla Saona o Four Wheel en Comatillo, te descontamos US$15 del tour. Solo marca la casilla «Combo aeropuerto» en el formulario del tour. Aplica un descuento por reserva.</p>
+      <summary>¿Cómo funciona el combo?</summary>
+      <p>Agrega cada servicio con el botón «Agregar a mi combo» y al final envía todo junto por WhatsApp. Con 2 servicios ahorras US$10 en cada tour, con 3 ahorras US$15 y con 4 o más ahorras US$20. El descuento aplica a City Tour, Isla Saona y Four Wheel en Comatillo; los traslados y el Four Wheel Boca Chica cuentan como servicios del combo.</p>
     </details>
     <details>
       <summary>¿Puedo cambiar o cancelar mi reserva?</summary>
@@ -239,6 +245,8 @@
 </footer>
 
 <script src="routes.js?v=3"></script>
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
+<script src="combo-config.js?v=1"></script>
+<script src="combo.js?v=2"></script>
 </body>
 </html>

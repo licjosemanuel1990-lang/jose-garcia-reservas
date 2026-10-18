@@ -154,9 +154,7 @@
     sel.forEach(function (p) { var c = stopCost(p); groupUSD += c.grupo; perPersonRD += c.rd; });
     var cost = transport + groupUSD + perPersonRD * n / T.tasaCambio;
     var total = Math.ceil(cost * M);
-    var cb = $("combo"), combo = !!(cb && cb.checked && window.JGT_COMBO);
-    if (combo) total = Math.max(0, total - window.JGT_COMBO.descuentoUSD);
-    return { kind: "price", total: total, perPerson: total / n, people: n, assumed: !ppl, combo: combo };
+    return { kind: "price", total: total, perPerson: total / n, people: n, assumed: !ppl };
   }
 
   function refresh() {
@@ -177,7 +175,6 @@
       note = q.assumed ? L("Precio para 1 persona. Elige cuántas personas son para calcular el total.", "Price for 1 person. Choose how many people to see the total.")
                        : L("Total para " + q.people + (q.people === 1 ? " persona" : " personas") + ". Incluye transporte privado, entradas y servicios elegidos.",
                            "Total for " + q.people + (q.people === 1 ? " person" : " people") + ". Includes private transportation, tickets and chosen services.");
-      if (q.combo) note += L(" Incluye combo aeropuerto: −US$" + window.JGT_COMBO.descuentoUSD + ".", " Includes airport combo: −US$" + window.JGT_COMBO.descuentoUSD + ".");
     }
     $("quoteLabel").textContent = label;
     $("quotePrice").textContent = price;
@@ -233,7 +230,6 @@
     L.push("Personas: " + esText(els.people));
     L.push("Paradas:");
     selected().forEach(function (p) { L.push(stopLine(p)); });
-    if ($("combo") && $("combo").checked) L.push("Combo aeropuerto: sí, también reserva traslado del aeropuerto" + (q.kind === "price" ? " (−US$" + window.JGT_COMBO.descuentoUSD + " incluido)" : " (descuento de US$" + window.JGT_COMBO.descuentoUSD + ")"));
     L.push("Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar"));
     if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
@@ -277,6 +273,12 @@
     openConfirm();
   });
 
+  window.JGT_COMBO_ITEMS = window.JGT_COMBO_ITEMS || {};
+  window.JGT_COMBO_ITEMS.confirmBox = function () {
+    var q = computeQuote();
+    return { tipo: "city", titulo: T.nombre, resumen: fmtDate(els.date.value) + " · " + selected().length + L(" paradas · ", " stops · ") + els.people.value + L(" personas", " people"),
+      total: q.kind === "price" ? q.total : null, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
+  };
   window.JGT_TOURAPI = { computeQuote: computeQuote, buildMessage: buildMessage };
   refresh();
 })();

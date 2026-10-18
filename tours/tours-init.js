@@ -1,6 +1,6 @@
 /* Activa los tours de precio fijo de esta página. */
 window.JGT_SAONAAPI = JGTSimpleTour({
-  prefix: "s", form: "saonaForm", cfg: window.JGT_SAONA,
+  prefix: "s", form: "saonaForm", tipo: "saona", cfg: window.JGT_SAONA,
   short: "Tour Isla Saona", msgTour: "Tour Isla Saona (todo incluido)",
   priceNote: "Todo incluido.",
   included: "Todo incluido: transporte, catamarán, piscina natural y buffet."
@@ -14,7 +14,7 @@ window.JGT_BUGGIESAPI = (function () {
   function fw(els, n) { return Number(els.count.value) || Math.ceil(n / 2); }
   function fwName(v) { return v + (v === 1 ? " four wheel" : " four wheels"); }
   return JGTSimpleTour({
-    prefix: "b", form: "buggiesForm", cfg: B,
+    prefix: "b", form: "buggiesForm", tipo: "buggies", cfg: B,
     short: "Tour en Four Wheel", msgTour: "Four Wheel en Comatillo",
     extras: [{ key: "plan", label: "Plan" }, { key: "count", label: "Four wheels" }, { key: "size", label: "Tipo" }, { key: "food", label: "Comida" }, { key: "shift", label: "Horario" }],
     extraKeys: ["count"],
@@ -79,7 +79,7 @@ window.JGT_FWBOCAAPI = (function () {
   function fw(els, n) { return Number(els.count.value) || Math.ceil(n / 2); }
   function fwName(v) { return v + (v === 1 ? " four wheel" : " four wheels"); }
   var api = JGTSimpleTour({
-    prefix: "f", form: "fwbocaForm", cfg: F,
+    prefix: "f", form: "fwbocaForm", tipo: "fwboca", cfg: F,
     short: "Four Wheel Boca Chica", msgTour: "Four Wheel Boca Chica",
     extras: [{ key: "count", label: "Four wheels" }, { key: "shift", label: "Horario" }],
     extraKeys: ["count"],

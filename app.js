@@ -318,6 +318,15 @@
     setTimeout(closeConfirm, 400); // al volver de WhatsApp, el formulario queda visible
   });
 
+  // Combo: este traslado se puede agregar al carrito de servicios
+  window.JGT_COMBO_ITEMS = window.JGT_COMBO_ITEMS || {};
+  window.JGT_COMBO_ITEMS.confirmBox = function () {
+    var s = readState(), q = computeQuote(s);
+    return { tipo: "traslado", titulo: "Traslado: " + s.oText + " → " + s.dText,
+      resumen: fmtDate(s.date) + " · " + L(s.trip === "round" ? "Ida y vuelta" : "Solo ida", s.trip === "round" ? "Round trip" : "One way"),
+      total: q.kind === "price" ? q.amount : null, msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
+  };
+
   // Acceso para pruebas automáticas
   window.JGT = { computeQuote: computeQuote, buildMessage: buildMessage, whatsappUrl: whatsappUrl, OTHER: OTHER };
 
