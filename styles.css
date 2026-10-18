@@ -145,12 +145,3 @@ body.modal-open{overflow:hidden}
 .faq details li{margin-bottom:6px}
 .faq-more{margin:12px 0 0;font-size:14px}
 
-/* Nuestros vehículos */
-.fleet{margin-top:18px}
-.fleet-lead{margin:4px 0 12px;color:var(--muted)}
-.fleet-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-@media(min-width:620px){.fleet-list{grid-template-columns:1fr 1fr}}
-.fleet-list li{display:flex;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}
-.fleet-list span{font-size:28px;line-height:1}
-.fleet-list b{display:block;color:var(--navy)}
-.fleet-list small{color:var(--muted)}
