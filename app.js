@@ -284,6 +284,9 @@
     }
     var q = computeQuote(s);
     L.push("Precio estimado: " + (q.kind === "price" ? money(q.amount) : "A cotizar"));
+    if (s.trip === "round") L.push("Nota: el 22 % de descuento aplica solo si el regreso es el mismo día y la espera no pasa de " + CFG.esperaMaximaHoras +
+      " horas. Más de " + CFG.esperaMaximaHoras + " y hasta " + CFG.esperaSinCargoHoras + " horas, u otro día, el regreso se cobra como otro viaje a tarifa normal. Desde la " +
+      (CFG.esperaSinCargoHoras + 1) + ".ª hora de espera se suman " + money(CFG.cargoHoraEspera) + " por cada hora adicional.");
     if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
   }

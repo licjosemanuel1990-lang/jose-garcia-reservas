@@ -81,6 +81,7 @@ with sync_playwright() as p:
           msg.startswith("Nombre:") and "Tarifa" not in msg and "Hola" not in msg and "Entiendo" not in msg, msg.replace(chr(10)," | "))
     check("Ventana previa muestra el precio US$25 antes de WhatsApp", modal_price(pg) == "US$25", modal_price(pg))
     check("Mensaje del traslado incluye el precio", "Precio estimado: US$25" in msg)
+    check("Solo ida: sin la nota de ida y vuelta", "Nota:" not in msg)
 
     # --- Vuelo obligatorio y hotel del lugar ---
     pq, eq = new_page(br); pq.evaluate("window.__noAutofill = true")
@@ -125,6 +126,7 @@ with sync_playwright() as p:
         pg.fill("#returnTime", rt); check(f"Caso E: espera {why} = {exp}", price(pg) == exp, price(pg))
     msg = decode(submit(pg))
     check("Caso E: mensaje indica la espera y el precio", "Espera: 7 h" in msg and "Precio estimado: US$70" in msg, msg.replace(chr(10), " | "))
+    check("Ida y vuelta: el mensaje lleva la nota de condiciones", "Nota: el 22 % de descuento aplica solo si el regreso es el mismo día y la espera no pasa de 4 horas" in msg and "US$10 por cada hora adicional" in msg)
     pg.fill("#returnDate", "2026-10-24"); pg.fill("#returnTime", "11:00")
     check("Caso E: regreso otro día → tarifa normal US$50 (sin 22 %)", price(pg) == "US$50" and pg.locator("#quoteNote").inner_text() == "Ida US$25 + vuelta US$25.", price(pg))
     msg = decode(submit(pg))
