@@ -30,7 +30,9 @@ window.JGTSimpleTour = function (o) {
     if (els.pickupZone.value !== "boca") return { kind: "pending", reason: T("Recogida fuera de Boca Chica: te cotizaremos el precio por WhatsApp.") };
     var n = Number(p);
     var total = o.calc ? o.calc(n, els) : C.transporte + C.porPersona * n;
-    var q = { kind: "price", total: total, people: n, perPerson: total / n };
+    var cb = $("combo"), combo = !!(cb && cb.checked && window.JGT_COMBO);
+    if (combo) total = Math.max(0, total - window.JGT_COMBO.descuentoUSD);
+    var q = { kind: "price", total: total, people: n, perPerson: total / n, combo: combo };
     if (C.deposito) { q.deposit = Math.ceil(total * C.deposito); q.rest = total - q.deposit; }
     return q;
   }
@@ -47,6 +49,7 @@ window.JGTSimpleTour = function (o) {
         "Total for " + q.people + (q.people === 1 ? " person" : " people") +
         (q.people > 1 ? " (" + usd(q.perPerson) + " per person)" : "") + ". ") +
         (o.detail ? o.detail(q.people, els) : T(o.priceNote)) +
+        (q.combo ? L(" Incluye combo aeropuerto: −US$" + window.JGT_COMBO.descuentoUSD + ".", " Includes airport combo: −US$" + window.JGT_COMBO.descuentoUSD + ".") : "") +
         (q.deposit ? L(" Reserva con " + usd(q.deposit) + " (" + pct + " %) y paga " + usd(q.rest) + " al abordar.",
                        " Book with " + usd(q.deposit) + " (" + pct + "%) and pay " + usd(q.rest) + " when you board.") : "");
     }
@@ -88,6 +91,7 @@ window.JGTSimpleTour = function (o) {
     L.push("Recogida: " + els.pickup.value.trim() + (els.pickupZone.value === "boca" ? " (Boca Chica)" : ""));
     L.push("Fecha: " + fmtDate(els.date.value));
     L.push("Personas: " + esText(els.people));
+    if ($("combo") && $("combo").checked) L.push("Combo aeropuerto: sí, también reserva traslado del aeropuerto" + (q.kind === "price" ? " (−US$" + window.JGT_COMBO.descuentoUSD + " incluido)" : " (descuento de US$" + window.JGT_COMBO.descuentoUSD + ")"));
     L.push("Precio estimado: " + (q.kind === "price" ? usd(q.total) : "A cotizar"));
     if (q.deposit) { L.push("Reserva (" + Math.round(C.deposito * 100) + " %): " + usd(q.deposit)); L.push("Resto al abordar: " + usd(q.rest)); }
     if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");

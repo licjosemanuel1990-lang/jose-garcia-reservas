@@ -12,8 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=6">
-<script src="../i18n.js?v=4"></script>
+<link rel="stylesheet" href="../styles.css?v=7">
+<script src="../i18n.js?v=5"></script>
 <link rel="stylesheet" href="tours.css?v=16">
 <link rel="stylesheet" href="saona.css?v=1">
 </head>
@@ -45,6 +45,7 @@
 <main class="wrap main">
   <section class="chooser card" aria-label="Elige tu tour">
     <h2>¿Qué tour quieres hacer?</h2>
+    <p class="combo-promo">✈️ <b>Combo aeropuerto:</b> reserva tu traslado del aeropuerto + City Tour, Isla Saona o Four Wheel en Comatillo y ahorra US$15 en el tour.</p>
     <div class="choices">
       <button type="button" class="choice" data-tour="city">
         <img src="img/catedral.jpg" alt="">
@@ -132,6 +133,8 @@
       </div>
     </section>
 
+    <label class="combo-pick"><input type="checkbox" id="combo"><span><b>✈️ Combo aeropuerto: ahorra US$15</b><small>Marca si también reservas tu traslado del aeropuerto con nosotros.</small></span></label>
+
     <section class="quote" aria-live="polite">
       <div class="quote-label" id="quoteLabel">Precio del tour</div>
       <div class="quote-price" id="quotePrice">—</div>
@@ -209,6 +212,8 @@
         <p class="err" data-for="sPickup"></p>
       </div>
     </div>
+
+    <label class="combo-pick"><input type="checkbox" id="sCombo"><span><b>✈️ Combo aeropuerto: ahorra US$15</b><small>Marca si también reservas tu traslado del aeropuerto con nosotros.</small></span></label>
 
     <section class="quote" aria-live="polite">
       <div class="quote-label">Precio total del tour</div>
@@ -394,6 +399,8 @@
       </div>
     </div>
 
+    <label class="combo-pick"><input type="checkbox" id="bCombo"><span><b>✈️ Combo aeropuerto: ahorra US$15</b><small>Marca si también reservas tu traslado del aeropuerto con nosotros.</small></span></label>
+
     <section class="quote" aria-live="polite">
       <div class="quote-label">Precio total del tour</div>
       <div class="quote-price" id="bQuotePrice">—</div>
@@ -530,6 +537,40 @@
     </div>
   </form>
   </section>
+
+  <section class="card faq" id="preguntas">
+    <h2>Preguntas frecuentes</h2>
+    <details>
+      <summary>¿Cómo se confirma mi reserva?</summary>
+      <p>Llenas el formulario y lo envías por WhatsApp. Te respondemos personalmente con la disponibilidad, y la reserva queda confirmada con nuestra respuesta.</p>
+    </details>
+    <details>
+      <summary>¿Tengo que pagar por adelantado?</summary>
+      <p>No. Los traslados, el City Tour, Isla Saona y el Four Wheel Boca Chica se pagan al finalizar el servicio. Solo el Four Wheel en Comatillo se reserva con el 50 %, por su alta demanda.</p>
+    </details>
+    <details>
+      <summary>¿El precio es por persona o por grupo?</summary>
+      <p>Es el total del grupo. Los traslados incluyen hasta 4 pasajeros; desde el quinto se suman US$10 por persona en cada trayecto. En los four wheels el precio es por four wheel, con 1 o 2 personas en cada uno.</p>
+    </details>
+    <details>
+      <summary>¿Recogen fuera de Boca Chica?</summary>
+      <p>Sí. Elige «Otra zona» en el formulario y te enviamos el precio por WhatsApp.</p>
+    </details>
+    <details>
+      <summary>¿Cómo funciona el combo aeropuerto?</summary>
+      <p>Si reservas tu traslado del aeropuerto y un City Tour, Isla Saona o Four Wheel en Comatillo, te descontamos US$15 del tour. Solo marca la casilla «Combo aeropuerto» en el formulario del tour. Aplica un descuento por reserva.</p>
+    </details>
+    <details>
+      <summary>¿Puedo cambiar o cancelar mi reserva?</summary>
+      <ul>
+        <li>Cancelación gratis hasta 24 horas antes del servicio.</li>
+        <li>Cambios de fecha u hora sin costo, avisando con al menos 24 horas y sujetos a disponibilidad.</li>
+        <li>Four Wheel en Comatillo: si cancelas con menos de 24 horas o no te presentas, la reserva del 50 % no se devuelve.</li>
+        <li>Si nosotros cancelamos por mal tiempo u otra causa, cambiamos la fecha o te devolvemos todo lo pagado.</li>
+      </ul>
+    </details>
+    <p class="faq-more">¿Otra pregunta? <a href="https://wa.me/18298182426" target="_blank" rel="noopener">Escríbenos por WhatsApp</a></p>
+  </section>
 </main>
 
 <div class="tourbar hidden" id="tourBar" aria-live="polite">
@@ -639,12 +680,13 @@
 
 <script src="../routes.js?v=3"></script>
 <script src="tour-config.js?v=10"></script>
-<script src="tours.js?v=11"></script>
+<script src="tours.js?v=12"></script>
+<script src="combo-config.js?v=1"></script>
 <script src="saona-config.js?v=1"></script>
 <script src="buggies-config.js?v=8"></script>
 <script src="fwboca-config.js?v=2"></script>
-<script src="simple-tour.js?v=5"></script>
-<script src="tours-init.js?v=11"></script>
+<script src="simple-tour.js?v=6"></script>
+<script src="tours-init.js?v=12"></script>
 <script src="hub.js?v=3"></script>
 </body>
 </html>

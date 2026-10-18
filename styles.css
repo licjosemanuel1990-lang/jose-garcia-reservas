@@ -118,3 +118,26 @@ body.modal-open{overflow:hidden}
 .lang-switch{flex:none;display:flex;border:1px solid rgba(227,194,122,.6);border-radius:999px;overflow:hidden}
 .lang-switch button{font:inherit;font-weight:800;font-size:13px;padding:7px 11px;border:0;background:transparent;color:#fff;cursor:pointer}
 .lang-switch button.on{background:var(--gold);color:var(--navy)}
+
+/* Combo aeropuerto */
+.combo-pick{display:flex;gap:12px;align-items:flex-start;margin:16px 0 4px;padding:14px;border:2px dashed var(--gold);border-radius:14px;background:#fffaf0;cursor:pointer}
+.combo-pick input{width:22px;height:22px;margin-top:2px;accent-color:var(--navy);flex:none}
+.combo-pick span{display:flex;flex-direction:column;gap:2px}
+.combo-pick b{color:var(--navy);font-size:15px}
+.combo-pick small{color:var(--muted);font-size:13px}
+.combo-promo{margin:0 0 14px;padding:12px 14px;border-radius:12px;background:#fffaf0;border:1px solid var(--gold);font-size:14px;color:var(--navy)}
+.combo-card{margin-top:18px;border:2px solid var(--gold)}
+.combo-card p{margin:6px 0 12px}
+.combo-go{display:inline-block;background:var(--gold);color:var(--navy);font-weight:800;padding:10px 16px;border-radius:10px;text-decoration:none}
+/* Preguntas frecuentes */
+.faq{margin-top:18px}
+.faq details{border-top:1px solid var(--line);padding:12px 0}
+.faq details:first-of-type{border-top:0}
+.faq summary{cursor:pointer;font-weight:700;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:20px;line-height:1;color:var(--gold)}
+.faq details[open] summary::after{content:"–"}
+.faq details p,.faq details ul{margin:8px 0 0;color:var(--muted);font-size:14px}
+.faq details ul{padding-left:18px}
+.faq details li{margin-bottom:6px}
+.faq-more{margin:12px 0 0;font-size:14px}
