@@ -1,8 +1,8 @@
 /* Selector de tours: muestra City Tour o Isla Saona en la misma página. */
 (function () {
   "use strict";
-  var panes = { city: document.getElementById("cityTour"), saona: document.getElementById("saonaTour"), buggies: document.getElementById("buggiesTour") };
-  var bars = { city: document.getElementById("tourBar"), saona: document.getElementById("sBar"), buggies: document.getElementById("bBar") };
+  var panes = { city: document.getElementById("cityTour"), saona: document.getElementById("saonaTour"), buggies: document.getElementById("buggiesTour"), fwboca: document.getElementById("fwbocaTour") };
+  var bars = { city: document.getElementById("tourBar"), saona: document.getElementById("sBar"), buggies: document.getElementById("bBar"), fwboca: document.getElementById("fBar") };
   var choices = document.querySelectorAll(".choice");
   function show(name, scroll) {
     Object.keys(panes).forEach(function (k) {

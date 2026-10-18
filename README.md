@@ -19,7 +19,7 @@ Formulario de reservas para clientes. El cliente elige su traslado, ve la tarifa
 
 ## City Tour
 
-- **Página:** https://jose-garcia-reservas.vercel.app/tours/ (City Tour, Tour Isla Saona y Tour de Buggies en el mismo enlace; precios en `tours/saona-config.js` y `tours/buggies-config.js`; Four Wheel: precio por four wheel (1 o 2 personas), se reserva con 30 % y el resto al abordar)
+- **Página:** https://jose-garcia-reservas.vercel.app/tours/ (City Tour, Tour Isla Saona, Four Wheel Comatillo y Four Wheel Boca Chica en el mismo enlace; precios en `tours/saona-config.js`, `tours/buggies-config.js` y `tours/fwboca-config.js`; Four Wheel Boca Chica: US$70 por four wheel (1 o 2 personas), reserva con 50 %)
 - **Precios y paradas:** `tours/tour-config.js` (costos sin margen; la página suma el 10 %).
 - Los precios por parada NO se muestran al cliente; solo el total.
 - Cálculo: (transporte US$70, o US$110 con Sambil; +US$10 por persona desde la quinta) + guía turístico certificado US$40 si lo elige + Alcázar, Fortaleza Ozama y Catedral RD$200 c/u por persona (los RD$600 repartidos) + entradas y comida en pesos × personas ÷ tasa de cambio → +10 % → redondeado hacia arriba.
