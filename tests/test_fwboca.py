@@ -16,6 +16,7 @@ with sync_playwright() as p:
     pg.click('.choice[data-tour="fwboca"]'); pg.wait_for_timeout(300)
     check("Abre Four Wheel Boca Chica y no Comatillo", pg.locator("#fwbocaTour").is_visible() and not pg.locator("#buggiesTour").is_visible())
     check("La presentación no muestra el precio", "US$" not in pg.locator("#fwbocaTour .b-intro").inner_text())
+    check("Dice lago y no río", "lago" in pg.locator("#fwbocaTour").inner_text() and "río" not in pg.locator("#fwbocaTour").inner_text() and "río" not in pg.locator('.choice[data-tour="fwboca"]').inner_text())
     check("Sin tarjeta de reserva", pg.locator("#fwbocaTour .deposit-card").count() == 0)
     check("Galería con 6 fotos", pg.locator("#fwbocaTour .s-gallery img[src^='img/fb-']").count() == 6)
     check("Todas las fotos cargan", pg.evaluate("[...document.querySelectorAll('#fwbocaTour img')].every(i=>i.complete&&i.naturalWidth>0)"))
