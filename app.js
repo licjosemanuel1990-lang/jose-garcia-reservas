@@ -12,6 +12,7 @@
   var els = {
     origin: $("origin"), destination: $("destination"),
     originOther: $("originOther"), destinationOther: $("destinationOther"),
+    originPlace: $("originPlace"), destinationPlace: $("destinationPlace"),
     date: $("date"), time: $("time"), returnDate: $("returnDate"), returnTime: $("returnTime"),
     passengers: $("passengers"), bags: $("bags"), carry: $("carry"),
     flight: $("flight"), airline: $("airline"),
@@ -82,6 +83,14 @@
   function placeLabel(sel, other) {
     if (sel.value === OTHER) return other.value.trim();
     return placeById[sel.value] ? placeById[sel.value].nombre : "";
+  }
+  /* Lugar de la lista que no es aeropuerto: pide el hotel o la dirección */
+  function needsPlace(v) { return !!(placeById[v] && !placeById[v].aeropuerto); }
+  function isAirport(v, other) { return placeById[v] ? !!placeById[v].aeropuerto : (v === OTHER && /aeropuerto|airport/i.test(other.value)); }
+  /* Nombre completo para el mensaje: «Boca Chica (Hotel X)»; los aeropuertos van solos */
+  function fullLabel(sel, other, place) {
+    var base = placeLabel(sel, other);
+    return needsPlace(sel.value) && place.value.trim() ? base + " (" + place.value.trim() + ")" : base;
   }
   function readState() {
     return {
@@ -167,6 +176,13 @@
   function syncUI() {
     els.originOther.classList.toggle("hidden", els.origin.value !== OTHER);
     els.destinationOther.classList.toggle("hidden", els.destination.value !== OTHER);
+    [["origin", "originPlace"], ["destination", "destinationPlace"]].forEach(function (k) {
+      var v = els[k[0]].value, need = needsPlace(v);
+      els[k[1]].classList.toggle("hidden", !need);
+      if (need) els[k[1]].placeholder = L("Hotel o dirección en " + placeById[v].nombre + " *", "Hotel or address in " + placeById[v].nombre + " *");
+    });
+    var flightReq = isAirport(els.origin.value, els.originOther);
+    $("flightLabel").textContent = flightReq ? L("Número de vuelo *", "Flight number *") : L("Número de vuelo (opcional)", "Flight number (optional)");
     $("returnBlock").classList.toggle("hidden", trip() !== "round");
     var airport = (placeById[els.origin.value] && placeById[els.origin.value].aeropuerto) ||
                   (placeById[els.destination.value] && placeById[els.destination.value].aeropuerto) ||
@@ -186,8 +202,10 @@
     var e = {}, s = readState(), now = new Date();
     if (!s.o) e.origin = "Selecciona el origen.";
     else if (s.o === OTHER && s.oText.length < 3) e.origin = "Escribe la dirección o lugar de origen.";
+    else if (needsPlace(s.o) && els.originPlace.value.trim().length < 3) e.origin = L("Escribe el hotel o la dirección en " + placeById[s.o].nombre + ".", "Enter the hotel or address in " + placeById[s.o].nombre + ".");
     if (!s.d) e.destination = "Selecciona el destino.";
     else if (s.d === OTHER && s.dText.length < 3) e.destination = "Escribe la dirección o lugar de destino.";
+    else if (needsPlace(s.d) && els.destinationPlace.value.trim().length < 3) e.destination = L("Escribe el hotel o la dirección en " + placeById[s.d].nombre + ".", "Enter the hotel or address in " + placeById[s.d].nombre + ".");
     if (!e.origin && !e.destination && computeQuote(s).kind === "same") e.destination = "El destino no puede ser igual al origen.";
 
     if (!s.date) e.date = "Elige la fecha.";
@@ -207,6 +225,8 @@
     if (!/^(\d{1,2}|\d{2}\+)$/.test(s.pax) || s.pax === "0") e.passengers = "Elige la cantidad de pasajeros.";
     ["bags", "carry"].forEach(function (k) { if (!/^(\d{1,2}|\d{2}\+)$/.test(els[k].value)) e[k] = "Cantidad no válida."; });
 
+    if (isAirport(s.o, els.originOther) && els.flight.value.trim().length < 3) e.flight = L("Escribe el número de vuelo: lo necesitamos para recogerte a tiempo.", "Enter the flight number: we need it to pick you up on time.");
+
     var nm = els.name.value.trim();
     if (nm.length < 3 || !/[a-zA-ZÀ-ÿ]/.test(nm)) e.name = "Escribe tu nombre completo.";
     var pd = phoneDigits();
@@ -217,7 +237,7 @@
     return e;
   }
 
-  var fieldIds = ["origin", "destination", "date", "time", "returnDate", "returnTime", "passengers", "name", "phone"];
+  var fieldIds = ["origin", "destination", "date", "time", "returnDate", "returnTime", "passengers", "flight", "name", "phone"];
   function showErrors(e) {
     fieldIds.forEach(function (k) {
       var box = form.querySelector('.err[data-for="' + k + '"]');
@@ -228,6 +248,8 @@
     });
     els.originOther.classList.toggle("invalid", !!e.origin && els.origin.value === OTHER);
     els.destinationOther.classList.toggle("invalid", !!e.destination && els.destination.value === OTHER);
+    els.originPlace.classList.toggle("invalid", !!e.origin && needsPlace(els.origin.value));
+    els.destinationPlace.classList.toggle("invalid", !!e.destination && needsPlace(els.destination.value));
     $("formError").classList.toggle("hidden", Object.keys(e).length === 0);
   }
 
@@ -237,8 +259,8 @@
     var L = [];
     L.push("Nombre: " + els.name.value.trim());
     L.push("WhatsApp: " + els.phone.value.trim());
-    L.push("Origen: " + s.oText);
-    L.push("Destino: " + s.dText);
+    L.push("Origen: " + fullLabel(els.origin, els.originOther, els.originPlace));
+    L.push("Destino: " + fullLabel(els.destination, els.destinationOther, els.destinationPlace));
     L.push("Servicio: " + (s.trip === "round" ? "Ida y vuelta" : "Solo ida"));
     L.push("Fecha: " + fmtDate(s.date));
     L.push("Hora: " + fmtTime(s.time));
@@ -248,8 +270,11 @@
     L.push("Equipaje de mano: " + esText(els.carry));
     if (!$("flightBlock").classList.contains("hidden")) {
       if (els.flight.value.trim()) L.push("Vuelo: " + els.flight.value.trim().toUpperCase());
+      else if (isAirport(s.o, els.originOther)) L.push("Vuelo: (falta)");
       if (els.airline.value.trim()) L.push("Aerolínea: " + els.airline.value.trim());
     }
+    var q = computeQuote(s);
+    L.push("Precio estimado: " + (q.kind === "price" ? money(q.amount) : "A cotizar"));
     if (window.JGT_LANG === "en") L.push("Idioma del cliente: inglés");
     return L.join("\n");
   }
@@ -266,6 +291,7 @@
     var o = els.origin.value, ot = els.originOther.value;
     els.origin.value = els.destination.value; els.originOther.value = els.destinationOther.value;
     els.destination.value = o; els.destinationOther.value = ot;
+    var op = els.originPlace.value; els.originPlace.value = els.destinationPlace.value; els.destinationPlace.value = op;
     syncUI();
   });
   form.addEventListener("submit", function (ev) {
@@ -278,6 +304,8 @@
       var target = els[first];
       if (first === "origin" && els.origin.value === OTHER) target = els.originOther;
       if (first === "destination" && els.destination.value === OTHER) target = els.destinationOther;
+      if (first === "origin" && needsPlace(els.origin.value)) target = els.originPlace;
+      if (first === "destination" && needsPlace(els.destination.value)) target = els.destinationPlace;
       target.scrollIntoView({ behavior: "smooth", block: "center" });
       try { target.focus({ preventScroll: true }); } catch (x) { target.focus(); }
       return;
@@ -332,7 +360,7 @@
   window.JGT_COMBO_ITEMS = window.JGT_COMBO_ITEMS || {};
   window.JGT_COMBO_ITEMS.confirmBox = function () {
     var s = readState(), q = computeQuote(s);
-    return { tipo: "traslado", titulo: "Traslado: " + s.oText + " → " + s.dText,
+    return { tipo: "traslado", titulo: "Traslado: " + fullLabel(els.origin, els.originOther, els.originPlace) + " → " + fullLabel(els.destination, els.destinationOther, els.destinationPlace),
       resumen: fmtDate(s.date) + " · " + L(s.trip === "round" ? "Ida y vuelta" : "Solo ida", s.trip === "round" ? "Round trip" : "One way"),
       total: q.kind === "price" ? q.amount : null, totalCombo: comboPrice(s, q), msg: buildMessage(), nombre: els.name.value.trim(), whatsapp: els.phone.value.trim() };
   };

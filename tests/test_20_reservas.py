@@ -3,6 +3,13 @@ Calcula cada precio por su cuenta y lo compara con lo que muestra la página.
 Uso: python3 -I test_20_reservas.py <URL_BASE> <carpeta>"""
 import sys, re, math, json, urllib.parse
 from playwright.sync_api import sync_playwright
+AUTOFILL = """document.addEventListener('submit', function (e) {
+  if (e.target.id !== 'booking' || window.__noAutofill) return;
+  ['originPlace', 'destinationPlace', 'flight'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetParent !== null && !el.value) el.value = id === 'flight' ? 'AA1234' : 'Hotel Prueba';
+  });
+}, true);"""
 ROOT = sys.argv[1].rstrip("/") + "/"; BASE = ROOT + "tours/"; OUT = sys.argv[2]
 rows = []
 
@@ -74,13 +81,13 @@ def combo_open(pg):
 with sync_playwright() as p:
     br = p.chromium.launch()
     ctx = br.new_context(**p.devices["iPhone 13"], timezone_id="America/Santo_Domingo", locale="es-DO")
-    pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};")
+    pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};"); pg.add_init_script(AUTOFILL)
     jserr = []; pg.on("pageerror", lambda e: jserr.append(str(e)))
     pg.goto(ROOT, wait_until="load"); pg.evaluate("localStorage.clear()")
 
     # ---------- Traslados ----------
     s, m = traslado(pg, "sdq", "boca", "2", "2026-10-25", "15:30", "Laura Méndez", "+1 809 555 0101")
-    add(1, "Laura Méndez", "Traslado SDQ → Boca Chica, 2 pers.", 25, num(s), "Origen: Aeropuerto Las Américas (SDQ)" in m and "Pasajeros: 2" in m)
+    add(1, "Laura Méndez", "Traslado SDQ → Boca Chica, 2 pers.", 25, num(s), "Origen: Aeropuerto de Santo Domingo (SDQ)" in m and "Pasajeros: 2" in m)
     s, m = traslado(pg, "sdq", "punta", "3", "2026-10-26", "11:00", "John Carter", "+1 305 555 0102")
     add(2, "John Carter", "Traslado SDQ → Punta Cana, 3 pers.", 150, num(s), "Destino: Punta Cana" in m)
     s, m = traslado(pg, "boca", "sdq", "6", "2026-10-27", "06:00", "Familia Rosario", "+1 829 555 0103")

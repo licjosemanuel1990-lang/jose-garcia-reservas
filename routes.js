@@ -31,7 +31,7 @@ window.JGT_CONFIG = {
   //  activo  → false para ocultarlo sin borrarlo
   // ---------------------------------------------------------
   lugares: [
-    { id: "sdq",      nombre: "Aeropuerto Las Américas (SDQ)", aeropuerto: true, activo: true },
+    { id: "sdq",      nombre: "Aeropuerto de Santo Domingo (SDQ)", aeropuerto: true, activo: true },
     { id: "boca",     nombre: "Boca Chica",                    activo: true },
     { id: "juan",     nombre: "Juan Dolio",                    activo: true },
     { id: "colonial", nombre: "Zona Colonial",                 activo: true },

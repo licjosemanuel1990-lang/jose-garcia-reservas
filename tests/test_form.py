@@ -3,6 +3,13 @@ Uso: python3 -I test_form.py <URL> <carpeta_capturas>
 No envía nada a WhatsApp: captura el enlace generado en lugar de abrirlo."""
 import sys, urllib.parse, json
 from playwright.sync_api import sync_playwright
+AUTOFILL = """document.addEventListener('submit', function (e) {
+  if (e.target.id !== 'booking' || window.__noAutofill) return;
+  ['originPlace', 'destinationPlace', 'flight'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetParent !== null && !el.value) el.value = id === 'flight' ? 'AA1234' : 'Hotel Prueba';
+  });
+}, true);"""
 
 URL = sys.argv[1]
 OUT = sys.argv[2]
@@ -19,7 +26,7 @@ def new_page(browser, device=None):
     ctx = browser.new_context(**(device or {"viewport": {"width": 390, "height": 844}}),
                               timezone_id="America/Santo_Domingo", locale="es-DO")
     pg = ctx.new_page()
-    pg.add_init_script(CAPTURE)
+    pg.add_init_script(CAPTURE); pg.add_init_script(AUTOFILL)
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.goto(URL, wait_until="networkidle")
@@ -66,13 +73,29 @@ with sync_playwright() as p:
     check("Caso A: solo ida SDQ→Boca Chica = US$25", price(pg) == "US$25", price(pg))
     u = submit(pg); msg = decode(u)
     check("Caso G: enlace a wa.me/18298182426", bool(u) and u.startswith("https://wa.me/18298182426?text="), (u or "")[:45])
-    for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Origen: Aeropuerto Las Américas (SDQ)",
+    for frag in ["Nombre: Cliente de Prueba", "WhatsApp: +1 809 555 1234", "Origen: Aeropuerto de Santo Domingo (SDQ)",
                  "Destino: Boca Chica", "Fecha: 23/10/2026", "Hora: 10:00 a. m.", "Pasajeros: 2",
                  "Servicio: Solo ida", "Maletas grandes: 0", "Equipaje de mano: 0"]:
         check(f"Caso G: mensaje contiene «{frag}»", frag in msg)
     check("Mensaje corto: empieza en 'Nombre:' y sin tarifa/textos extra",
           msg.startswith("Nombre:") and "Tarifa" not in msg and "Hola" not in msg and "Entiendo" not in msg, msg.replace(chr(10)," | "))
     check("Ventana previa muestra el precio US$25 antes de WhatsApp", modal_price(pg) == "US$25", modal_price(pg))
+    check("Mensaje del traslado incluye el precio", "Precio estimado: US$25" in msg)
+
+    # --- Vuelo obligatorio y hotel del lugar ---
+    pq, eq = new_page(br); pq.evaluate("window.__noAutofill = true")
+    pq.select_option("#origin", "sdq"); pq.select_option("#destination", "boca")
+    pq.fill("#date", DATE); pq.fill("#time", "10:00"); fill_client(pq, "2")
+    check("Recogida en el aeropuerto: el vuelo es obligatorio", "*" in pq.locator("#flightLabel").inner_text())
+    check("Destino Boca Chica pide el hotel", pq.locator("#destinationPlace").is_visible() and not pq.locator("#originPlace").is_visible())
+    check("Sin vuelo ni hotel no se puede enviar", submit(pq) is None and pq.locator('.err[data-for="flight"]').inner_text() != "" and "hotel" in pq.locator('.err[data-for="destination"]').inner_text())
+    pq.fill("#destinationPlace", "Santo Domingo Bay"); pq.fill("#flight", "dl123")
+    mq = decode(submit(pq))
+    for frag in ["Origen: Aeropuerto de Santo Domingo (SDQ)\n", "Destino: Boca Chica (Santo Domingo Bay)", "Vuelo: DL123", "Precio estimado: US$25"]:
+        check(f"Mensaje con hotel y vuelo: «{frag.strip()}»", frag in mq)
+    pq.wait_for_timeout(600); pq.click("#swap")
+    check("Regreso al aeropuerto: vuelo opcional y el hotel pasa al origen", "opcional" in pq.locator("#flightLabel").inner_text() and pq.input_value("#originPlace") == "Santo Domingo Bay")
+    check("Sin errores de JavaScript (vuelo y hotel)", not eq, "; ".join(eq))
     check("Ventana indica continuar por WhatsApp, sin confirmación falsa",
           "continúa por WhatsApp" in pg.locator("#confirmBox").text_content() and "confirmada" not in pg.locator("#confirmBox").text_content())
     check("La ventana se cierra sola tras pulsar WhatsApp", not pg.locator("#confirmBox").is_visible())

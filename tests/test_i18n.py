@@ -2,6 +2,13 @@
 Uso: python3 -I test_i18n.py <URL_BASE>  · No envía nada a WhatsApp."""
 import sys, urllib.parse
 from playwright.sync_api import sync_playwright
+AUTOFILL = """document.addEventListener('submit', function (e) {
+  if (e.target.id !== 'booking' || window.__noAutofill) return;
+  ['originPlace', 'destinationPlace', 'flight'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetParent !== null && !el.value) el.value = id === 'flight' ? 'AA1234' : 'Hotel Prueba';
+  });
+}, true);"""
 BASE = sys.argv[1].rstrip("/"); DATE = "2026-10-23"; res = []
 def check(n, c, d=""):
     res.append(bool(c)); print(("PASA " if c else "FALLA") + " | " + n + (" | " + d if d else ""))
@@ -11,7 +18,7 @@ with sync_playwright() as p:
     br = p.chromium.launch()
     def page(locale="es-DO", url="/"):
         ctx = br.new_context(viewport={"width": 390, "height": 844}, locale=locale, timezone_id="America/Santo_Domingo")
-        pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};")
+        pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};"); pg.add_init_script(AUTOFILL)
         errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
         pg.goto(BASE + url, wait_until="load"); pg.wait_for_timeout(300); return pg, errs
     # Español

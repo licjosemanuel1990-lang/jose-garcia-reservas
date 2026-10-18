@@ -2,6 +2,13 @@
 Uso: python3 -I test_combo.py <URL_BASE> <carpeta>"""
 import sys, urllib.parse, re
 from playwright.sync_api import sync_playwright
+AUTOFILL = """document.addEventListener('submit', function (e) {
+  if (e.target.id !== 'booking' || window.__noAutofill) return;
+  ['originPlace', 'destinationPlace', 'flight'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetParent !== null && !el.value) el.value = id === 'flight' ? 'AA1234' : 'Hotel Prueba';
+  });
+}, true);"""
 ROOT = sys.argv[1].rstrip("/") + "/"; BASE = ROOT + "tours/"; OUT = sys.argv[2]; DATE = "2026-10-23"
 res = []
 def check(n, c, d=""):
@@ -20,7 +27,7 @@ def traslado(pg, o, d, pax, r):
 with sync_playwright() as p:
     br = p.chromium.launch()
     ctx = br.new_context(**p.devices["iPhone 13"], timezone_id="America/Santo_Domingo", locale="es-DO")
-    pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};")
+    pg = ctx.new_page(); pg.add_init_script("window.__JGT_CAPTURE__=function(u){window.__lastUrl=u;};"); pg.add_init_script(AUTOFILL)
     errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
 
     pg.goto(ROOT, wait_until="load"); pg.evaluate("localStorage.clear()"); pg.reload(wait_until="load")
@@ -75,9 +82,9 @@ with sync_playwright() as p:
     pg.screenshot(path=f"{OUT}/combo-ventana.png")
     pg.click("#comboWa"); pg.wait_for_timeout(300)
     msg = urllib.parse.unquote((pg.evaluate("window.__lastUrl") or "").split("?text=", 1)[-1])
-    for f in ["🎁 COMBO · 6 servicios", "Nombre: Cliente Combo", "1) Traslado: Aeropuerto Las Américas (SDQ) → Boca Chica", "Precio: US$25 − US$5 combo = US$20",
+    for f in ["🎁 COMBO · 6 servicios", "Nombre: Cliente Combo", "1) Traslado: Aeropuerto de Santo Domingo (SDQ) → Boca Chica", "Precio: US$25 − US$5 combo = US$20",
               "2) Tour Isla Saona (todo incluido)", "Precio: US$180\n", "Precio: US$170 − US$8 combo = US$162", "Precio: US$70 − US$5 combo = US$65",
-              "5) Traslado: Boca Chica → Aeropuerto Las Américas (SDQ)", "Precio: US$45 − US$20 combo = US$25", "Descuento combo: −US$48",
+              "5) Traslado: Boca Chica (Hotel Prueba) → Aeropuerto de Santo Domingo (SDQ)", "Precio: US$45 − US$20 combo = US$25", "Descuento combo: −US$48",
               "Reserva del combo (50 %): US$", "Resto al abordar: US$"]:
         check(f"Mensaje contiene «{f.strip()}»", f in msg)
     check("El nombre aparece una sola vez", msg.count("Nombre:") == 1)

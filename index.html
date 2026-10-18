@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=10">
-<script src="i18n.js?v=13"></script>
+<script src="i18n.js?v=14"></script>
 </head>
 <body>
 
@@ -57,6 +57,7 @@
           <label for="origin">Origen *</label>
           <select id="origin" name="origin"></select>
           <input id="originOther" class="other hidden" type="text" maxlength="160" placeholder="Hotel, aeropuerto, barrio, ciudad o dirección" aria-label="Escribe el origen">
+          <input id="originPlace" class="other hidden" type="text" maxlength="120" placeholder="Hotel o dirección" aria-label="Hotel o dirección de origen">
           <p class="err" data-for="origin"></p>
         </div>
 
@@ -66,6 +67,7 @@
           <label for="destination">Destino *</label>
           <select id="destination" name="destination"></select>
           <input id="destinationOther" class="other hidden" type="text" maxlength="160" placeholder="Hotel, aeropuerto, barrio, ciudad o dirección" aria-label="Escribe el destino">
+          <input id="destinationPlace" class="other hidden" type="text" maxlength="120" placeholder="Hotel o dirección" aria-label="Hotel o dirección de destino">
           <p class="err" data-for="destination"></p>
         </div>
       </div>
@@ -123,8 +125,9 @@
 
       <div id="flightBlock" class="grid2 hidden">
         <div class="field">
-          <label for="flight">Número de vuelo</label>
+          <label for="flight" id="flightLabel">Número de vuelo</label>
           <input id="flight" type="text" maxlength="20" placeholder="Ej.: AA1234" autocapitalize="characters">
+          <p class="err" data-for="flight"></p>
         </div>
         <div class="field">
           <label for="airline">Aerolínea (opcional)</label>
@@ -246,8 +249,8 @@
   </div>
 </footer>
 
-<script src="routes.js?v=3"></script>
-<script src="app.js?v=12"></script>
+<script src="routes.js?v=4"></script>
+<script src="app.js?v=13"></script>
 <script src="combo-config.js?v=5"></script>
 <script src="combo.js?v=6"></script>
 </body>
