@@ -46,7 +46,10 @@ Después de editar, hay que **volver a publicar** (ver abajo); el cambio aparece
 ## Reglas de precio (en `routes.js`)
 
 - `factorIdaYVuelta: 0.78` → ida y vuelta = ida × 2 × 0.78 (22 % de descuento).
-- `esperaMaximaHoras: 4` → el descuento aplica si el regreso es el mismo día y hasta 4 h después de la hora de salida. Si se supera o el regreso es otro día: «A cotizar».
+- `esperaMaximaHoras: 4` → el descuento aplica si el regreso es el mismo día y hasta 4 h después de la hora de salida.
+- `esperaSinCargoHoras: 5` → más de 4 y hasta 5 h, u otro día: el regreso se cobra como otro viaje (tarifa normal × 2).
+- `cargoHoraEspera: 10` → desde la 6.ª hora de espera, US$10 por cada hora adicional (o fracción).
+- El número de vuelo es obligatorio solo cuando el viaje sale del aeropuerto.
 - `pasajerosIncluidos: 4` y `cargoPasajeroAdicional: 10` → la tarifa cubre hasta 4 pasajeros; desde el quinto se suman US$10 por persona en cada trayecto. Ejemplo: Aeropuerto → Boca Chica con 6 pasajeros = 25 + 2 × 10 = US$45. En ida y vuelta se aplica la fórmula sobre ese total: 45 × 2 × 0.78 = US$70.20. Más de 15 pasajeros: «A cotizar».
 
 ## Publicar cambios
