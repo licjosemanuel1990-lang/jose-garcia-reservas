@@ -15,6 +15,10 @@ window.JGT_CONFIG = {
   // Espera máxima incluida en ida y vuelta (horas). Se mide entre la
   // hora de salida y la hora de regreso del mismo día.
   esperaMaximaHoras: 4,
+  // Más de 4 y hasta 5 horas: el regreso es otro viaje a tarifa normal (sin descuento).
+  esperaSinCargoHoras: 5,
+  // Desde la 6.ª hora, cada hora adicional de espera (o fracción) suma este cargo (US$).
+  cargoHoraEspera: 10,
 
   // Las tarifas incluyen hasta este número de pasajeros...
   pasajerosIncluidos: 4,

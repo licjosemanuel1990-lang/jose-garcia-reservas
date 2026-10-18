@@ -53,8 +53,8 @@
   fillCount(els.bags, 0, 10, null, "Más de 10");
   fillCount(els.carry, 0, 10, null, "Más de 10");
   var H = CFG.esperaMaximaHoras;
-  $("roundHint").innerHTML = L("<b>22 % de descuento</b> solo si regresas <b>el mismo día</b> y <b>dentro de " + H + " horas</b> desde la hora de salida. Más de " + H + " horas u otro día: no aplica el descuento.",
-    "<b>22% off</b> only if you return <b>the same day</b> and <b>within " + H + " hours</b> of the departure time. More than " + H + " hours or another day: no discount.");
+  $("roundHint").innerHTML = L("<b>22 % de descuento</b> solo si regresas <b>el mismo día</b> y <b>dentro de " + H + " horas</b> desde la hora de salida. Hasta " + CFG.esperaSinCargoHoras + " horas u otro día: el regreso se cobra como otro viaje. Desde la " + (CFG.esperaSinCargoHoras + 1) + ".ª hora: " + money(CFG.cargoHoraEspera) + " por cada hora adicional.",
+    "<b>22% off</b> only if you return <b>the same day</b> and <b>within " + H + " hours</b> of the departure time. Up to " + CFG.esperaSinCargoHoras + " hours or another day: the return is charged as a separate trip. From hour " + (CFG.esperaSinCargoHoras + 1) + ": " + money(CFG.cargoHoraEspera) + " per extra hour.");
 
   /* ---------- Fechas ---------- */
   function pad(n) { return (n < 10 ? "0" : "") + n; }
@@ -124,8 +124,19 @@
     if (ret <= dep) return { kind: "invalidReturn" };
     var hours = (ret - dep) / 36e5;
     if (s.rDate !== s.date) return mix({ kind: "price", amount: round2(oneWay * 2), trip: "round", otherDay: true }, info);
-    if (hours > CFG.esperaMaximaHoras) return { kind: "pending", reason: "longWait", base: base };
+    if (hours > CFG.esperaMaximaHoras) {
+      // Más de 4 h: regreso como viaje aparte (tarifa normal); desde la 6.ª hora, US$10 por hora adicional
+      var extraH = Math.max(0, Math.ceil(hours - CFG.esperaSinCargoHoras - 1e-9));
+      return mix({ kind: "price", amount: round2(oneWay * 2 + extraH * CFG.cargoHoraEspera), trip: "round", longWait: true, waitHours: hours, extraHours: extraH }, info);
+    }
     return mix({ kind: "price", amount: roundAmount, trip: "round" }, info);
+  }
+  function waitNote(q) {
+    var h = Math.round(q.waitHours * 10) / 10;
+    return L("Espera de " + h + " h: el regreso se cobra como otro viaje (" + money(q.oneWay) + " + " + money(q.oneWay) + ")" +
+        (q.extraHours ? " + " + q.extraHours + (q.extraHours === 1 ? " hora adicional" : " horas adicionales") + " × " + money(CFG.cargoHoraEspera) : "") + ".",
+      "Wait of " + h + " h: the return is charged as a separate trip (" + money(q.oneWay) + " + " + money(q.oneWay) + ")" +
+        (q.extraHours ? " + " + q.extraHours + " extra hour" + (q.extraHours === 1 ? "" : "s") + " × " + money(CFG.cargoHoraEspera) : "") + ".");
   }
   function legs(q) { return L("Ida " + money(q.oneWay) + " + vuelta " + money(q.oneWay) + ".", "Outbound " + money(q.oneWay) + " + return " + money(q.oneWay) + "."); }
   function mix(a, b) { for (var k in b) a[k] = b[k]; return a; }
@@ -157,7 +168,7 @@
         price = money(q.amount);
         if (q.trip === "round") {
           label = "Tarifa estimada · ida y vuelta";
-          note = q.otherDay ? legs(q) : (q.extraPax ? extraText(q) + " " : "") + L("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento: regreso el mismo día, máximo " + CFG.esperaMaximaHoras + " horas de espera.",
+          note = q.otherDay ? legs(q) : q.longWait ? waitNote(q) : (q.extraPax ? extraText(q) + " " : "") + L("2 trayectos de " + money(q.oneWay) + " con 22 % de descuento: regreso el mismo día, máximo " + CFG.esperaMaximaHoras + " horas de espera.",
             "2 legs of " + money(q.oneWay) + " with 22% off: same-day return, maximum " + CFG.esperaMaximaHoras + " hours of waiting.");
         } else {
           label = "Tarifa estimada · solo ida";
@@ -181,13 +192,9 @@
       els[k[1]].classList.toggle("hidden", !need);
       if (need) els[k[1]].placeholder = L("Hotel o dirección en " + placeById[v].nombre + " *", "Hotel or address in " + placeById[v].nombre + " *");
     });
-    var flightReq = isAirport(els.origin.value, els.originOther);
-    $("flightLabel").textContent = flightReq ? L("Número de vuelo *", "Flight number *") : L("Número de vuelo (opcional)", "Flight number (optional)");
+    $("flightLabel").textContent = L("Número de vuelo *", "Flight number *");
     $("returnBlock").classList.toggle("hidden", trip() !== "round");
-    var airport = (placeById[els.origin.value] && placeById[els.origin.value].aeropuerto) ||
-                  (placeById[els.destination.value] && placeById[els.destination.value].aeropuerto) ||
-                  /aeropuerto|airport/i.test(els.originOther.value + " " + els.destinationOther.value);
-    $("flightBlock").classList.toggle("hidden", !airport);
+    $("flightBlock").classList.toggle("hidden", !isAirport(els.origin.value, els.originOther));   // solo si el viaje sale del aeropuerto
     if (trip() === "round" && els.date.value && !els.returnDate.value) els.returnDate.value = els.date.value;
     setMins();
     renderQuote();
@@ -265,6 +272,8 @@
     L.push("Fecha: " + fmtDate(s.date));
     L.push("Hora: " + fmtTime(s.time));
     if (s.trip === "round") L.push("Regreso: " + fmtDate(s.rDate) + " a las " + fmtTime(s.rTime));
+    var qq = computeQuote(s);
+    if (qq.longWait) L.push("Espera: " + (Math.round(qq.waitHours * 10) / 10) + " h (regreso como otro viaje" + (qq.extraHours ? " + " + qq.extraHours + " h adicional" + (qq.extraHours === 1 ? "" : "es") : "") + ")");
     L.push("Pasajeros: " + esText(els.passengers));
     L.push("Maletas grandes: " + esText(els.bags));
     L.push("Equipaje de mano: " + esText(els.carry));
@@ -323,7 +332,7 @@
       $("cLabel").textContent = "Precio del servicio";
       priceEl.textContent = money(q.amount);
       priceEl.classList.remove("pending");
-      $("cNote").textContent = q.otherDay ? legs(q) : (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
+      $("cNote").textContent = q.otherDay ? legs(q) : q.longWait ? waitNote(q) : (q.extraPax ? extraText(q) + " " : "") + (q.trip === "round"
         ? L("Ida y vuelta el mismo día, con hasta " + CFG.esperaMaximaHoras + " h de espera incluidas.", "Same-day round trip, with up to " + CFG.esperaMaximaHoras + " h of waiting included.")
         : T("Sujeto a confirmación de disponibilidad."));
     } else {

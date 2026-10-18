@@ -94,7 +94,7 @@ with sync_playwright() as p:
     for frag in ["Origen: Aeropuerto de Santo Domingo (SDQ)\n", "Destino: Boca Chica (Santo Domingo Bay)", "Vuelo: DL123", "Precio estimado: US$25"]:
         check(f"Mensaje con hotel y vuelo: «{frag.strip()}»", frag in mq)
     pq.wait_for_timeout(600); pq.click("#swap")
-    check("Regreso al aeropuerto: vuelo opcional y el hotel pasa al origen", "opcional" in pq.locator("#flightLabel").inner_text() and pq.input_value("#originPlace") == "Santo Domingo Bay")
+    check("Regreso al aeropuerto: no pide vuelo y el hotel pasa al origen", not pq.locator("#flightBlock").is_visible() and pq.input_value("#originPlace") == "Santo Domingo Bay")
     check("Sin errores de JavaScript (vuelo y hotel)", not eq, "; ".join(eq))
     check("Ventana indica continuar por WhatsApp, sin confirmación falsa",
           "continúa por WhatsApp" in pg.locator("#confirmBox").text_content() and "confirmada" not in pg.locator("#confirmBox").text_content())
@@ -120,8 +120,11 @@ with sync_playwright() as p:
     check("Caso B: mensaje con regreso; ventana muestra US$39", "Regreso: 23/10/2026 a las 1:30 p. m." in msg and modal_price(pg) == "US$39", modal_price(pg))
 
     # --- Caso E ---
-    pg.fill("#returnTime", "15:30")
-    check("Caso E: espera > 4 h → A cotizar (sin descuento)", price(pg) == "A cotizar" and "4 horas" in pg.locator("#quoteNote").inner_text(), price(pg))
+    for rt, exp, why in [("14:00", "US$39", "4 h justas: con 22 %"), ("14:30", "US$50", "4,5 h: regreso como otro viaje"), ("15:00", "US$50", "5 h: regreso como otro viaje"),
+                         ("15:30", "US$60", "5,5 h: + 1 hora adicional"), ("17:00", "US$70", "7 h: + 2 horas adicionales")]:
+        pg.fill("#returnTime", rt); check(f"Caso E: espera {why} = {exp}", price(pg) == exp, price(pg))
+    msg = decode(submit(pg))
+    check("Caso E: mensaje indica la espera y el precio", "Espera: 7 h" in msg and "Precio estimado: US$70" in msg, msg.replace(chr(10), " | "))
     pg.fill("#returnDate", "2026-10-24"); pg.fill("#returnTime", "11:00")
     check("Caso E: regreso otro día → tarifa normal US$50 (sin 22 %)", price(pg) == "US$50" and pg.locator("#quoteNote").inner_text() == "Ida US$25 + vuelta US$25.", price(pg))
     msg = decode(submit(pg))
