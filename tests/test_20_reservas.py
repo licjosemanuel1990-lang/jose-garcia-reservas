@@ -8,11 +8,14 @@ rows = []
 
 def num(t):
     m = re.search(r"US\$([\d.,]+)", t or ""); return float(m.group(1).replace(",", "")) if m else None
+LAST = {"url": ""}
 def wa(pg):
-    return urllib.parse.unquote((pg.evaluate("window.__lastUrl") or "").split("?text=", 1)[-1])
+    LAST["url"] = pg.evaluate("window.__lastUrl") or ""
+    return urllib.parse.unquote(LAST["url"].split("?text=", 1)[-1])
 def add(n, cliente, servicio, esperado, mostrado, msg_ok, nota=""):
     ok = (esperado == mostrado) and msg_ok
-    rows.append(dict(n=n, cliente=cliente, servicio=servicio, esperado=esperado, mostrado=mostrado, msg=msg_ok, ok=ok, nota=nota))
+    rows.append(dict(n=n, cliente=cliente, servicio=servicio, esperado=esperado, mostrado=mostrado, msg=msg_ok, ok=ok, nota=nota, url=LAST["url"]))
+    LAST["url"] = ""
     print(("PASA " if ok else "FALLA") + f" | {n:>2}. {cliente} · {servicio} | esperado {esperado} · página {mostrado} · mensaje {'ok' if msg_ok else 'MAL'} {nota}")
 
 def traslado(pg, o, d, pax, fecha, hora, nombre, tel, rt=None, otro=None, combo=False, lang=""):
