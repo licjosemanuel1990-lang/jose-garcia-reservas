@@ -35,12 +35,12 @@ window.JGT_BUGGIESAPI = (function () {
       var extrasRD = v * (els.size.value === "300" ? B.extra300ccRD : 0) + (els.food.value === "si" ? B.comidaRD * n : 0);
       return Math.ceil(B.transporte + v * planUSD + extrasRD / B.tasaCambio);
     },
-    // Combo: RD$500 menos por four wheel
+    // Combo: US$8 menos por four wheel
     comboCalc: function (n, els, K) {
       var v = fw(els, n), p = plan(els);
       var planUSD = p.usd != null ? p.usd : (p.rd + B.margenRD) / B.tasaCambio;
-      var extrasRD = v * (els.size.value === "300" ? B.extra300ccRD : 0) + (els.food.value === "si" ? B.comidaRD * n : 0) - v * K.comatilloRDporFourWheel;
-      return Math.ceil(B.transporte + v * planUSD + extrasRD / B.tasaCambio);
+      var extrasRD = v * (els.size.value === "300" ? B.extra300ccRD : 0) + (els.food.value === "si" ? B.comidaRD * n : 0);
+      return Math.ceil(B.transporte + v * planUSD + extrasRD / B.tasaCambio) - v * K.comatilloUSDporFourWheel;
     },
     detail: function (n, els) {
       var v = fw(els, n), p = plan(els);

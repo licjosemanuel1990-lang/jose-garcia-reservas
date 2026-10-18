@@ -45,7 +45,7 @@ with sync_playwright() as p:
     check("2 servicios: todavía sin precios de combo", "2 servicios" in bar(pg) and "ahorras" not in bar(pg), bar(pg))
     pg.click("#comboOpen"); check("Pista: agrega 1 servicio más", "Agrega 1 servicio más" in pg.locator("#comboHint").inner_text()); pg.click("#comboClose")
 
-    # 3) Comatillo 2 personas, 1 four wheel: US$170 → combo US$162 (RD$500 menos)
+    # 3) Comatillo 2 personas, 1 four wheel: US$170 → combo US$162 (US$8 menos)
     pg.goto(BASE + "?r=3#buggies", wait_until="load")
     pg.select_option("#bPeople", "2"); datos(pg, "b"); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300); pg.click("#bConfirmBoxCombo"); pg.wait_for_timeout(300)
     check("3 servicios: se activa el combo (recogida US$5 + Comatillo US$8) → ahorras US$13", "US$13" in bar(pg), bar(pg))

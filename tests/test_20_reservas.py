@@ -69,8 +69,8 @@ def city(pg, personas, fecha, nombre, tel, combo=False):
 def city_price(n):  # transporte 70 (+10 desde la 5.ª persona) + Tres Ojos RD$300 c/u ÷ 61, +10 %
     return math.ceil((70 + max(0, n - 4) * 10 + 300 * n / 61) * 1.10)
 def comatillo(fw, plan_usd, s300=False, comida=0, combo=False):
-    rd = fw * (300 if s300 else 0) + 375 * comida - (500 * fw if combo else 0)
-    return math.ceil(100 + fw * plan_usd + rd / 62)
+    rd = fw * (300 if s300 else 0) + 375 * comida
+    return math.ceil(100 + fw * plan_usd + rd / 62) - (8 * fw if combo else 0)
 
 def combo_open(pg):
     pg.click("#comboOpen"); pg.wait_for_timeout(250)
