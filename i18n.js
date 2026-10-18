@@ -243,9 +243,9 @@
 
     /* ---- Combo y preguntas frecuentes ---- */
     "Arma tu combo:": "Build your combo:",
-    "con 2 o más servicios pagas precios de combo: recogida en el aeropuerto US$20, regreso US$15, City Tour US$10 menos y four wheels más baratos. Se reserva con el 50 %.": "with 2 or more services you pay combo prices: airport pickup US$20, return US$15, City Tour US$10 off and cheaper four wheels. Booked with 50%.",
+    "con 3 o más servicios pagas precios de combo: recogida en el aeropuerto US$20, regreso US$15, City Tour US$10 menos y four wheels más baratos. Se reserva con el 50 %.": "with 3 or more services you pay combo prices: airport pickup US$20, return US$15, City Tour US$10 off and cheaper four wheels. Booked with 50%.",
     "🎁 Arma tu combo: traslados + tours": "🎁 Build your combo: transfers + tours",
-    "Agrega 2 o más servicios con el botón «Agregar a mi combo» y paga precios de combo:": "Add 2 or more services with the “Add to my combo” button and pay combo prices:",
+    "Agrega 3 o más servicios con el botón «Agregar a mi combo» y paga precios de combo:": "Add 3 or more services with the “Add to my combo” button and pay combo prices:",
     "Recogida en el aeropuerto (SDQ → Boca Chica):": "Airport pickup (SDQ → Boca Chica):",
     "US$20 en vez de US$25, hasta 4 personas; +US$5 por persona adicional": "US$20 instead of US$25, up to 4 people; +US$5 per additional person",
     "Regreso al aeropuerto (Boca Chica → SDQ):": "Return to the airport (Boca Chica → SDQ):",
@@ -267,7 +267,7 @@
     "¿Recogen fuera de Boca Chica?": "Do you pick up outside Boca Chica?",
     "Sí. Elige «Otra zona» en el formulario y te enviamos el precio por WhatsApp.": "Yes. Choose \u201cOther area\u201d in the form and we will send you the price on WhatsApp.",
     "¿Cómo funciona el combo?": "How does the combo work?",
-    "Agrega cada servicio con el botón «Agregar a mi combo» y al final envía todo junto por WhatsApp. Con 2 o más servicios pagas precios de combo: recogida en el aeropuerto US$20 y regreso US$15 (hasta 4 personas; +US$5 por persona adicional), City Tour US$10 menos, Four Wheel en Comatillo RD$500 menos por four wheel y Four Wheel Boca Chica US$5 menos por four wheel. Isla Saona mantiene su precio. El combo se reserva con el 50 % del total y el resto se paga al abordar.": "Add each service with the \u201cAdd to my combo\u201d button and send everything together on WhatsApp at the end. With 2 or more services you pay combo prices: airport pickup US$20 and return US$15 (up to 4 people; +US$5 per additional person), City Tour US$10 off, Four Wheel in Comatillo RD$500 off per four wheel and Four Wheel Boca Chica US$5 off per four wheel. Saona Island keeps its price. The combo is booked with 50% of the total and the rest is paid when you board.",
+    "Agrega cada servicio con el botón «Agregar a mi combo» y al final envía todo junto por WhatsApp. Con 3 o más servicios pagas precios de combo: recogida en el aeropuerto US$20 y regreso US$15 (hasta 4 personas; +US$5 por persona adicional), City Tour US$10 menos, Four Wheel en Comatillo RD$500 menos por four wheel y Four Wheel Boca Chica US$5 menos por four wheel. Isla Saona mantiene su precio. El combo se reserva con el 50 % del total y el resto se paga al abordar.": "Add each service with the \u201cAdd to my combo\u201d button and send everything together on WhatsApp at the end. With 3 or more services you pay combo prices: airport pickup US$20 and return US$15 (up to 4 people; +US$5 per additional person), City Tour US$10 off, Four Wheel in Comatillo RD$500 off per four wheel and Four Wheel Boca Chica US$5 off per four wheel. Saona Island keeps its price. The combo is booked with 50% of the total and the rest is paid when you board.",
     "¿Puedo cambiar o cancelar mi reserva?": "Can I change or cancel my booking?",
     "Cancelación gratis hasta 24 horas antes del servicio.": "Free cancellation up to 24 hours before the service.",
     "Cambios de fecha u hora sin costo, avisando con al menos 24 horas y sujetos a disponibilidad.": "Date or time changes at no cost with at least 24 hours' notice, subject to availability.",

@@ -1,7 +1,7 @@
 /*
  * ============================================================
  *  COMBO — PRECIOS ESPECIALES
- *  Con 2 o más servicios en el combo, cada servicio pasa a su
+ *  Con 3 o más servicios en el combo, cada servicio pasa a su
  *  precio de combo:
  *
  *  Recogida en el aeropuerto (SDQ → Boca Chica)  US$20 hasta 4 personas, +US$5 por persona adicional
@@ -16,7 +16,7 @@
  * ============================================================
  */
 window.JGT_COMBO = {
-  minServicios: 2,
+  minServicios: 3,
   deposito: 0.50,          // el combo se reserva con el 50 %; el resto se paga al abordar
   traslado: {
     aeropuerto: "sdq", hotel: "boca",

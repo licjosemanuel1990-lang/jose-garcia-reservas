@@ -128,8 +128,8 @@
       (r.dep ? '<div><span>' + (r.on ? L("Para reservar el combo (50 %)", "To book the combo (50%)") : L("Para reservar (Four Wheel Comatillo 50 %)", "To book (Four Wheel Comatillo 50%)")) + '</span><span>' + usd(r.dep) + '</span></div>' +
                '<div><span>' + L("Al abordar", "When you board") + '</span><span>' + usd(r.rest) + '</span></div>' : "");
     var hint = !r.on
-      ? L("Agrega 1 servicio más y activa los precios de combo: recogida en el aeropuerto US$20, regreso US$15, City Tour −US$10, four wheels más baratos.",
-          "Add 1 more service to unlock combo prices: airport pickup US$20, return US$15, City Tour −US$10, cheaper four wheels.")
+      ? L("Agrega " + (C.minServicios - n) + (C.minServicios - n === 1 ? " servicio más" : " servicios más") + " y activa los precios de combo: recogida en el aeropuerto US$20, regreso US$15, City Tour −US$10, four wheels más baratos.",
+          "Add " + (C.minServicios - n) + " more service" + (C.minServicios - n === 1 ? "" : "s") + " to unlock combo prices: airport pickup US$20, return US$15, City Tour −US$10, cheaper four wheels.")
       : (r.disc ? L("¡Precios de combo activados! Ahorras " + usd(r.disc) + ".", "Combo prices unlocked! You save " + usd(r.disc) + ".")
                 : L("Precios de combo activados. Isla Saona mantiene su precio; agrega un traslado del aeropuerto, City Tour o four wheel para ahorrar.",
                     "Combo prices unlocked. Saona Island keeps its price; add an airport transfer, City Tour or four wheel to save."));
@@ -160,7 +160,7 @@
     var t = $("comboToast");
     if (!t) { t = document.createElement("div"); t.className = "combo-toast"; t.id = "comboToast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
     t.innerHTML = "✓ " + L("Agregado a tu combo (" + n + "). ", "Added to your combo (" + n + "). ") +
-      (n < C.minServicios ? L("Agrega otro servicio para activar los precios de combo. ", "Add another service to unlock combo prices. ") : L("Precios de combo activados. ", "Combo prices unlocked. ")) +
+      (n < C.minServicios ? L("Con " + C.minServicios + " servicios se activan los precios de combo. ", "Combo prices unlock with " + C.minServicios + " services. ") : L("Precios de combo activados. ", "Combo prices unlocked. ")) +
       '<br><a href="' + hrefTransfers + '">' + L("+ Traslado", "+ Transfer") + '</a><a href="' + hrefTours + '">' + L("+ Tour", "+ Tour") + '</a>';
     t.classList.remove("hidden"); clearTimeout(toastT);
     toastT = setTimeout(function () { t.classList.add("hidden"); }, 7000);

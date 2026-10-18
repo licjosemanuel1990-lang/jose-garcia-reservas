@@ -30,17 +30,18 @@ with sync_playwright() as p:
     # 1) Recogida SDQ → Boca Chica, 2 personas: US$25 (combo US$20)
     traslado(pg, "sdq", "boca", "2", 1)
     check("1 servicio: sin precios de combo", "1 servicio" in bar(pg) and "ahorras" not in bar(pg), bar(pg))
-    pg.click("#comboOpen"); check("Pista: agrega 1 servicio más", "Agrega 1 servicio más" in pg.locator("#comboHint").inner_text()); pg.click("#comboClose")
+    pg.click("#comboOpen"); check("Pista: agrega 2 servicios más", "Agrega 2 servicios más" in pg.locator("#comboHint").inner_text()); pg.click("#comboClose")
 
     # 2) Saona 2 personas: US$180 (sin cambio)
     pg.goto(BASE + "?r=2#saona", wait_until="load")
     pg.select_option("#sPeople", "2"); datos(pg, "s"); pg.click("#sSubmitBtn"); pg.wait_for_timeout(300); pg.click("#sConfirmBoxCombo"); pg.wait_for_timeout(300)
-    check("2 servicios: recogida a US$20 → ahorras US$5", "2 servicios" in bar(pg) and "US$5" in bar(pg), bar(pg))
+    check("2 servicios: todavía sin precios de combo", "2 servicios" in bar(pg) and "ahorras" not in bar(pg), bar(pg))
+    pg.click("#comboOpen"); check("Pista: agrega 1 servicio más", "Agrega 1 servicio más" in pg.locator("#comboHint").inner_text()); pg.click("#comboClose")
 
     # 3) Comatillo 2 personas, 1 four wheel: US$170 → combo US$162 (RD$500 menos)
     pg.goto(BASE + "?r=3#buggies", wait_until="load")
     pg.select_option("#bPeople", "2"); datos(pg, "b"); pg.click("#bSubmitBtn"); pg.wait_for_timeout(300); pg.click("#bConfirmBoxCombo"); pg.wait_for_timeout(300)
-    check("3 servicios: +US$8 Comatillo → ahorras US$13", "US$13" in bar(pg), bar(pg))
+    check("3 servicios: se activa el combo (recogida US$5 + Comatillo US$8) → ahorras US$13", "US$13" in bar(pg), bar(pg))
 
     # 4) Four Wheel Boca Chica 2 personas: US$70 → US$65
     pg.goto(BASE + "?r=4#fwboca", wait_until="load")
