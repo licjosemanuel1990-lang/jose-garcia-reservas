@@ -243,7 +243,7 @@
 
     /* ---- Four Wheel Boca Chica ---- */
     "Four Wheel Boca Chica": "Four Wheel Boca Chica",
-    "US$70 por four wheel: caminos de barro, la cantera, el río y senderos de bosque.": "US$70 per four wheel: muddy roads, the quarry, the river and forest trails.",
+    "Aventura aquí mismo: caminos de barro, la cantera, el río y senderos de bosque.": "Adventure right here: muddy roads, the quarry, the river and forest trails.",
     "Aquí mismo en Boca Chica": "Right here in Boca Chica",
     "Maneja tu propio four wheel por caminos de barro entre palmeras, una antigua cantera de roca, la orilla del río y senderos de bosque, siempre con guía. Sin viajes largos: la aventura empieza en Boca Chica.": "Drive your own four wheel along muddy palm-lined roads, an old rock quarry, the riverbank and forest trails, always with a guide. No long drives: the adventure starts in Boca Chica.",
     "por four wheel · 1 o 2 personas en cada uno": "per four wheel · 1 or 2 people on each",

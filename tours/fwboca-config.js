@@ -9,6 +9,6 @@
 window.JGT_FWBOCA = {
   nombre: "Four Wheel Boca Chica",
   porFourWheel: 70,    // US$ por cada four wheel (1 o 2 personas)
-  deposito: 0.50,      // 50 % para reservar; el resto al abordar
+  // Sin reserva ni pagos anticipados: se paga al finalizar el servicio
   maxPersonas: 15      // más personas → "A cotizar"
 };
